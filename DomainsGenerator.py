@@ -22,7 +22,73 @@ class DomainsGenerator(object):
         cfg = json.loads(cfgF.read())
         self.__domains = cfg['domains']
         self.__meshDegree = cfg['meshDegree']
+        self.__lastNodeId = -1
         
+
+    def __getNextIds(self, numNodes):
+        """Obtains the node IDs for the next numNodes
+        
+        :param numNodes: number of nodes to obtain IDs
+
+        :return: list(string, ...)"""
+
+        nodeIds = range(self.__lastNodeId + 1,
+                self.__lastNodeId + 1 + numNodes)
+        self.__lastNodeId += numNodes
+
+        return [str(nodeId) for nodeId in nodeIds]
+
+
+    def __attachFatTree(self, gwMesh, gw, k):
+        """Attaches a Fat Tree under the GW domain
+
+        :param gwMesh: gw mesh graph
+        :param gw: gateway node where FatTree is created
+        :param k: FatTree degree (must be even)
+        """
+
+        baseId = self.__lastNodeId
+
+        # Add core switches
+        coreSw = (k/2)*(k/2)
+        for i in range(1, coreSw + 1):
+            gwMesh.add_node(baseId + i)
+            gwMesh.add_edge(gw, baseId + i)
+            self.__lastNodeId += 1
+
+        # Create pods
+        podsBaseId = self.__lastNodeId
+        for i in range(k):
+            # Create pod
+            for j in range(1, k/2 + 1):
+                gwMesh.add_node(podsBaseId + i*k/2 + j)
+                gwMesh.add_node(podsBaseId + k*k/2 + i*k/2 + j)
+                self.__lastNodeId += 2
+            # In-pod links
+            for j in range(1, k/2 + 1):
+                for l in range(1, k/2 + 1):
+                    gwMesh.add_edge(podsBaseId + i*k/2 + j,
+                            podsBaseId + k*k/2 + i*k/2 + l)
+
+        # Links with core switches
+        for p in range(k):
+            for s in range(1, k/2 + 1)
+                for c in range(1, coreSw + 1):
+                    gwMesh.add_edge(podsBaseId + p*k/2 + s, baseId + c)
+
+        # Server and links
+        serversBaseId = self.__lastNodeId
+        sndPodsBaseId = k/2*k/2 + k*k/2
+        s = 1
+        for i in range(1, k*k/2 + 1):
+            gwMesh.add_node(serversBaseId + s)
+            gwMesh.add_node(serversBaseId + s + 1)
+            gwMesh.add_edge(serversBaseId + s, sndPodsBaseId + i)
+            gwMesh.add_edge(serversBaseId + s + 1, sndPodsBaseId + i)
+            s += 2
+            self.__lastNodeId += 2
+
+
 
     def __genGwMesh(self):
         """Generates the multiple domains GW mesh
@@ -31,6 +97,7 @@ class DomainsGenerator(object):
 
         # Calc number of mesh links
         gwMesh = nx.cycle_graph(self.__domains)
+        _ = self.__getNextIds(self.__domains)
         possibleLinks = itertools.combinations(
                 range(self.__domains), 2)
         possibleLinks = len(list(possibleLinks)) - self.__domains
@@ -50,13 +117,15 @@ class DomainsGenerator(object):
         return gwMesh
         
 
-
     def create(self):
         """Creates the multi-domain graphs invoking the multiple generation
         steps.
         
         :return: a MultiDomain instance"""
         gwMesh = self.__genGwMesh()
+        self.__attachFatTree(gwMesh, gw=1, k=2)
+
+        # Draw
         circular_pos = nx.circular_layout(gwMesh)
         nx.draw(gwMesh, pos=circular_pos)
         plt.show()
