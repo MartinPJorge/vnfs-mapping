@@ -7,21 +7,22 @@ import itertools
 import random
 from datetime import datetime
 import matplotlib.pyplot as plt
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 class DomainsGenerator(object):
 
     """Generates randomly multi-domain graphs"""
 
-    def __init__(self, config):
+    def __init__(self, domains, meshDegree):
         """__init__
 
-        :param config: path for configuration file to generate
+        :param domains: number of domains composing the graph
+        :param meshDegree: connectivity degree of the mesh (0, 1)
         """
         # Read JSON config
-        cfgF = open(config)
-        cfg = json.loads(cfgF.read())
-        self.__domains = cfg['domains']
-        self.__meshDegree = cfg['meshDegree']
+        self.__domains = domains
+        self.__meshDegree = meshDegree
         self.__lastNodeId = -1
         
 
@@ -52,7 +53,7 @@ class DomainsGenerator(object):
         # Add core switches
         coreSw = (k/2)*(k/2)
         for i in range(1, coreSw + 1):
-            gwMesh.add_node(baseId + i)
+            gwMesh.add_node(baseId + i, nodeType='r', fatType='core')
             gwMesh.add_edge(gw, baseId + i)
             self.__lastNodeId += 1
 
@@ -61,8 +62,10 @@ class DomainsGenerator(object):
         for i in range(k):
             # Create pod
             for j in range(1, k/2 + 1):
-                gwMesh.add_node(podsBaseId + i*k/2 + j)
-                gwMesh.add_node(podsBaseId + k*k/2 + i*k/2 + j)
+                gwMesh.add_node(podsBaseId + i*k/2 + j, nodeType='r',
+                        fatType='aggregate1')
+                gwMesh.add_node(podsBaseId + k*k/2 + i*k/2 + j, nodeType='r',
+                        fatType='aggregate2')
                 self.__lastNodeId += 2
             # In-pod links
             for j in range(1, k/2 + 1):
@@ -81,7 +84,8 @@ class DomainsGenerator(object):
         for edgeR in range(podsBaseId + k*k/2 + 1, podsBaseId + k*k + 1):
             for _ in range(k/2):
                 self.__lastNodeId += 1
-                gwMesh.add_node(self.__lastNodeId)
+                gwMesh.add_node(self.__lastNodeId, nodeType='c',
+                        fatType='server')
                 gwMesh.add_edge(self.__lastNodeId, edgeR)
 
 
@@ -112,22 +116,25 @@ class DomainsGenerator(object):
         return gwMesh
         
 
-    def create(self):
-        """Creates the multi-domain graphs invoking the multiple generation
-        steps.
+    def createGlobalView(self):
+        """Creates the graph of the global view
         
-        :return: a MultiDomain instance"""
-        gwMesh = self.__genGwMesh()
-        self.__attachFatTree(gwMesh, gw=1, k=2)
+        :return: networkX graph instance"""
+        globalView = self.__genGwMesh()
+        for domain in range(1, self.__domains + 1):
+            self.__attachFatTree(globalView, gw=1, k=4)
 
-        # Draw
-        circular_pos = nx.circular_layout(gwMesh)
-        nx.draw(gwMesh, pos=circular_pos)
-        plt.show()
+        return globalView
         
 
 
 if __name__ == "__main__":
-    generator = DomainsGenerator('config/generator.json')
-    generator.create()
+    # Load configuration file
+    cfgF = open(os.path.abspath(os.path.dirname(__file__)) +\
+            '/config/generator.json')
+    cfg = json.loads(cfgF.read())
+
+    # Create the global view graph
+    generator = DomainsGenerator(cfg['domains'], cfg['meshDegree'])
+    globalView = generator.createGlobalView()
 
