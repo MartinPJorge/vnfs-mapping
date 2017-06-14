@@ -71,23 +71,18 @@ class DomainsGenerator(object):
                             podsBaseId + k*k/2 + i*k/2 + l)
 
         # Links with core switches
-        for p in range(k):
-            for s in range(1, k/2 + 1)
-                for c in range(1, coreSw + 1):
-                    gwMesh.add_edge(podsBaseId + p*k/2 + s, baseId + c)
+        for coreGroup in range(k/2):
+            for coreNode in range(coreGroup*k/2 + 1, coreGroup*k/2 + k/2 + 1):
+                for pod in range(k):
+                    gwMesh.add_edge(baseId + coreNode, podsBaseId + pod*k/2 + 1
+                            + coreGroup)
 
-        # Server and links
-        serversBaseId = self.__lastNodeId
-        sndPodsBaseId = k/2*k/2 + k*k/2
-        s = 1
-        for i in range(1, k*k/2 + 1):
-            gwMesh.add_node(serversBaseId + s)
-            gwMesh.add_node(serversBaseId + s + 1)
-            gwMesh.add_edge(serversBaseId + s, sndPodsBaseId + i)
-            gwMesh.add_edge(serversBaseId + s + 1, sndPodsBaseId + i)
-            s += 2
-            self.__lastNodeId += 2
-
+        # Server and links with edge routers
+        for edgeR in range(podsBaseId + k*k/2 + 1, podsBaseId + k*k + 1):
+            for _ in range(k/2):
+                self.__lastNodeId += 1
+                gwMesh.add_node(self.__lastNodeId)
+                gwMesh.add_edge(self.__lastNodeId, edgeR)
 
 
     def __genGwMesh(self):
