@@ -68,8 +68,20 @@ class DomainsGeneratorTester(object):
                 pathLengths[length] = 1 if length not in pathLengths.keys()\
                         else pathLengths[length] + 1
 
+            len2Paths = k*k/2*len(list(itertools.combinations(range(k/2), 2)))
+            len4Paths = k*( len(list(itertools.combinations(range(k/2*k/2),
+                2))) - k/2*len(list(itertools.combinations(range(k/2), 2))) )
+            len6Paths = len(list(itertools.combinations(range(k*k/2*k/2), 2)))\
+                - len4Paths - len2Paths
+
+            print '  len2Paths: ' + str(len2Paths)
+            print '  len4Paths: ' + str(len4Paths)
+            print '  len6Paths: ' + str(len6Paths)
+
             print '  ' + str(pathLengths)
-            print '  There are ' + str(len(servers)) + ' servers'
+            print '  path lengths ok?: ' + str(len2Paths == pathLengths[2] and\
+                    len4Paths == pathLengths[4] and\
+                    len6Paths == pathLengths[6])
 
 
 
