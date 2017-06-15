@@ -14,16 +14,22 @@ class DomainsGenerator(object):
 
     """Generates randomly multi-domain graphs"""
 
-    def __init__(self, domains, meshDegree):
+    def __init__(self, domains, meshDegree, fatTreeDegrees):
         """__init__
 
         :param domains: number of domains composing the graph
         :param meshDegree: connectivity degree of the mesh (0, 1)
+        :param fatTreeDegrees: list of fat-tree degrees for each domain
         """
-        # Read JSON config
-        self.__domains = domains
-        self.__meshDegree = meshDegree
-        self.__lastNodeId = -1
+
+        if len(fatTreeDegrees) != domains:
+            raise UnboundLocalError('number of domains don\'t match with\
+ number of provided degrees')
+        else:
+            self.__domains = domains
+            self.__meshDegree = meshDegree
+            self.__lastNodeId = -1
+            self.__fatTreeDegrees = fatTreeDegrees
         
 
     def __getNextIds(self, numNodes):
@@ -63,9 +69,9 @@ class DomainsGenerator(object):
             # Create pod
             for j in range(1, k/2 + 1):
                 gwMesh.add_node(podsBaseId + i*k/2 + j, nodeType='r',
-                        fatType='aggregate1')
+                        fatType='aggregate')
                 gwMesh.add_node(podsBaseId + k*k/2 + i*k/2 + j, nodeType='r',
-                        fatType='aggregate2')
+                        fatType='edge')
                 self.__lastNodeId += 2
             # In-pod links
             for j in range(1, k/2 + 1):
@@ -115,6 +121,21 @@ class DomainsGenerator(object):
 
         return gwMesh
         
+    
+    def setFatTreeDegrees(self, degrees):
+        """Sets the degrees of each fat-tree.
+        If degrees don't match with the number of domains, an exception is
+        raised.
+
+        :degrees: list of domain's fat-trees' degrees
+
+        """
+        if len(degrees) != self.__domains:
+            raise UnboundLocalError('number of domains don\'t match with\
+ number of provided degrees')
+        else:
+            self.__fatTreeDegrees = degrees
+
 
     def createGlobalView(self):
         """Creates the graph of the global view
@@ -122,7 +143,8 @@ class DomainsGenerator(object):
         :return: networkX graph instance"""
         globalView = self.__genGwMesh()
         for domain in range(1, self.__domains + 1):
-            self.__attachFatTree(globalView, gw=1, k=4)
+            self.__attachFatTree(globalView, gw=domain,
+                    k=self.__fatTreeDegrees[domain-1])
 
         return globalView
         
@@ -135,6 +157,7 @@ if __name__ == "__main__":
     cfg = json.loads(cfgF.read())
 
     # Create the global view graph
-    generator = DomainsGenerator(cfg['domains'], cfg['meshDegree'])
+    generator = DomainsGenerator(cfg['domains'], cfg['meshDegree'],
+            cfg['fatTreeDegrees'])
     globalView = generator.createGlobalView()
 

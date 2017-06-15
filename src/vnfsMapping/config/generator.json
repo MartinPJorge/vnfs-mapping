@@ -1,4 +1,5 @@
 {
 	"domains": 6,
+    "fatTreeDegrees": [4, 4, 4, 4, 4, 4],
     "meshDegree": 0.2
 }
