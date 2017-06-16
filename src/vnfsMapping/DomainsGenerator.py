@@ -55,6 +55,8 @@ class DomainsGenerator(object):
         """
 
         baseId = self.__lastNodeId
+        nx.set_node_attributes(gwMesh, 'firstCore', {gw: baseId + 1})
+        nx.set_node_attributes(gwMesh, 'k', {gw: k})
 
         # Add core switches
         coreSw = (k/2)*(k/2)
@@ -142,12 +144,59 @@ class DomainsGenerator(object):
         
         :return: networkX graph instance"""
         globalView = self.__genGwMesh()
+        gwMesh = globalView.copy()
         for domain in range(1, self.__domains + 1):
             self.__attachFatTree(globalView, gw=domain,
                     k=self.__fatTreeDegrees[domain-1])
 
         return globalView
         
+
+    def createDomainView(self, globalView, domain, foreignPods):
+        """Creates the domain view based on the foreign domains to which it
+        have access.
+
+        :globalView: networkX of the global view
+        :domain: domain number
+        :foreignPods: { "domainNumber": [podNumber1, ..., podNumberN], ... }
+        :returns: networkX graph with the domain view
+
+        """
+        domainG = globalView.copy()
+
+        for foreignDom in [dom for dom in range(self.__domains)
+                if dom != domain]:
+            k = domainG[foreignDomain]['k']
+            firstCore = domainG[foreignDomain]['firstCore']
+
+            # If the foreign domain don't share pods
+            if str(foreignDom) not in foreignPods.keys():
+                lastFatTreeNode = firstCore - 1 + k/2*k/2 + k*k + k*k*k/2*2
+                domainG.remove_nodes_from(range(firstCore, lastFatTreeNode + 1))
+
+            # Foreign domain shares one or more pods
+            else:
+                sharedPods = foreignPods[str(foreignDom)]
+                deletePods = [pod for pod in range(1, self.__domains + 1)
+                        if pod not in sharedPods]
+                for deletePod in deletePods:
+                    # Remove aggregation switches
+                    firstAgg = k/2*k/2 + (deletePod-1)*k/2 + firstCore
+                    lastAgg = firstAgg + k/2 - 1
+                    domainG.remove_nodes_from(range(firstAgg, last + 1))
+
+                    # Remove edge switches
+                    firstEdge = k/2*k/2 + k*k/2 + (deletePod-1)*k/2 + 1
+                    lastEdge = firstEdge + k/2 - 1
+                    domainG.remove_nodes_from(range(firstEdge, lastEdge + 1))
+
+                    # Remove servers
+                    firstServer = k/2*k/2 + k*k + (deletePod-1)*k/2*k/2 + 1
+                    lastServer = firstServer + k/2*k/2 - 1
+                    domainG.remove_nodes_from(range(firstServer, lastServer + 1))
+
+        return domainG
+
 
 
 if __name__ == "__main__":
