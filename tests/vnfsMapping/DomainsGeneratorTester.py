@@ -36,6 +36,11 @@ class DomainsGeneratorTester(object):
 
         """
 
+        print '#####################'
+        print '### fat-tree test ###'
+        print '#####################'
+
+
         generator = DG.DomainsGenerator(domains=1, meshDegree=0,
                 fatTreeDegrees=[1])
 
@@ -93,6 +98,10 @@ class DomainsGeneratorTester(object):
 
         """
 
+        print '\n########################'
+        print '### domainsView test ###'
+        print '########################'
+
         # Specify graph characteristics
         domains = random.randint(2, 8)
         meshDegree = random.random()
@@ -106,14 +115,15 @@ class DomainsGeneratorTester(object):
         for domain in range(domains):
             sharedDomainPods = dict()
 
-            for foreignDom in range(domains) and foreingDom != domain:
+            for foreignDom in [dom for dom in range(domains)\
+                    if dom != domain]:
                 foreignDegree = fatTreeDegrees[foreignDom]
-                numSharedPods = random.random(1, foreignDegree)
+                numSharedPods = random.randint(1, foreignDegree)
                 sharedPods = range(1, foreignDegree + 1)
 
                 for _ in range(foreignDegree - numSharedPods):
-                    sharedPods.remove(random.randint(0, len(sharedPods)))
-                sharedDomainPods[str(foreignDomain)] = sharedPods
+                    del sharedPods[random.randint(0, len(sharedPods)-1)]
+                sharedDomainPods[str(foreignDom)] = sharedPods
 
             foreingPods.append(sharedDomainPods)
 
@@ -122,9 +132,30 @@ class DomainsGeneratorTester(object):
         generator = DG.DomainsGenerator(domains=domains,
                 meshDegree=meshDegree, fatTreeDegrees=fatTreeDegrees)
         globalView = generator.createGlobalView()
+        print '       \ttheory\treal'
+        for domain in range(domains):
+            domainView = generator.createDomainView(globalView, domain,
+                    foreingPods[domain])
+            # Check if it has the correct number of nodes
+            k = fatTreeDegrees[domain]
+            fatTreeNodes = k/2*k/2 + k*k + k*k*k/4
+            sharedNodes = 0
+            
+            for shareDomain in foreingPods[domain]:
+                shareK = fatTreeDegrees[int(shareDomain)]
+                pods = foreingPods[domain][shareDomain]
+                sharedNodes += len(pods)* (shareK + shareK*shareK/4) # pod
+                sharedNodes += shareK*shareK/4 # core switches
+
+            theoryNodes = fatTreeNodes + domains + sharedNodes
+
+            print 'Domain' + str(domain) + '\t' + str(theoryNodes) + '\t' +\
+                    str(len(domainView.nodes())) + ('\tok' if theoryNodes ==
+                            len(domainView.nodes()) else '\terr')
 
 
 if __name__ == '__main__':
     tester = DomainsGeneratorTester()
     tester.testFatTree()
+    tester.domainsViewTester()
 

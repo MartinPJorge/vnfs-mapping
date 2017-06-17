@@ -147,7 +147,7 @@ class DomainsGenerator(object):
         gwMesh = globalView.copy()
         for domain in range(self.__domains):
             self.__attachFatTree(globalView, gw=domain,
-                    k=self.__fatTreeDegrees[domain-1])
+                    k=self.__fatTreeDegrees[domain])
 
         return globalView
         
@@ -166,8 +166,9 @@ class DomainsGenerator(object):
 
         for foreignDom in [dom for dom in range(self.__domains)
                 if dom != domain]:
-            k = domainG[foreignDomain]['k']
-            firstCore = domainG[foreignDomain]['firstCore']
+            k = nx.get_node_attributes(domainG, 'k')[foreignDom]
+            firstCore = nx.get_node_attributes(domainG,
+                    'firstCore')[foreignDom]
 
             # If the foreign domain don't share pods
             if str(foreignDom) not in foreignPods.keys():
