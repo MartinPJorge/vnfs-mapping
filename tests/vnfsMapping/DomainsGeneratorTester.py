@@ -1,5 +1,6 @@
 import sys
 import os
+import random
 import itertools
 import networkx as nx
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
@@ -49,6 +50,7 @@ class DomainsGeneratorTester(object):
             edgeNodes = self.getAttrNodes(globalView, 'fatType', 'edge')
 
             # Check nodes degree
+            gwDegOk = globalView.degree(0) == k/2*k/2
             coreDegOk = reduce(lambda ok, node: ok and\
                     globalView.degree(node) == k+1, coreNodes)
             aggNodesOk = reduce(lambda ok, node: ok and\
@@ -56,6 +58,7 @@ class DomainsGeneratorTester(object):
             edgeNodesOk = reduce(lambda ok, node: ok and\
                     globalView.degree(node) == k, edgeNodes)
 
+            print '  gwDegOk: ' + str(gwDegOk)
             print '  coreDegOk: ' + str(coreDegOk)
             print '  aggNodesOk: ' + str(aggNodesOk)
             print '  edgeNodesOk: ' + str(edgeNodesOk)
@@ -71,18 +74,54 @@ class DomainsGeneratorTester(object):
             len2Paths = k*k/2*len(list(itertools.combinations(range(k/2), 2)))
             len4Paths = k*( len(list(itertools.combinations(range(k/2*k/2),
                 2))) - k/2*len(list(itertools.combinations(range(k/2), 2))) )
-            len6Paths = len(list(itertools.combinations(range(k*k/2*k/2), 2)))\
-                - len4Paths - len2Paths
+            len6Paths = len(list(itertools.combinations(range(k*k/2*k/2),
+                2))) - len4Paths - len2Paths
 
             print '  len2Paths: ' + str(len2Paths)
             print '  len4Paths: ' + str(len4Paths)
             print '  len6Paths: ' + str(len6Paths)
 
             print '  ' + str(pathLengths)
-            print '  path lengths ok?: ' + str(len2Paths == pathLengths[2] and\
-                    len4Paths == pathLengths[4] and\
+            print '  path lengths ok?: ' + str(len2Paths == pathLengths[2]\
+                    and len4Paths == pathLengths[4] and\
                     len6Paths == pathLengths[6])
 
+    
+    def domainsViewTester(self):
+        """Test if each domain view of the global graph is correct
+        :returns: TODO
+
+        """
+
+        # Specify graph characteristics
+        domains = random.randint(2, 8)
+        meshDegree = random.random()
+        degrees = [4, 6, 8]
+        fatTreeDegrees = []
+        for _ in range(domains):
+            fatTreeDegrees.append(degrees[random.randint(0, len(degrees)-1)])
+        
+        # Create shared infrastructure
+        foreingPods = []
+        for domain in range(domains):
+            sharedDomainPods = dict()
+
+            for foreignDom in range(domains) and foreingDom != domain:
+                foreignDegree = fatTreeDegrees[foreignDom]
+                numSharedPods = random.random(1, foreignDegree)
+                sharedPods = range(1, foreignDegree + 1)
+
+                for _ in range(foreignDegree - numSharedPods):
+                    sharedPods.remove(random.randint(0, len(sharedPods)))
+                sharedDomainPods[str(foreignDomain)] = sharedPods
+
+            foreingPods.append(sharedDomainPods)
+
+
+        # Create the global and per domain graph views
+        generator = DG.DomainsGenerator(domains=domains,
+                meshDegree=meshDegree, fatTreeDegrees=fatTreeDegrees)
+        globalView = generator.createGlobalView()
 
 
 if __name__ == '__main__':

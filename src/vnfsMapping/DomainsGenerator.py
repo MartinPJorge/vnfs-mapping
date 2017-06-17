@@ -145,7 +145,7 @@ class DomainsGenerator(object):
         :return: networkX graph instance"""
         globalView = self.__genGwMesh()
         gwMesh = globalView.copy()
-        for domain in range(1, self.__domains + 1):
+        for domain in range(self.__domains):
             self.__attachFatTree(globalView, gw=domain,
                     k=self.__fatTreeDegrees[domain-1])
 
@@ -171,29 +171,32 @@ class DomainsGenerator(object):
 
             # If the foreign domain don't share pods
             if str(foreignDom) not in foreignPods.keys():
-                lastFatTreeNode = firstCore - 1 + k/2*k/2 + k*k + k*k*k/2*2
-                domainG.remove_nodes_from(range(firstCore, lastFatTreeNode + 1))
+                lastFatTreeNode = firstCore - 1 + k/2*k/2 + k*k + k*k*k/4
+                domainG.remove_nodes_from(range(firstCore,
+                    lastFatTreeNode + 1))
 
             # Foreign domain shares one or more pods
             else:
                 sharedPods = foreignPods[str(foreignDom)]
-                deletePods = [pod for pod in range(1, self.__domains + 1)
+                deletePods = [pod for pod in range(1, k + 1)
                         if pod not in sharedPods]
                 for deletePod in deletePods:
                     # Remove aggregation switches
                     firstAgg = k/2*k/2 + (deletePod-1)*k/2 + firstCore
                     lastAgg = firstAgg + k/2 - 1
-                    domainG.remove_nodes_from(range(firstAgg, last + 1))
+                    domainG.remove_nodes_from(range(firstAgg, lastAgg + 1))
 
                     # Remove edge switches
-                    firstEdge = k/2*k/2 + k*k/2 + (deletePod-1)*k/2 + 1
+                    firstEdge = k/2*k/2 + k*k/2 + (deletePod-1)*k/2 + firstCore
                     lastEdge = firstEdge + k/2 - 1
                     domainG.remove_nodes_from(range(firstEdge, lastEdge + 1))
 
                     # Remove servers
-                    firstServer = k/2*k/2 + k*k + (deletePod-1)*k/2*k/2 + 1
+                    firstServer = k/2*k/2 + k*k + (deletePod-1)*k/2*k/2 +\
+                        firstCore
                     lastServer = firstServer + k/2*k/2 - 1
-                    domainG.remove_nodes_from(range(firstServer, lastServer + 1))
+                    domainG.remove_nodes_from(range(firstServer,
+                        lastServer + 1))
 
         return domainG
 
