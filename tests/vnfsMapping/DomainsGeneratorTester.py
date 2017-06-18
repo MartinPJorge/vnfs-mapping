@@ -14,7 +14,84 @@ class DomainsGeneratorTester(object):
     """Test the domain generation class"""
 
     def __init__(self):
-        pass
+        properties = self.__genProperties()
+
+        self.__domains = properties['domains']
+        self.__meshDegree = properties['meshDegree']
+        self.__fatTreeDegrees = properties['fatTreeDegrees']
+        self.__foreignPods = properties['foreignPods']
+        self.__meshLnkRes = properties['meshLnkRes']
+        self.__fatLnkRes = properties['fatLnkRes']
+        self.__servRes = properties['servRes']
+
+
+    def __genProperties(self):
+        """Generates set of properties neccessary for the graphs generation
+        :returns: dictionary with the set of properties
+
+        """
+        # Specify graph characteristics
+        domains = random.randint(2, 8)
+        meshDegree = random.random()
+        degrees = [4, 6, 8]
+        fatTreeDegrees = []
+        for _ in range(domains):
+            fatTreeDegrees.append(degrees[random.randint(0, len(degrees)-1)])
+        
+        # Create shared infrastructure
+        foreingPods = []
+        for domain in range(domains):
+            sharedDomainPods = dict()
+
+            for foreignDom in [dom for dom in range(domains)\
+                    if dom != domain]:
+                foreignDegree = fatTreeDegrees[foreignDom]
+                numSharedPods = random.randint(1, foreignDegree)
+                sharedPods = range(1, foreignDegree + 1)
+
+                for _ in range(foreignDegree - numSharedPods):
+                    del sharedPods[random.randint(0, len(sharedPods)-1)]
+                sharedDomainPods[str(foreignDom)] = sharedPods
+
+            foreingPods.append(sharedDomainPods)
+
+        # Links and server resources
+        meshLnkRes = {
+            'bw': {
+                'min': 1,
+                'max': 3
+            },
+            'delay': {
+                'min': 1,
+                'max': 3
+            }
+        }
+        fatLnkRes = meshLnkRes
+        servRes = {
+            'memory': {
+                'min': 1,
+                'max': 3
+            },
+            'cpu': {
+                'min': 1,
+                'max': 3
+            },
+            'disk': {
+                'min': 1,
+                'max': 3
+            }
+        }
+
+        return {
+            'domains': domains,
+            'meshDegree': meshDegree,
+            'fatTreeDegrees': fatTreeDegrees,
+            'foreignPods': foreingPods,
+            'meshLnkRes': meshLnkRes,
+            'fatLnkRes': fatLnkRes,
+            'servRes': servRes
+        }
+        
 
     
     def getAttrNodes(self, graph, attr, value):
@@ -42,7 +119,8 @@ class DomainsGeneratorTester(object):
 
 
         generator = DG.DomainsGenerator(domains=1, meshDegree=0,
-                fatTreeDegrees=[1])
+                fatTreeDegrees=[1], meshLnkRes=self.__meshLnkRes,
+                fatLnkRes=self.__fatLnkRes, servRes=self.__servRes)
 
         for k in [4, 6, 8]:
             # Test k-ary tree generation
@@ -102,46 +180,23 @@ class DomainsGeneratorTester(object):
         print '### domainsView test ###'
         print '########################'
 
-        # Specify graph characteristics
-        domains = random.randint(2, 8)
-        meshDegree = random.random()
-        degrees = [4, 6, 8]
-        fatTreeDegrees = []
-        for _ in range(domains):
-            fatTreeDegrees.append(degrees[random.randint(0, len(degrees)-1)])
-        
-        # Create shared infrastructure
-        foreingPods = []
-        for domain in range(domains):
-            sharedDomainPods = dict()
-
-            for foreignDom in [dom for dom in range(domains)\
-                    if dom != domain]:
-                foreignDegree = fatTreeDegrees[foreignDom]
-                numSharedPods = random.randint(1, foreignDegree)
-                sharedPods = range(1, foreignDegree + 1)
-
-                for _ in range(foreignDegree - numSharedPods):
-                    del sharedPods[random.randint(0, len(sharedPods)-1)]
-                sharedDomainPods[str(foreignDom)] = sharedPods
-
-            foreingPods.append(sharedDomainPods)
-
-
         # Create the global and per domain graph views
-        generator = DG.DomainsGenerator(domains=domains,
-                meshDegree=meshDegree, fatTreeDegrees=fatTreeDegrees)
+        generator = DG.DomainsGenerator(domains=self.__domains,
+                meshDegree=self.__meshDegree,
+                fatTreeDegrees=self.__fatTreeDegrees,
+                meshLnkRes=self.__meshLnkRes, fatLnkRes=self.__fatLnkRes,
+                servRes=self.__servRes)
         globalView = generator.createGlobalView()
         print '       \ttheory\treal'
-        for domain in range(domains):
+        for domain in range(self.__domains):
             domainView = generator.createDomainView(globalView, domain,
-                    foreingPods[domain])
+                    self.__foreignPods[domain])
             # Check if it has the correct number of nodes
-            k = fatTreeDegrees[domain]
+            k = self.__fatTreeDegrees[domain]
             fatTreeNodes = k/2*k/2 + k*k + k*k*k/4
             sharedNodes = 0
             
-            for shareDomain in foreingPods[domain]:
+            for shareDomain in self.__foreingPods[domain]:
                 shareK = fatTreeDegrees[int(shareDomain)]
                 pods = foreingPods[domain][shareDomain]
                 sharedNodes += len(pods)* (shareK + shareK*shareK/4) # pod
@@ -156,6 +211,6 @@ class DomainsGeneratorTester(object):
 
 if __name__ == '__main__':
     tester = DomainsGeneratorTester()
-    tester.testFatTree()
+#    tester.testFatTree()
     tester.domainsViewTester()
 

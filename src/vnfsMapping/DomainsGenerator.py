@@ -14,12 +14,16 @@ class DomainsGenerator(object):
 
     """Generates randomly multi-domain graphs"""
 
-    def __init__(self, domains, meshDegree, fatTreeDegrees):
+    def __init__(self, domains, meshDegree, fatTreeDegrees, meshLnkRes,
+            fatLnkRes, servRes):
         """__init__
 
         :param domains: number of domains composing the graph
         :param meshDegree: connectivity degree of the mesh (0, 1)
         :param fatTreeDegrees: list of fat-tree degrees for each domain
+        :param meshLnkRes: dictionary with mesh links resources thresholds
+        :param fatLnkRes: dictionary with fat-tree link resources thresholds
+        :param serverRes: dictionary with server resources thresholds
         """
 
         if len(fatTreeDegrees) != domains:
@@ -30,6 +34,9 @@ class DomainsGenerator(object):
             self.__meshDegree = meshDegree
             self.__lastNodeId = -1
             self.__fatTreeDegrees = fatTreeDegrees
+            self.__meshLnkRes = meshLnkRes
+            self.__fatLnkRes = fatLnkRes
+            self.__servRes = servRes
         
 
     def __getNextIds(self, numNodes):
@@ -44,6 +51,48 @@ class DomainsGenerator(object):
         self.__lastNodeId += numNodes
 
         return [str(nodeId) for nodeId in nodeIds]
+
+
+    def __genMeshLnkRes(self):
+        """Generates the resources for a mesh link
+        :returns: resources dictionary, e.g.: {'resource': ammount, ...}
+
+        """
+        bw = random.randint(self.__fatLnkRes['bw']['min'],
+                self.__fatLnkRes['bw']['max'])
+        delay = random.randint(self.__fatLnkRes['delay']['min'],
+                self.__fatLnkRes['delay']['max'])
+
+        return { 'bw': bw, 'delay': delay }
+        
+
+
+    def __genFatLnkRes(self):
+        """Generates the resources for a fat-tree link
+        :returns: resources dictionary, e.g.: {'resource': ammount, ...}
+
+        """
+        bw = random.randint(self.__fatLnkRes['bw']['min'],
+                self.__fatLnkRes['bw']['max'])
+        delay = random.randint(self.__fatLnkRes['delay']['min'],
+                self.__fatLnkRes['delay']['max'])
+
+        return { 'bw': bw, 'delay': delay }
+
+
+    def __genServRes(self):
+        """Generates the resources for a server
+        :returns: resources dictionary, e.g.: {'resource': ammount, ...}
+
+        """
+        memory = random.randint(self.__servRes['memory']['min'],
+                self.__servRes['memory']['max'])
+        cpu = random.randint(self.__servRes['memory']['min'],
+                self.__servRes['cpu']['max'])
+        disk = random.randint(self.__servRes['disk']['min'],
+                self.__servRes['disk']['max'])
+
+        return { 'memory': memory, 'cpu': cpu, 'disk': disk }
 
 
     def __attachFatTree(self, gwMesh, gw, k):
@@ -62,7 +111,7 @@ class DomainsGenerator(object):
         coreSw = (k/2)*(k/2)
         for i in range(1, coreSw + 1):
             gwMesh.add_node(baseId + i, nodeType='r', fatType='core')
-            gwMesh.add_edge(gw, baseId + i)
+            gwMesh.add_edge(gw, baseId + i, res=self.__genFatLnkRes())
             self.__lastNodeId += 1
 
         # Create pods
@@ -79,22 +128,25 @@ class DomainsGenerator(object):
             for j in range(1, k/2 + 1):
                 for l in range(1, k/2 + 1):
                     gwMesh.add_edge(podsBaseId + i*k/2 + j,
-                            podsBaseId + k*k/2 + i*k/2 + l)
+                            podsBaseId + k*k/2 + i*k/2 + l,
+                            res=self.__genFatLnkRes())
 
         # Links with core switches
         for coreGroup in range(k/2):
             for coreNode in range(coreGroup*k/2 + 1, coreGroup*k/2 + k/2 + 1):
                 for pod in range(k):
-                    gwMesh.add_edge(baseId + coreNode, podsBaseId + pod*k/2 + 1
-                            + coreGroup)
+                    gwMesh.add_edge(baseId + coreNode,
+                            podsBaseId + pod*k/2 + 1 + coreGroup,
+                            res=self.__genFatLnkRes())
 
         # Server and links with edge routers
         for edgeR in range(podsBaseId + k*k/2 + 1, podsBaseId + k*k + 1):
             for _ in range(k/2):
                 self.__lastNodeId += 1
                 gwMesh.add_node(self.__lastNodeId, nodeType='c',
-                        fatType='server')
-                gwMesh.add_edge(self.__lastNodeId, edgeR)
+                        fatType='server', res=self.__genServRes())
+                gwMesh.add_edge(self.__lastNodeId, edgeR,
+                        res=self.__genFatLnkRes())
 
 
     def __genGwMesh(self):
@@ -117,9 +169,18 @@ class DomainsGenerator(object):
             candidates = list(nx.non_neighbors(gwMesh, i))
             if len(candidates) > 0:
                 candid = random.randint(0, len(candidates) - 1)
-                gwMesh.add_edge(i, candidates[candid])
+                gwMesh.add_edge(i, candidates[candid],
+                        res=self.__genMeshLnkRes(), meshLink='True')
                 linked += 1
             i = (i + 1) % self.__domains
+
+        # Add mesh attribute to original cycle edges
+        if self.__domains > 1: # Possible to have only have 1 domain
+            for gw in range(self.__domains):
+                if gw == self.__domains - 1:
+                    gwMesh[gw][0]['meshLink'] = True
+                else:
+                    gwMesh[gw][gw+1]['meshLink'] = True
 
         return gwMesh
         
@@ -201,6 +262,39 @@ class DomainsGenerator(object):
 
         return domainG
 
+
+    def issueMeshBw(self, globalView, domainsViews):
+        """Issues the mesh bandwidth among the multiple domains
+        :globalView: networkX graph with the global infrastructure
+        :domainsViews: list of networkX graphs with each domain's view
+        :returns: Nothing
+
+        """
+        maxNullLinks = 1 # Max number of links without bandwidth
+        allowedProps = range(4) # Proportions of bw issuing
+        nullsCounter = [maxNullLinks] * self.__domains 
+
+        for (gwA, gwB) in nx.get_edge_attributes(globalView, 'meshLink'):
+            props = []
+
+            # Generate proportions for link
+            for domain in self.__domains:
+                propIdx = None
+                if nullsCounter[domain] > 0 and random.random() > 0.5:
+                    propIdx = random.randint(0, len(allowedProps) - 1)
+                    nullsCounter[domain] -= 1
+                else:
+                    propIdx = random.randint(1, len(allowedProps) - 1)
+                props.append(allowedProps[propIdx])
+            
+            baseProp = globalView[gwA][gwB]['res']['bw'] /\
+                    reduce(lambda x, y: x + y, props)
+            
+            # Assign proportions
+            for domain in self.__domains:
+                domainView = domainsViews[domain]
+                domainView[gwA][gwB]['res']['bw'] =\
+                        math.floor(baseProp * props[domain])
 
 
 if __name__ == "__main__":
