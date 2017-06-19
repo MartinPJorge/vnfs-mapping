@@ -58,8 +58,8 @@ class DomainsGeneratorTester(object):
         # Links and server resources
         meshLnkRes = {
             'bw': {
-                'min': 1,
-                'max': 3
+                'min': 1000,
+                'max': 3000
             },
             'delay': {
                 'min': 1,
@@ -196,21 +196,65 @@ class DomainsGeneratorTester(object):
             fatTreeNodes = k/2*k/2 + k*k + k*k*k/4
             sharedNodes = 0
             
-            for shareDomain in self.__foreingPods[domain]:
-                shareK = fatTreeDegrees[int(shareDomain)]
-                pods = foreingPods[domain][shareDomain]
+            for shareDomain in self.__foreignPods[domain]:
+                shareK = self.__fatTreeDegrees[int(shareDomain)]
+                pods = self.__foreignPods[domain][shareDomain]
                 sharedNodes += len(pods)* (shareK + shareK*shareK/4) # pod
                 sharedNodes += shareK*shareK/4 # core switches
 
-            theoryNodes = fatTreeNodes + domains + sharedNodes
+            theoryNodes = fatTreeNodes + self.__domains + sharedNodes
 
             print 'Domain' + str(domain) + '\t' + str(theoryNodes) + '\t' +\
                     str(len(domainView.nodes())) + ('\tok' if theoryNodes ==
                             len(domainView.nodes()) else '\terr')
 
 
+    def testMeshBw(self):
+        """Tests if the mesh links share bandwidth properly accross domains.
+        :returns: None
+
+        """
+
+        print '\n########################'
+        print '### issueMeshBw test ###'
+        print '########################'
+
+        print '(gwA,gwB): sum of domain bws for link (gwA,gwB) <= totalBW ->\
+ True/False'
+
+        # Generate the domain and subdomain views
+        generator = DG.DomainsGenerator(domains=self.__domains,
+                meshDegree=self.__meshDegree,
+                fatTreeDegrees=self.__fatTreeDegrees,
+                meshLnkRes=self.__meshLnkRes, fatLnkRes=self.__fatLnkRes,
+                servRes=self.__servRes)
+        globalView = generator.createGlobalView()
+        domainsViews = []
+        for domain in range(self.__domains):
+            domainsViews.append(generator.createDomainView(globalView, domain,
+                self.__foreignPods[domain]))
+        generator.issueMeshBw(globalView, domainsViews)
+
+        # Check bandwidth's sums
+        for (gwA, gwB) in nx.get_edge_attributes(globalView, 'meshLink'):
+            bwDomain = []
+            for domain in range(self.__domains):
+                bwDomain.append(domainsViews[domain][gwA][gwB]['res']['bw'])
+
+            globalBw = globalView[gwA][gwB]['res']['bw']
+            bwDomainSum = reduce(lambda x, y: x+y, bwDomain)
+            bwDomainSumStr = ' + '.join([str(bw) for bw in bwDomain])
+            sumStr = '(' + str(gwA) + ', ' + str(gwB) + '): ' + bwDomainSumStr\
+                + ' = ' + str(bwDomainSum) + ' <= ' +\
+                str(globalBw) + ' -> ' + str(bwDomainSum <= globalBw)
+            print sumStr
+
+        
+
+
 if __name__ == '__main__':
     tester = DomainsGeneratorTester()
-#    tester.testFatTree()
-    tester.domainsViewTester()
+    # tester.testFatTree()
+    # tester.domainsViewTester()
+    tester.testMeshBw()
 

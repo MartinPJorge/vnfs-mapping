@@ -177,10 +177,9 @@ class DomainsGenerator(object):
         # Add mesh attribute to original cycle edges
         if self.__domains > 1: # Possible to have only have 1 domain
             for gw in range(self.__domains):
-                if gw == self.__domains - 1:
-                    gwMesh[gw][0]['meshLink'] = True
-                else:
-                    gwMesh[gw][gw+1]['meshLink'] = True
+                nextGw = 0 if gw == self.__domains - 1 else gw+1
+                gwMesh[gw][nextGw]['meshLink'] = True
+                gwMesh[gw][nextGw]['res'] = self.__genMeshLnkRes()
 
         return gwMesh
         
@@ -263,6 +262,56 @@ class DomainsGenerator(object):
         return domainG
 
 
+    def __genProportions(self, domains, allowedProps, nullsCounter):
+        """Creates a list of proportions for the resources issuing.
+
+        :domains: number of domains
+        :allowedProps: list of allowed integer proportions
+        :nullsCounter: list with a counter with the number of remaining null
+            resources assignation for each domain
+        :returns: a list of integer proportions
+
+        """
+        props = []
+
+        for domain in range(domains):
+            propIdx = None
+            if nullsCounter[domain] > 0 and random.random() > 0.5:
+                propIdx = random.randint(0, len(allowedProps) - 1)
+                nullsCounter[domain] -= 1
+            else:
+                propIdx = random.randint(1, len(allowedProps) - 1)
+            props.append(allowedProps[propIdx])
+
+        return props
+
+
+    def getFatTreeEdges(self, gView, domain):
+        """Obtains the domain's fat-tree edges contained within the gView.
+
+        :gView: graph view
+        :domain: domain number
+        :returns: doubled index dictionary with the edge and it's attributes
+            you can iterate through it as (A,B)
+
+        """
+        firstCore = gView[domain]['firstCore']
+        k = gView[domain]['k']
+        lastNode = firstCore + k/2*k/2 + k*k + k*k*k/4 - 1
+
+        fatEdges = dict()
+
+        # Get the fat-tree edges
+        for (A, B) in nx.get_edge_attributes(gView, 'fatType'):
+            if firstCore <= A <= lastNode and firstCore <= B <= lastNode:
+                if A not in fatEdges.keys():
+                    fatEdges[A] = dict()
+                fatEdges[A][B] = gView[A][B]
+                fatEdges[A,B] = gView[A][B]
+
+        return fatEdges
+
+
     def issueMeshBw(self, globalView, domainsViews):
         """Issues the mesh bandwidth among the multiple domains
         :globalView: networkX graph with the global infrastructure
@@ -275,26 +324,65 @@ class DomainsGenerator(object):
         nullsCounter = [maxNullLinks] * self.__domains 
 
         for (gwA, gwB) in nx.get_edge_attributes(globalView, 'meshLink'):
-            props = []
-
-            # Generate proportions for link
-            for domain in self.__domains:
-                propIdx = None
-                if nullsCounter[domain] > 0 and random.random() > 0.5:
-                    propIdx = random.randint(0, len(allowedProps) - 1)
-                    nullsCounter[domain] -= 1
-                else:
-                    propIdx = random.randint(1, len(allowedProps) - 1)
-                props.append(allowedProps[propIdx])
+            props = self.__genProportions(self.__domains, allowedProps,
+                    nullsCounter)
             
             baseProp = globalView[gwA][gwB]['res']['bw'] /\
                     reduce(lambda x, y: x + y, props)
             
             # Assign proportions
-            for domain in self.__domains:
+            for domain in range(self.__domains):
                 domainView = domainsViews[domain]
                 domainView[gwA][gwB]['res']['bw'] =\
                         math.floor(baseProp * props[domain])
+
+
+    def issueFatRes(self, globalView, domainsViews):
+        """Issues the fat-tree's resources accross the multiple domains
+
+        :globalView: nextworkX graph with the global infrastructure
+        :domainsViews: list of networkX graphs with each domain's view
+        :returns: Nothing
+
+        """
+
+        # Issue bandwidth
+        maxNullLinks = 0 # Max number of links without bandwidth
+        allowedProps = range(4) # Proportions of bw issuing
+        nullsCounter = [maxNullLinks] * self.__domains 
+        
+        for domain in range(self.__domains):
+            firstCore = globalView[domain]['firstCore']
+            k = globalView[domain]['k']
+
+            fatLinkBw = globalView[domain][firstCore]['res']['bw']
+            props = self.__genProportions(self.__domains, allowedProps,
+                    nullsCounter)
+            domainBw = math.floor(fatLinkBw / 2)
+            remainingBw = fatLinkBw - domainBw
+            baseBw = remainingBw / reduce(lambda x,y: x+y, props)
+
+            # Assign resources
+            for localDom in range(self.__domains):
+                localView = domainsViews[localDom]
+                for (A, B) in self.getFatTreeEdges(localView, domain):
+                    # Link resource
+                    if localDom == domain:
+                        localView[A][B]['res']['bw'] = domainBw
+                    else:
+                        localView[A][B]['res']['bw'] = baseBw * props[localDom]
+
+                    # Server resources
+                    isAServer = nx.get_node_attributes('fatType')[A]\
+                            == 'server'
+                    isBServer = nx.get_node_attributes('fatType')[B]\
+                            == 'server'
+                    if isAServer:
+                        # TODO - assign partial resources
+                    elif isBServer:
+                        pass
+            
+
 
 
 if __name__ == "__main__":
