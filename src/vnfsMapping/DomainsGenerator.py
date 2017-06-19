@@ -107,11 +107,14 @@ class DomainsGenerator(object):
         nx.set_node_attributes(gwMesh, 'firstCore', {gw: baseId + 1})
         nx.set_node_attributes(gwMesh, 'k', {gw: k})
 
+        fatLnkRes = self.__genFatLnkRes()
+
         # Add core switches
         coreSw = (k/2)*(k/2)
         for i in range(1, coreSw + 1):
             gwMesh.add_node(baseId + i, nodeType='r', fatType='core')
-            gwMesh.add_edge(gw, baseId + i, res=self.__genFatLnkRes())
+            gwMesh.add_edge(gw, baseId + i, res=fatLnkRes,
+                    fatLink=True)
             self.__lastNodeId += 1
 
         # Create pods
@@ -129,7 +132,7 @@ class DomainsGenerator(object):
                 for l in range(1, k/2 + 1):
                     gwMesh.add_edge(podsBaseId + i*k/2 + j,
                             podsBaseId + k*k/2 + i*k/2 + l,
-                            res=self.__genFatLnkRes())
+                            res=fatLnkRes, fatLink=True)
 
         # Links with core switches
         for coreGroup in range(k/2):
@@ -137,7 +140,7 @@ class DomainsGenerator(object):
                 for pod in range(k):
                     gwMesh.add_edge(baseId + coreNode,
                             podsBaseId + pod*k/2 + 1 + coreGroup,
-                            res=self.__genFatLnkRes())
+                            res=fatLnkRes, fatLink=True)
 
         # Server and links with edge routers
         for edgeR in range(podsBaseId + k*k/2 + 1, podsBaseId + k*k + 1):
@@ -146,7 +149,7 @@ class DomainsGenerator(object):
                 gwMesh.add_node(self.__lastNodeId, nodeType='c',
                         fatType='server', res=self.__genServRes())
                 gwMesh.add_edge(self.__lastNodeId, edgeR,
-                        res=self.__genFatLnkRes())
+                        res=fatLnkRes, fatLink=True)
 
 
     def __genGwMesh(self):
@@ -295,21 +298,43 @@ class DomainsGenerator(object):
             you can iterate through it as (A,B)
 
         """
-        firstCore = gView[domain]['firstCore']
-        k = gView[domain]['k']
+        firstCore = nx.get_node_attributes(gView, 'firstCore')[domain]
+        k = nx.get_node_attributes(gView, 'k')[domain]
         lastNode = firstCore + k/2*k/2 + k*k + k*k*k/4 - 1
 
         fatEdges = dict()
 
         # Get the fat-tree edges
-        for (A, B) in nx.get_edge_attributes(gView, 'fatType'):
+        for (A, B) in nx.get_edge_attributes(gView, 'fatLink'):
             if firstCore <= A <= lastNode and firstCore <= B <= lastNode:
-                if A not in fatEdges.keys():
-                    fatEdges[A] = dict()
-                fatEdges[A][B] = gView[A][B]
                 fatEdges[A,B] = gView[A][B]
 
         return fatEdges
+    
+
+    def getFatTreeServers(self, gView, domain):
+        """Obtains the fat-tree servers contained within the gView
+
+        :gView: graph view
+        :domain: domain number
+        :returns: doubled index dictionary with the edge and it's attributes
+            you can iterate through it as (A,B)
+
+        """
+        firstCore = nx.get_node_attributes(gView, 'firstCore')[domain]
+        k = nx.get_node_attributes(gView, 'k')[domain]
+        lastNode = firstCore + k/2*k/2 + k*k + k*k*k/4 - 1
+
+        fatServers = dict()
+
+        # Get the fat-tree edges
+        for server in nx.get_node_attributes(gView, 'fatType'):
+            fatType = nx.get_node_attributes(gView, 'fatType')[server]
+            if firstCore <= server <= lastNode and fatType  == 'server':
+                fatServers[server] = nx.get_node_attributes(gView,
+                        'res')[server]
+
+        return fatServers
 
 
     def issueMeshBw(self, globalView, domainsViews):
@@ -352,36 +377,62 @@ class DomainsGenerator(object):
         nullsCounter = [maxNullLinks] * self.__domains 
         
         for domain in range(self.__domains):
-            firstCore = globalView[domain]['firstCore']
-            k = globalView[domain]['k']
+            firstCore = nx.get_node_attributes(globalView, 'firstCore')[domain]
+            k = nx.get_node_attributes(globalView, 'k')[domain]
 
             fatLinkBw = globalView[domain][firstCore]['res']['bw']
+            domainBw = math.floor(fatLinkBw / 2)
             props = self.__genProportions(self.__domains, allowedProps,
                     nullsCounter)
-            domainBw = math.floor(fatLinkBw / 2)
-            remainingBw = fatLinkBw - domainBw
-            baseBw = remainingBw / reduce(lambda x,y: x+y, props)
+            props[domain] = 0 # Self domain no proportion on remaining bw
+            baseBw = domainBw / reduce(lambda x,y: x+y, props)
 
             # Assign resources
             for localDom in range(self.__domains):
                 localView = domainsViews[localDom]
+
                 for (A, B) in self.getFatTreeEdges(localView, domain):
                     # Link resource
                     if localDom == domain:
+                        localView[A][B]['res']['prop'] = props[localDom]
                         localView[A][B]['res']['bw'] = domainBw
                     else:
-                        localView[A][B]['res']['bw'] = baseBw * props[localDom]
+                        localView[A][B]['res']['prop'] = props[localDom]
+                        localView[A][B]['res']['bw'] = math.floor(baseBw *
+                                props[localDom])
 
                     # Server resources
-                    isAServer = nx.get_node_attributes('fatType')[A]\
-                            == 'server'
-                    isBServer = nx.get_node_attributes('fatType')[B]\
-                            == 'server'
-                    if isAServer:
-                        # TODO - assign partial resources
-                    elif isBServer:
-                        pass
-            
+                    server = None
+                    if nx.get_node_attributes(localView, 'fatType')[A]\
+                            == 'server':
+                        server = A
+                    elif nx.get_node_attributes(localView, 'fatType')[B]\
+                            == 'server':
+                        server = B
+                    if server != None:
+                        servRes = nx.get_node_attributes(globalView,
+                                'res')[server]
+                        
+                        # Iterate through resources and assign
+                        resDict = dict()
+                        for resource in servRes.keys():
+                            halfRes = servRes[resource] / 2
+
+                            res = None
+                            if localDom == domain:
+                                res = math.floor(halfRes)
+                            else:
+                                baseRes = halfRes / reduce(lambda x,y: x+y,
+                                        props)
+                                res = math.floor(baseRes * props[localDom])
+
+                            resDict[resource] = res
+                        nx.set_node_attributes(localView, 'res',
+                                {server: resDict})
+                        
+
+
+                     
 
 
 

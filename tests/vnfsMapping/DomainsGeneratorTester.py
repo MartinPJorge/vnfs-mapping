@@ -70,15 +70,15 @@ class DomainsGeneratorTester(object):
         servRes = {
             'memory': {
                 'min': 1,
-                'max': 3
+                'max': 128000
             },
             'cpu': {
                 'min': 1,
-                'max': 3
+                'max': 16
             },
             'disk': {
                 'min': 1,
-                'max': 3
+                'max': 2000000000
             }
         }
 
@@ -249,12 +249,99 @@ class DomainsGeneratorTester(object):
                 str(globalBw) + ' -> ' + str(bwDomainSum <= globalBw)
             print sumStr
 
-        
+    
+    def testFatTreeRes(self):
+        """Tests the assignment of resources to the fat-tree
+        :returns: Nothing
+
+        """
+        print '\n########################'
+        print '### issueFatRes test ###'
+        print '########################'
+
+        # Generate the domain and subdomain views
+        generator = DG.DomainsGenerator(domains=self.__domains,
+                meshDegree=self.__meshDegree,
+                fatTreeDegrees=self.__fatTreeDegrees,
+                meshLnkRes=self.__meshLnkRes, fatLnkRes=self.__fatLnkRes,
+                servRes=self.__servRes)
+        globalView = generator.createGlobalView()
+        domainsViews = []
+        for domain in range(self.__domains):
+            domainsViews.append(generator.createDomainView(globalView, domain,
+                self.__foreignPods[domain]))
+        generator.issueFatRes(globalView, domainsViews)
+
+        # Test fat-tree proportional assignment for edges
+        exceeded = False
+        for domain in range(self.__domains):
+            for (A, B) in generator.getFatTreeEdges(globalView, domain):
+                totalBw = globalView[A][B]['res']['bw']
+                issuedBw = []
+                issuedProps = []
+                
+                for localDom in range(self.__domains):
+                    domainView = domainsViews[localDom]
+                    resEdges = nx.get_edge_attributes(domainView, 'res')
+                    if (A, B) in resEdges.keys():
+                        issuedBw.append(domainView[A][B]['res']['bw'])
+                        issuedProps.append(domainView[A][B]['res']['prop'])
+
+                sumedIssued = reduce(lambda x,y: x+y, issuedBw)
+                if sumedIssued > totalBw:
+                    exceeded = True
+                    strIssuedBw = [str(bw) for bw in issuedBw]
+                    print '(' + str(A) + ',' + str(B) + '): ' +\
+                            ' + '.join(strIssuedBw) + ' = ' +\
+                            str(sumedIssued) + ' > ' + str(totalBw)
+
+        if exceeded:
+            print 'Error, above link exceeds bandwidth shared'
+        else:
+            print 'Fat-tree link resources shared properly - OK'
+
+        # Test fat-tree proportional assignment for servers
+        exceeded = False
+        for domain in range(self.__domains):
+            for server in generator.getFatTreeServers(globalView, domain):
+                resourcesG = nx.get_node_attributes(globalView, 'res')[server]
+
+                resources = dict()
+                for localDom in range(self.__domains):
+                    localView = domainsViews[localDom]
+                    hasServer = nx.get_node_attributes(localView,
+                            'res').has_key(server)
+
+                    if hasServer:
+                        resourcesL = nx.get_node_attributes(localView,
+                                'res')[server]
+                        for res in resourcesG.keys():
+                            if not resources.has_key(res):
+                                resources[res] = []
+                            resources[res].append(resourcesL[res])
+
+                # Check server resurces distribution
+                for res in resourcesG.keys():
+                    distRes = resources[res]
+                    distResSum = reduce(lambda x,y: x+y, distRes)
+                    globalRes = resourcesG[res]
+
+                    if distResSum > globalRes:
+                        print 'server' + str(server) + ' - ' + str(res) + ': '\
+                                + ' + '.join([str(res) for res in distRes]) +\
+                                ' = ' + str(distResSum) + ' > ' +\
+                                str(globalRes)
+
+        if exceeded:
+            print 'Error, above server resurces sharing have been exceeded'
+        else:
+            print 'Server resources shared properly - OK'
 
 
 if __name__ == '__main__':
     tester = DomainsGeneratorTester()
-    # tester.testFatTree()
-    # tester.domainsViewTester()
+    tester.testFatTree()
+    tester.domainsViewTester()
     tester.testMeshBw()
+    tester.testFatTreeRes()
 
