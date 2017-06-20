@@ -14,6 +14,75 @@ class DomainsGenerator(object):
 
     """Generates randomly multi-domain graphs"""
 
+    @staticmethod
+    def genProperties():
+        """Generates set of properties neccessary for the graphs generation
+        :returns: dictionary with the set of properties
+
+        """
+        # Specify graph characteristics
+        domains = random.randint(2, 8)
+        meshDegree = random.random()
+        degrees = [4, 6, 8]
+        fatTreeDegrees = []
+        for _ in range(domains):
+            fatTreeDegrees.append(degrees[random.randint(0, len(degrees)-1)])
+        
+        # Create shared infrastructure
+        foreingPods = []
+        for domain in range(domains):
+            sharedDomainPods = dict()
+
+            for foreignDom in [dom for dom in range(domains)\
+                    if dom != domain]:
+                foreignDegree = fatTreeDegrees[foreignDom]
+                numSharedPods = random.randint(1, foreignDegree)
+                sharedPods = range(1, foreignDegree + 1)
+
+                for _ in range(foreignDegree - numSharedPods):
+                    del sharedPods[random.randint(0, len(sharedPods)-1)]
+                sharedDomainPods[str(foreignDom)] = sharedPods
+
+            foreingPods.append(sharedDomainPods)
+
+        # Links and server resources
+        meshLnkRes = {
+            'bw': {
+                'min': 1000,
+                'max': 3000
+            },
+            'delay': {
+                'min': 1,
+                'max': 3
+            }
+        }
+        fatLnkRes = meshLnkRes
+        servRes = {
+            'memory': {
+                'min': 1,
+                'max': 128000
+            },
+            'cpu': {
+                'min': 1,
+                'max': 16
+            },
+            'disk': {
+                'min': 1,
+                'max': 2000000000
+            }
+        }
+
+        return {
+            'domains': domains,
+            'meshDegree': meshDegree,
+            'fatTreeDegrees': fatTreeDegrees,
+            'foreignPods': foreingPods,
+            'meshLnkRes': meshLnkRes,
+            'fatLnkRes': fatLnkRes,
+            'servRes': servRes
+        }
+
+
     def __init__(self, domains, meshDegree, fatTreeDegrees, meshLnkRes,
             fatLnkRes, servRes):
         """__init__
@@ -37,7 +106,23 @@ class DomainsGenerator(object):
             self.__meshLnkRes = meshLnkRes
             self.__fatLnkRes = fatLnkRes
             self.__servRes = servRes
-        
+    
+    
+    @staticmethod
+    def yieldGenerator():
+        """Returns an initialized DomainsGenerator instance
+        :returns: initialized DomainsGenerator
+
+        """
+        properties = DomainsGenerator.genProperties()
+
+        return DomainsGenerator(domains=properties['domains'],
+                meshDegree=properties['meshDegree'],
+                fatTreeDegrees=properties['fatTreeDegrees'],
+                meshLnkRes=properties['meshLnkRes'],
+                fatLnkRes=properties['fatLnkRes'],
+                servRes=properties['servRes'])
+
 
     def __getNextIds(self, numNodes):
         """Obtains the node IDs for the next numNodes

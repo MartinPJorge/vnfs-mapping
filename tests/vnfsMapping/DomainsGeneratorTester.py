@@ -14,7 +14,7 @@ class DomainsGeneratorTester(object):
     """Test the domain generation class"""
 
     def __init__(self):
-        properties = self.__genProperties()
+        properties = DG.DomainsGenerator.genProperties()
 
         self.__domains = properties['domains']
         self.__meshDegree = properties['meshDegree']
@@ -25,75 +25,6 @@ class DomainsGeneratorTester(object):
         self.__servRes = properties['servRes']
 
 
-    def __genProperties(self):
-        """Generates set of properties neccessary for the graphs generation
-        :returns: dictionary with the set of properties
-
-        """
-        # Specify graph characteristics
-        domains = random.randint(2, 8)
-        meshDegree = random.random()
-        degrees = [4, 6, 8]
-        fatTreeDegrees = []
-        for _ in range(domains):
-            fatTreeDegrees.append(degrees[random.randint(0, len(degrees)-1)])
-        
-        # Create shared infrastructure
-        foreingPods = []
-        for domain in range(domains):
-            sharedDomainPods = dict()
-
-            for foreignDom in [dom for dom in range(domains)\
-                    if dom != domain]:
-                foreignDegree = fatTreeDegrees[foreignDom]
-                numSharedPods = random.randint(1, foreignDegree)
-                sharedPods = range(1, foreignDegree + 1)
-
-                for _ in range(foreignDegree - numSharedPods):
-                    del sharedPods[random.randint(0, len(sharedPods)-1)]
-                sharedDomainPods[str(foreignDom)] = sharedPods
-
-            foreingPods.append(sharedDomainPods)
-
-        # Links and server resources
-        meshLnkRes = {
-            'bw': {
-                'min': 1000,
-                'max': 3000
-            },
-            'delay': {
-                'min': 1,
-                'max': 3
-            }
-        }
-        fatLnkRes = meshLnkRes
-        servRes = {
-            'memory': {
-                'min': 1,
-                'max': 128000
-            },
-            'cpu': {
-                'min': 1,
-                'max': 16
-            },
-            'disk': {
-                'min': 1,
-                'max': 2000000000
-            }
-        }
-
-        return {
-            'domains': domains,
-            'meshDegree': meshDegree,
-            'fatTreeDegrees': fatTreeDegrees,
-            'foreignPods': foreingPods,
-            'meshLnkRes': meshLnkRes,
-            'fatLnkRes': fatLnkRes,
-            'servRes': servRes
-        }
-        
-
-    
     def getAttrNodes(self, graph, attr, value):
         """Gets graph nodes with a certain attribute value
 
