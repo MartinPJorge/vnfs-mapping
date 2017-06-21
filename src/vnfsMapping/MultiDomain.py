@@ -5,6 +5,7 @@ import networkx as nx
 import DomainsGenerator as DG
 
 # Global variable for the project absolute path
+absPath = os.path.abspath(os.path.dirname(__file__))
 graphsAbsPath = '/'.join(absPath.split('/')[:-2]) + '/graphs'
 
 
@@ -13,8 +14,7 @@ class MultiDomain(object):
     """Wrapper class to operate with the graphs associated to the multiple
     domains contained in a multi-domain scenario."""
 
-    def __init__(self, domains, meshDegree, fatTreeDegrees, meshLnkRes,
-            fatLnkRes, servRes):
+    def __init__(self):
         """__init__
         """
         pass
@@ -26,8 +26,23 @@ class MultiDomain(object):
 
         """
         header = '### MultiDomain ###\n'
-        domain = ' domains: ' + str(self.__domains)
-        # TODO - check if it's an empty MultiDomain
+        domains = '  - domains: ' + str(self.__domains if hasattr(self,
+            '_MultiDomain__domains') else str(None)) + '\n'
+        meshDegree = '  - meshDegree: ' + str(self.__meshDegree if\
+                hasattr(self, '_MultiDomain__meshDegree') else str(None)) + '\n'
+        fatTreeDegrees = '  - fatTreeDegrees: ' + str(self.__fatTreeDegrees\
+                if hasattr(self, '_MultiDomain__fatTreeDegrees') else str(None)) + '\n'
+        meshLnkRes = '  - meshLnkRes: ' + str(self.__meshLnkRes\
+                if hasattr(self, '_MultiDomain__meshLnkRes') else str(None)) + '\n'
+        fatLnkRes = '  - fatLnkRes: ' + str(self.__fatLnkRes\
+                if hasattr(self, '_MultiDomain__fatLnkRes') else str(None)) + '\n'
+        servRes = '  - servRes: ' + str(self.__servRes\
+                if hasattr(self, '_MultiDomain__servRes') else str(None)) + '\n'
+        foreignPods = '  - foreignPods: ' + str(self.__foreignPods\
+                if hasattr(self, '_MultiDomain__servRes') else str(None)) + '\n'
+
+        return header + domains + meshDegree + fatTreeDegrees + meshLnkRes +\
+            fatLnkRes + servRes + foreignPods
 
 
     @staticmethod
@@ -57,14 +72,16 @@ class MultiDomain(object):
         :returns: Multidomain instance
 
         """
-        poperties = DG.DomainsGenerator.genProperties()
+        properties = DG.DomainsGenerator.genProperties()
 
-        return MultiDomain(domains=properties['domains'],
-                meshDegree=properties['meshDegree'],
-                fatTreeDegrees=properties['fatTreeDegrees'],
-                meshLnkRes=properties['meshLnkRes='],
-                fatLnkRes=properties['fatLnkRes'],
-                servRes=properties['servRes'])
+        multidomain = MultiDomain()
+        multidomain.setProperties(properties)
+        multidomain.initialize(multidomain.__domains, multidomain.__meshDegree,
+                multidomain.__fatTreeDegrees, multidomain.__meshLnkRes, multidomain.__fatLnkRes,
+                multidomain.__servRes)
+
+        return multidomain
+        
 
 
     def __getProperties(self):
@@ -76,6 +93,7 @@ class MultiDomain(object):
             'domains': self.__domains,
             'meshDegree': self.__meshDegree,
             'fatTreeDegrees': self.__fatTreeDegrees,
+            'foreignPods': self.__foreignPods,
             'meshLnkRes': self.__meshLnkRes,
             'fatLnkRes': self.__fatLnkRes,
             'servRes': self.__servRes
@@ -86,18 +104,24 @@ class MultiDomain(object):
         """Sets the dictionary with the properties specified by argument
 
         :properties: dictionary with the same keys as the ones returned by
-            __getProperties() and the 'globalDomain' and 'domainsViews'
+            __getProperties() and the 'globalDomain' and 'domainsViews' are
+            optional
         :returns: Nothing
 
         """
         self.__domains = properties['domains']
         self.__meshDegree = properties['meshDegree']
         self.__fatTreeDegrees = properties['fatTreeDegrees']
-        self.__meshLnkRes = properties['meshLinkRes']
+        self.__foreignPods = properties['foreignPods']
+        self.__meshLnkRes = properties['meshLnkRes']
         self.__fatLnkRes = properties['fatLnkRes']
         self.__servRes = properties['servRes']
-        self.__globalDomain = properties['globalDomain']
-        self.__domainsViews = properties['domainsViews']
+
+
+        if hasattr(properties, 'globalDomain'):
+            self.__globalDomain = properties['globalDomain']
+        if hasattr(properties, 'domainsViews'):
+            self.__domainsViews = properties['domainsViews']
 
 
     def initialize(self, domains, meshDegree, fatTreeDegrees, meshLnkRes,
@@ -265,8 +289,7 @@ class MultiDomain(object):
 
 
 if __name__ == '__main__':
-    absPath = os.path.abspath(os.path.dirname(__file__))
-    projectAbsPath = '/'.join(absPath.split('/')[:-2])
-    print projectAbsPath + '/graphs'
-
+    # md = MultiDomain.yieldRandMultiDomain()
+    md = MultiDomain()
+    print md
 
