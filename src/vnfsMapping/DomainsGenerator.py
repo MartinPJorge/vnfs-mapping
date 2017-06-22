@@ -199,7 +199,7 @@ class DomainsGenerator(object):
         for i in range(1, coreSw + 1):
             gwMesh.add_node(baseId + i, nodeType='r', fatType='core')
             gwMesh.add_edge(gw, baseId + i, res=fatLnkRes,
-                    fatLink=True)
+                    fatLink="True")
             self.__lastNodeId += 1
 
         # Create pods
@@ -217,7 +217,7 @@ class DomainsGenerator(object):
                 for l in range(1, k/2 + 1):
                     gwMesh.add_edge(podsBaseId + i*k/2 + j,
                             podsBaseId + k*k/2 + i*k/2 + l,
-                            res=fatLnkRes, fatLink=True)
+                            res=fatLnkRes, fatLink="True")
 
         # Links with core switches
         for coreGroup in range(k/2):
@@ -225,7 +225,7 @@ class DomainsGenerator(object):
                 for pod in range(k):
                     gwMesh.add_edge(baseId + coreNode,
                             podsBaseId + pod*k/2 + 1 + coreGroup,
-                            res=fatLnkRes, fatLink=True)
+                            res=fatLnkRes, fatLink="True")
 
         # Server and links with edge routers
         for edgeR in range(podsBaseId + k*k/2 + 1, podsBaseId + k*k + 1):
@@ -234,7 +234,7 @@ class DomainsGenerator(object):
                 gwMesh.add_node(self.__lastNodeId, nodeType='c',
                         fatType='server', res=self.__genServRes())
                 gwMesh.add_edge(self.__lastNodeId, edgeR,
-                        res=fatLnkRes, fatLink=True)
+                        res=fatLnkRes, fatLink="True")
 
 
     def __genGwMesh(self):
@@ -266,7 +266,7 @@ class DomainsGenerator(object):
         if self.__domains > 1: # Possible to have only have 1 domain
             for gw in range(self.__domains):
                 nextGw = 0 if gw == self.__domains - 1 else gw+1
-                gwMesh[gw][nextGw]['meshLink'] = True
+                gwMesh[gw][nextGw]['meshLink'] = 'True'
                 gwMesh[gw][nextGw]['res'] = self.__genMeshLnkRes()
 
         return gwMesh
@@ -364,12 +364,17 @@ class DomainsGenerator(object):
 
         for domain in range(domains):
             propIdx = None
-            if nullsCounter[domain] > 0 and random.random() > 0.5:
-                propIdx = random.randint(0, len(allowedProps) - 1)
-                nullsCounter[domain] -= 1
-            else:
+
+            # Avoid having all proportions to zero
+            if domain == domains - 1 and reduce(lambda x,y: x+y, props) == 0:
                 propIdx = random.randint(1, len(allowedProps) - 1)
-            props.append(allowedProps[propIdx])
+            else:
+                if nullsCounter[domain] > 0 and random.random() > 0.5:
+                    propIdx = random.randint(0, len(allowedProps) - 1)
+                    nullsCounter[domain] -= 1
+                else:
+                    propIdx = random.randint(1, len(allowedProps) - 1)
+                props.append(allowedProps[propIdx])
 
         return props
 
