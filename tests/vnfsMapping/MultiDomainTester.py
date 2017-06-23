@@ -160,6 +160,59 @@ class MultiDomainTester(object):
                 print '  Resource restore: ERR\n'
 
 
+    def __compareMeshLnkRes(self, meshLnkResA, meshLnkResB):
+        """Compares 2 meshLnkRes objects
+
+        :meshLnkResA: first mesh link res
+        :meshLnkResB: second mesh link res
+        :returns: True/False
+
+        """
+        allEq = True
+        for resource in meshLnkResA.keys():
+            allEq = allEq and meshLnkResA[resource]['min']\
+                    == meshLnkResB[resource]['min']
+            allEq = allEq and meshLnkResA[resource]['max']\
+                    == meshLnkResB[resource]['max']
+
+        return allEq
+
+
+    def __compareFatLnkRes(self, fatLnkResA, fatLnkResB):
+        """Compares 2 fatLinkRes objects
+
+        :fatLnkResA: object A
+        :fatLnkResB: objectB
+        :returns: True/False
+
+        """
+        allEq = True
+        for resource in fatLnkResA.keys():
+            allEq = allEq and fatLnkResA[resource]['min']\
+                    == fatLnkResB[resource]['min']
+            allEq = allEq and fatLnkResA[resource]['max']\
+                    == fatLnkResB[resource]['max']
+
+        return allEq
+
+
+    def __compareServRes(self, servResA, servResB):
+        """Compares server resources
+        :fatLnkResA: object A
+        :fatLnkResB: objectB
+        :returns: True/False
+
+        """
+        allEq = True
+        for resource in servResA.keys():
+            allEq = allEq and servResA[resource]['min']\
+                    == servResB[resource]['min']
+            allEq = allEq and servResA[resource]['max']\
+                    == servResB[resource]['max']
+
+        return allEq
+
+
     def testWriteRead(self):
         """Tests the read and write functions for a MultiDomain instance
         :returns: Nothing
@@ -183,9 +236,7 @@ class MultiDomainTester(object):
 
         # Write and read
         self.__multiDomain.write('testMultiDomain')
-        print ' TO READ'
         multiDomain = MD.MultiDomain.read('testMultiDomain')
-        print ' ME FUIIIR'
 
         # Check info after read/write
         globalView = multiDomain.getGlobalView()
@@ -205,14 +256,14 @@ class MultiDomainTester(object):
             afterEdges)]
         sameEdges = reduce(lambda okA, okB: okA and okB, sameEdges)
 
-        print ' same nodes before and after: ' + str(sameNodes)
-        print ' same edges before and after: ' + str(sameEdges)
+        print '  same nodes before and after: ' + str(sameNodes)
+        print '  same edges before and after: ' + str(sameEdges)
 
         # Check if properties remain the same
         print '  domains equal: ' + str(beforeProperties['domains'] ==
             afterProperties['domains'])
         print '  meshDegree equal: ' + str(beforeProperties['meshDegree'] ==
-            afterProperties['domains'])
+            afterProperties['meshDegree'])
 
         sameDegrees = [degB == degA for (degB, degA) in
                 zip(beforeProperties['fatTreeDegrees'],
@@ -220,7 +271,16 @@ class MultiDomainTester(object):
         sameDegrees = reduce(lambda okA, okB: okA and okB, sameDegrees)
         print '  fatTreeDegrees equal: ' + str(sameDegrees)
 
-        # TODO - compare the mesh fat and serv resources
+        # Compare the mesh fat and serv resources
+        print '  fatLnkRes equal before and after: ' +\
+            str(self.__compareFatLnkRes(beforeProperties['fatLnkRes'],
+                afterProperties['fatLnkRes']))
+        print '  meshLinkRes equal before and after: ' +\
+            str(self.__compareMeshLnkRes(beforeProperties['meshLnkRes'],
+                afterProperties['meshLnkRes']))
+        print '  servRes equal before and after: ' +\
+            str(self.__compareServRes(beforeProperties['servRes'],
+                afterProperties['servRes']))
 
         
 if __name__ == '__main__':
