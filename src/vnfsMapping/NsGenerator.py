@@ -55,7 +55,7 @@ class NSgenerator(object):
         cpu = random.randint(self.__cpuTh['min'], self.__cpuTh['max'])
 
         # Add VNFs and links
-        vnfId = max(predecesors) + 1 if not vnfId else vnfId
+        vnfId = max(branchHeads) + 1 if not vnfId else vnfId
         chain.add_node(vnfId, memory=memory, disk=disk, cpu=cpu)
         newBranchHeads = list(branchHeads)
         for predecesor in predecesors:
@@ -118,7 +118,7 @@ class NSgenerator(object):
         joinNum = 0
 
         if remVNFs == 1:
-            newBranchHeads = self.__insertVNF(chain, branchHeads)
+            newBranchHeads = self.__insertVNF(chain, branchHeads, branchHeads)
             joinNum = len(branchHeads)
         else:
             joinNum = random.randint(2, len(branchHeads))
@@ -126,7 +126,7 @@ class NSgenerator(object):
             
             for _ in range(len(joinVNFs) - joinNum):
                 del joinVNFs[random.randint(0, len(joinVNFs) - 1)]
-            newBranchHeads = self.__insertVNF(chain, joinVNFs)
+            newBranchHeads = self.__insertVNF(chain, branchHeads, joinVNFs)
 
         return (joinNum, newBranchHeads)
 
@@ -142,16 +142,13 @@ class NSgenerator(object):
         
         vnfIdx = random.randint(0, len(branchHeads) - 1)
         predecesor = branchHeads[vnfIdx]
-        self.__insertVNF(chain, [predecesor], vnfId=predecesor + 1)
-        self.__insertVNF(chain, [predecesor], vnfId=predecesor + 2)
+        newBranchHeads = self.__insertVNF(chain, branchHeads, [predecesor])
+        newBranchHeads = self.__insertVNF(chain, branchHeads, [predecesor])
 
-        newBranchHeads = list(branchHeads)
-        del newBranchHeads[vnfIdx]
-
-        return newBranchHeads + [predecesor + 1, predecesor + 2]
+        return newBranchHeads
 
 
-    def yield(self, splits, branches, vnfs):
+    def yieldChain(self, splits, branches, vnfs):
         """Yields a generated NS chain with a maximum number of splits,
         branches and a certain number a vnfs.
 

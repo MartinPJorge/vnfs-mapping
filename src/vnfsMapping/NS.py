@@ -10,6 +10,7 @@ class NS(object):
 
         """
         self.__chain = None
+        self.__iterIdx = 1
 
 
     @staticmethod
@@ -53,6 +54,37 @@ class NS(object):
         return ns
 
 
+    def getVNFsNumber(self):
+        """Obtains the number of VNFs present in the NS chain
+        :returns: number of nodes or -1 if the chain is not set yet
+
+        """
+        return self.__chain.number_of_nodes() if self.__chain != None else -1
+
+
+    def initIter(self):
+        """Initializes an iterator that goes through each VNF
+        :returns: Nothing
+
+        """
+
+        self.__iterIdx = 'start'
+
+
+    def iterNext(self):
+        """Retrieves the next VNFs' ids after the current one and advances the
+            iterator pointer to the next id
+        :returns: list of next VNFs ids (it can be 'end')
+
+        """
+
+        curr = self.__iterIdx if self.__iterIdx != 'start' is int else 0
+        self.__iterIdx = 'end' if curr == self.getVNFsNumber() else curr + 1
+
+        return filter(lambda node: node > curr if type(node) is int else True,
+                self.__chain.neighbors(curr))
+
+
     def setChain(self, chain):
         """Sets the NS chain
 
@@ -60,6 +92,7 @@ class NS(object):
         :returns: Nothing
 
         """
+
         self.__chain = chain
 
 
