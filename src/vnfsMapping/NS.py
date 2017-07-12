@@ -11,6 +11,8 @@ class NS(object):
         """
         self.__chain = None
         self.__iterIdx = 1
+        self.__branches = None
+        self.__splits = None
 
 
     @staticmethod
@@ -40,7 +42,7 @@ class NS(object):
             elif link['idB'] == 'end' and not chain.has_node(link['idA']):
                 raise UnboundLocalError('Wrong ending VNF id')
             # Check if link endpoints are correct
-            elif not chain.has_node(link['idA']) or
+            elif not chain.has_node(link['idA']) or\
                 not chain.has_node(link['idB']):
                 raise UnboundLocalError('Link endpoint is a non-existing\
  VNF!')
@@ -59,7 +61,8 @@ class NS(object):
         :returns: number of nodes or -1 if the chain is not set yet
 
         """
-        return self.__chain.number_of_nodes() if self.__chain != None else -1
+        return self.__chain.number_of_nodes() -2 if self.__chain != None\
+                else -1
 
 
     def initIter(self):
@@ -71,18 +74,99 @@ class NS(object):
         self.__iterIdx = 'start'
 
 
+    def currIterId(self):
+        """Obtains the id for the current VNF in the iterator
+        :returns: VNF id (VNF number, 'start', or 'end')
+
+        """
+        return self.__iterIdx
+
+    
+    def prevVNFs(self, vnfId):
+        """Obtains the previous vnfs of a certain one
+
+        :vnfId: VNF id from which to obtain the previous neighbours
+        :returns: list of all the previous neighbors (this may include 'start'
+            node)
+
+        """
+        if vnfId == 'start':
+            return []
+
+        neighs = self.__chain.neighbors(vnfId)
+        prevs = []
+        for neigh in neighs:
+            if type(neigh) is int and neigh < vnfId:
+                prevs += [neigh]
+            elif type(neigh) is str and neigh == 'start':
+                prevs += [neigh]
+
+        return prevs
+
+
     def iterNext(self):
         """Retrieves the next VNFs' ids after the current one and advances the
             iterator pointer to the next id
-        :returns: list of next VNFs ids (it can be 'end')
+        :returns: list of next VNFs ids (it can be [] if curr VNF is last one)
 
         """
 
-        curr = self.__iterIdx if self.__iterIdx != 'start' is int else 0
-        self.__iterIdx = 'end' if curr == self.getVNFsNumber() else curr + 1
+        neighs = []
 
-        return filter(lambda node: node > curr if type(node) is int else True,
-                self.__chain.neighbors(curr))
+        # print '  iterNext -> self.__iterIdx: ' + str(self.__iterIdx)
+
+
+        # Starting node
+        if self.__iterIdx == 'start':
+            self.__iterIdx = 1
+            neighs = self.__chain.neighbors('start')
+        # Last VNF
+        elif self.__iterIdx == self.getVNFsNumber():
+            self.__iterIdx = 'end'
+        # Intermediate node
+        else:
+            neighs = filter(lambda nd: type(nd) is int,\
+                    self.__chain.neighbors(self.__iterIdx))
+            neighs = filter(lambda nd: nd > self.__iterIdx, neighs)
+            self.__iterIdx += 1
+
+        return neighs
+
+
+    def getBranchNum(self):
+        """Obtains the number of branches
+        :returns: int, None if not set
+
+        """
+
+        return self.__branches
+
+
+    def getSplitsNum(self):
+        """Obtains the number of splits
+        :returns: int, None if not set
+
+        """
+        
+        return self.__splits
+
+
+    def setBranchNum(self, branchNum):
+        """Sets the number of branches in a NS chain
+
+        :branchNum: number of branches in the chain
+
+        """
+        self.__branches = branchNum
+
+
+    def setSplitsNum(self, splits):
+        """Sets the number of splits of the NS chain
+
+        :splits: number of splits
+
+        """
+        self.__splits = splits
 
 
     def setChain(self, chain):
@@ -94,6 +178,17 @@ class NS(object):
         """
 
         self.__chain = chain
+
+
+    def setBranchingInfo(self, branches, splits):
+        """Sets the number of branches and splits present in the NS
+
+        :branches: TODO
+        :splits: TODO
+        :returns: TODO
+
+        """
+        pass
 
 
     def getLink(self, A, B):

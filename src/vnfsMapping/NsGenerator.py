@@ -1,4 +1,5 @@
 import random
+import time
 import networkx as nx
 import NS
 
@@ -21,6 +22,9 @@ class NSgenerator(object):
         self.__memoryTh = memoryTh
         self.__diskTh = diskTh
         self.__cpuTh = cpuTh
+
+        self.__branches = None
+        self.__split = None
         
 
     def __createLink(self, chain, vnfA, vnfB):
@@ -83,14 +87,21 @@ class NSgenerator(object):
             return True
         
 
-    def __canInsertVnf(self, remVNFs):
+    def __canInsertVnf(self, branchHeads, remVNFs):
         """Checks if a VNF can be added to the current NS chain
 
+        :branchHeads: list of all branches' heads
         :remVNFs: remaining VNFs to be inserted in the NS chain
         :returns: Nothing
 
         """
-        return remVNFs > 1 # Need a final VNF
+
+        # In case of last VNF, check if it is needed to join open branches
+        finalJoin = False
+        if len(branchHeads) > 1 and remVNFs == 1:
+            finalJoin = True
+
+        return remVNFs > 0 and not finalJoin # Need a final VNF
         
 
     def __mustJoin(self, remVNFs):
@@ -142,10 +153,15 @@ class NSgenerator(object):
         
         vnfIdx = random.randint(0, len(branchHeads) - 1)
         predecesor = branchHeads[vnfIdx]
-        newBranchHeads = self.__insertVNF(chain, branchHeads, [predecesor])
-        newBranchHeads = self.__insertVNF(chain, branchHeads, [predecesor])
+        newVnfId = max(branchHeads)
 
-        return newBranchHeads
+        # Insert new VNFs after the split
+        self.__insertVNF(chain, branchHeads, [predecesor], vnfId=newVnfId + 1)
+        self.__insertVNF(chain, branchHeads, [predecesor], vnfId=newVnfId + 2)
+
+        del branchHeads[vnfIdx]
+
+        return branchHeads + [newVnfId + 1, newVnfId + 2]
 
 
     def yieldChain(self, splits, branches, vnfs):
@@ -162,11 +178,13 @@ class NSgenerator(object):
         branchHeads = []
         remVNFs = vnfs
         remSplits = splits
-        remBranches = branches
+        remBranches = branches - 1
+        maxBranches = 1
+        maxSplits = 1
         chain = nx.Graph()
         decisions = ['insert', 'join', 'split']
 
-        branchHeads = self.__insertVNF(chain, [], vnfId=1)
+        branchHeads = self.__insertVNF(chain, [], [], vnfId=1)
         remVNFs -= 1
 
         while chain.number_of_nodes() < vnfs:
@@ -176,7 +194,8 @@ class NSgenerator(object):
             # Decide wether a new VNF is inserted, or if there is a split or a
             # join in the chain
             while not madeDecision and i < len(decisions):
-                if decisions[i] == 'insert' and self.__canInsertVnf(remVNFs):
+                if decisions[i] == 'insert' and\
+                        self.__canInsertVnf(branchHeads, remVNFs):
                     predecesor = branchHeads[random.randint(0, len(branchHeads)
                         - 1)]
                     branchHeads = self.__insertVNF(chain, branchHeads,
@@ -196,17 +215,27 @@ class NSgenerator(object):
                     branchHeads = self.__splitChain(chain, branchHeads)
                     remVNFs -= 2
                     remBranches -= 1
+                    remSplits -= 1
                     madeDecision = True
+
+                    # Refresh counters
+                    if branches - remBranches > maxBranches:
+                        maxBranches = branches - remBranches
+                    if splits - remSplits > maxSplits:
+                        maxSplits = splits - remSplits
 
                 i += 1
 
         # Add starting and ending link requirements and star/end points
-        chain.add_node(-1, start='True')
-        chain.add_node(-2, end='True')
-        self.__createLink(chain, -1, 1)
-        self.__createLink(chain, vnfs, -2)
+        chain.add_node('start')
+        chain.add_node('end')
+        self.__createLink(chain, 'start', 1)
+        self.__createLink(chain, vnfs, 'end')
 
-        ns = NS()
+        ns = NS.NS()
         ns.setChain(chain)
+        ns.setBranchNum(maxBranches)
+        ns.setSplitsNum(maxSplits)
+
         return ns
 
