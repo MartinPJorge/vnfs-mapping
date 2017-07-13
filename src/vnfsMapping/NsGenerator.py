@@ -80,8 +80,7 @@ class NSgenerator(object):
 
         """
 
-        # remVNFs >= 3 because of 2 after split and the end one (2 + 1 = 3)
-        if not remSplits > 0 or not remBranches > 0 or not remVNFs >= 3:
+        if not remSplits > 0 or not remBranches > 0 or not remVNFs >= 2:
             return False
         else:
             return True
@@ -96,24 +95,8 @@ class NSgenerator(object):
 
         """
 
-        # In case of last VNF, check if it is needed to join open branches
-        finalJoin = False
-        if len(branchHeads) > 1 and remVNFs == 1:
-            finalJoin = True
-
-        return remVNFs > 0 and not finalJoin # Need a final VNF
+        return remVNFs > 0
         
-
-    def __mustJoin(self, remVNFs):
-        """Checks if all branches must be joined
-
-        :remVNFs: remaining VNFs to be inserted in the NS chain
-        :returns: True/False
-
-        """
-        
-        return remVNFs == 1
-
 
     def __joinBranches(self, chain, branchHeads, remVNFs):
         """Randomly joins the branches present in the NS chain
@@ -142,12 +125,15 @@ class NSgenerator(object):
         return (joinNum, newBranchHeads)
 
 
-    def __splitChain(self, chain, branchHeads):
+    def __splitChain(self, chain, branchHeads, splitWidth, remBranches, remVNFs):
         """Randomly splits a NS chain
 
         :chain: NS chain
         :branchHeads: list of all branches' heads
-        :returns: list of new branch heads
+        :splitWidth: maximum number of branches coming out of a split
+        :remBranches: number of remaining branches to be created
+        :remVNFs: remaining VNFs to be inserted in the NS chain
+        :returns: (list of new branch heads, number of new branches)
 
         """
         
@@ -155,20 +141,26 @@ class NSgenerator(object):
         predecesor = branchHeads[vnfIdx]
         newVnfId = max(branchHeads)
 
-        # Insert new VNFs after the split
-        self.__insertVNF(chain, branchHeads, [predecesor], vnfId=newVnfId + 1)
-        self.__insertVNF(chain, branchHeads, [predecesor], vnfId=newVnfId + 2)
+        # Decide split length and insert new VNFs after the split
+        newVnfs = []
+        maxSplitW = min(splitWidth, remBranches + 1, remVNFs)
+        splitW = random.randint(2, maxSplitW)
+        for i in range(1, splitW + 1):
+            newVnfs.append(newVnfId + i)
+            self.__insertVNF(chain, branchHeads, [predecesor],
+                    vnfId=newVnfId + i)
 
         del branchHeads[vnfIdx]
 
-        return branchHeads + [newVnfId + 1, newVnfId + 2]
+        return branchHeads + newVnfs, splitW - 1
 
 
-    def yieldChain(self, splits, branches, vnfs):
+    def yieldChain(self, splits, splitWidth, branches, vnfs):
         """Yields a generated NS chain with a maximum number of splits,
         branches and a certain number a vnfs.
 
         :splits: maximum number of splits in the NS chain
+        :splitWidth: maximum number of branches coming out of a split
         :branches: maximum number of branches in the NS chain
         :vnfs: number of VNFs that compose the chain
         :returns: a NS instance
@@ -181,6 +173,7 @@ class NSgenerator(object):
         remBranches = branches - 1
         maxBranches = 1
         maxSplits = 1
+        maxSplitW = 0
         chain = nx.Graph()
         decisions = ['insert', 'join', 'split']
 
@@ -212,9 +205,10 @@ class NSgenerator(object):
 
                 elif decisions[i] == 'split' and self.__canSplit(remSplits,
                         remBranches, remVNFs):
-                    branchHeads = self.__splitChain(chain, branchHeads)
-                    remVNFs -= 2
-                    remBranches -= 1
+                    branchHeads, newBranches = self.__splitChain(chain,
+                            branchHeads, splitWidth, remBranches, remVNFs)
+                    remVNFs -= newBranches + 1
+                    remBranches -= newBranches
                     remSplits -= 1
                     madeDecision = True
 
@@ -223,19 +217,21 @@ class NSgenerator(object):
                         maxBranches = branches - remBranches
                     if splits - remSplits > maxSplits:
                         maxSplits = splits - remSplits
+                    if maxSplitW < newBranches + 1:
+                        maxSplitW = newBranches + 1
 
                 i += 1
 
+        print ''
         # Add starting and ending link requirements and star/end points
         chain.add_node('start')
-        chain.add_node('end')
         self.__createLink(chain, 'start', 1)
-        self.__createLink(chain, vnfs, 'end')
 
         ns = NS.NS()
         ns.setChain(chain)
         ns.setBranchNum(maxBranches)
         ns.setSplitsNum(maxSplits)
+        ns.setMaxSplitW(maxSplitW)
 
         return ns
 

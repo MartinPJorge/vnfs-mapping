@@ -38,14 +38,6 @@ class NsTester(object):
         mockChain.add_edge(3, 5, bw=2, delay=3)
         mockChain.add_edge(3, 6, bw=2, delay=3)
 
-        mockChain.add_node(7, memory=2, disk=3, cpu=4)
-        mockChain.add_edge(5, 7, bw=2, delay=3)
-        mockChain.add_edge(4, 7, bw=2, delay=3)
-        mockChain.add_edge(6, 7, bw=2, delay=3)
-
-        mockChain.add_node('end', memory=2, disk=3, cpu=4)
-        mockChain.add_edge(7, 'end', bw=2, delay=3)
-
         return mockChain
 
 
@@ -64,6 +56,7 @@ class NsTester(object):
         ns.setChain(mockChain)
         ns.setSplitsNum(2)
         ns.setBranchNum(3)
+        ns.setMaxSplitW(2)
 
         
         ns.write('test')
@@ -100,7 +93,7 @@ class NsTester(object):
 
         nextVnfs = ns.iterNext()
         if 2 not in nextVnfs or 4 not in nextVnfs or len(nextVnfs) != 2:
-            print '  retrieval 1 is not == [1]'
+            print '  retrieval 1 is not == [2, 4]'
             correct = False
 
         nextVnfs = ns.iterNext()
@@ -111,21 +104,6 @@ class NsTester(object):
         nextVnfs = ns.iterNext()
         if 5 not in nextVnfs or 6 not in nextVnfs or len(nextVnfs) != 2:
             print '  retrieval 4 is not == [5, 6]'
-            correct = False
-
-        nextVnfs = ns.iterNext()
-        if [7] != nextVnfs:
-            print '  retrieval 5 is not == [7]'
-            correct = False
-
-        nextVnfs = ns.iterNext()
-        if [7] != nextVnfs:
-            print '  retrieval 6 is not == [7]'
-            correct = False
-
-        nextVnfs = ns.iterNext()
-        if [7] != nextVnfs:
-            print '  retrieval 7 is not == [7]'
             correct = False
 
         nextVnfs = ns.iterNext()

@@ -20,6 +20,7 @@ class NS(object):
         self.__iterIdx = 1
         self.__branches = None
         self.__splits = None
+        self.__maxSplitW = None
 
 
     @staticmethod
@@ -31,7 +32,6 @@ class NS(object):
         :links: list of dictionaries with required resources for each link in
             the NS [{'idA', 'idB', 'bw', 'delay'}, ...]
             idA can be 'start' for the starting point
-            idB can be 'end' for end point
         :returns: a NS instance
 
         """
@@ -46,8 +46,6 @@ class NS(object):
             # Check if start/end VNF is correct
             if link['idA'] == 'start' and not chain.has_node(link['idB']):
                 raise UnboundLocalError('Wrong starting VNF id!')
-            elif link['idB'] == 'end' and not chain.has_node(link['idA']):
-                raise UnboundLocalError('Wrong ending VNF id')
             # Check if link endpoints are correct
             elif not chain.has_node(link['idA']) or\
                 not chain.has_node(link['idB']):
@@ -68,7 +66,7 @@ class NS(object):
         :returns: number of nodes or -1 if the chain is not set yet
 
         """
-        return self.__chain.number_of_nodes() -2 if self.__chain != None\
+        return self.__chain.number_of_nodes() -1 if self.__chain != None\
                 else -1
 
 
@@ -83,7 +81,7 @@ class NS(object):
 
     def currIterId(self):
         """Obtains the id for the current VNF in the iterator
-        :returns: VNF id (VNF number, 'start', or 'end')
+        :returns: VNF id (VNF number or 'start')
 
         """
         return self.__iterIdx
@@ -155,6 +153,15 @@ class NS(object):
         return self.__splits
 
 
+    def getMaxSplitW(self):
+        """Obtains the maximum split within the chain
+        :returns: int, None if not set
+
+        """
+        
+        return self.__maxSplitW
+
+
     def setBranchNum(self, branchNum):
         """Sets the number of branches in a NS chain
 
@@ -182,6 +189,17 @@ class NS(object):
         """
 
         self.__chain = chain
+
+
+    def setMaxSplitW(self, maxSplitW):
+        """Sets the maximum split width
+
+        :maxSplitW: the split within the chain with the maximum width
+        :returns: Nothing
+
+        """
+        
+        self.__maxSplitW = maxSplitW
 
 
     def getLink(self, A, B):
@@ -237,7 +255,8 @@ class NS(object):
         nx.write_gml(self.__chain, basePath + 'chain.gml')
 
         # Write the properties as well
-        props = {'branches': self.__branches, 'splits': self.__splits}
+        props = { 'branches': self.__branches, 'splits': self.__splits,
+                'maxSplitW': self.__maxSplitW }
         with open(basePath + 'props.json', 'w') as f:
             json.dump(props, f)
     
@@ -316,6 +335,12 @@ class NS(object):
                 i += 1
             if not eqLinks:
                 equal = False
+
+        # Check local variables
+        if self.getBranchNum() != ns.getBranchNum() or\
+                self.getSplitsNum() != ns.getSplitsNum() or\
+                self.getMaxSplitW() != ns.getMaxSplitW():
+            equal = False
                 
         return equal
 
@@ -343,6 +368,7 @@ class NS(object):
         ns.setChain(chain)
         ns.setBranchNum(props['branches'])
         ns.setSplitsNum(props['splits'])
+        ns.setMaxSplitW(props['maxSplitW'])
         
         return ns
 
