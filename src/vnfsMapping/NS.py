@@ -1,4 +1,11 @@
 import networkx as nx
+import json
+import os
+
+# Global variable for the project absolute path
+absPath = os.path.abspath(os.path.dirname(__file__))
+nsAbsPath = '/'.join(absPath.split('/')[:-2]) + '/ns-chains'
+
 
 class NS(object):
 
@@ -113,9 +120,6 @@ class NS(object):
 
         neighs = []
 
-        # print '  iterNext -> self.__iterIdx: ' + str(self.__iterIdx)
-
-
         # Starting node
         if self.__iterIdx == 'start':
             self.__iterIdx = 1
@@ -180,17 +184,6 @@ class NS(object):
         self.__chain = chain
 
 
-    def setBranchingInfo(self, branches, splits):
-        """Sets the number of branches and splits present in the NS
-
-        :branches: TODO
-        :splits: TODO
-        :returns: TODO
-
-        """
-        pass
-
-
     def getLink(self, A, B):
         """Gets the (A,B) link resources
 
@@ -226,5 +219,130 @@ class NS(object):
                 'cpu')[vnf]
 
             return resources
+
+    
+    def write(self, storedName):
+        """Writes the NS chain and saves it under the specified storedName
+        directory
+
+        :storedName: name of the directory under which the NS chain will be
+            stored
+        :returns: Nothing
+
+        """
+
+        basePath = nsAbsPath + '/' + storedName + '/'
+        if not os.path.exists(basePath):
+            os.makedirs(basePath)
+        nx.write_gml(self.__chain, basePath + 'chain.gml')
+
+        # Write the properties as well
+        props = {'branches': self.__branches, 'splits': self.__splits}
+        with open(basePath + 'props.json', 'w') as f:
+            json.dump(props, f)
+    
+
+    def compareVNFs(self, vnf1, vnf2):
+        """Compares two VNFs
+
+        :vnf1: VNF 1 obtained with the getVnf() method
+        :vnf2: VNF 2 obtained with the getVnf() method
+        :returns: True/False
+
+        """
         
+        return vnf1['memory'] == vnf2['memory'] and\
+                vnf1['disk'] == vnf2['disk'] and\
+                vnf1['cpu'] == vnf2['cpu']
+
+
+    def compareLinks(self, link1, link2):
+        """Compares two NS chain links
+
+        :link1: link 1 obtained with getLink() method
+        :link2: link 2 obtained with getLink() method
+        :returns: True/False
+
+        """
+        
+        return link1['bw'] == link2['bw'] and link1['delay'] == link2['delay']
+
+
+    def compare(self, ns):
+        """Compares the NS chain with the other ones passed by argument.
+        All nodes, links and properties must be the same
+
+        :ns: other NS chain to compare with
+        :returns: True/False
+
+        """
+        
+        equal = True
+        neighs = ['_']
+        self.initIter()
+        ns.initIter()
+
+        while equal and neighs != []:
+            currId1 = self.currIterId()
+            currId2 = ns.currIterId()
+            neighs = neighs1 = self.iterNext()
+            neighs2 = ns.iterNext()
+
+            # Check if neighbors are the same
+            if currId1 != currId2:
+                equal = False
+            if len(neighs1) != len(neighs2):
+                equal = False
+            elif False in [neigh1 in neighs2 for neigh1 in neighs1]:
+                equal = False
+            
+            # Check if current VNFs are the same
+            if type(currId1) is not str:
+                eqVnfs = self.compareVNFs(self.getVnf(currId1),
+                        ns.getVnf(currId2))
+                if not eqVnfs:
+                    equal = False
+
+            # Compare if links are the same
+            i = 0
+            eqLinks = True
+            while eqLinks and i < len(neighs1):
+                neigh1 = neighs1[i]
+
+                link1 = self.getLink(currId1, neigh1)
+                link2 = ns.getLink(currId1, neigh1)
+
+                eqLinks = self.compareLinks(link1, link2)
+                i += 1
+            if not eqLinks:
+                equal = False
+                
+        return equal
+
+    
+    @staticmethod
+    def read(storedName):
+        """Reads a NS chain stored under the provided storedName directory
+
+        :storedName: name of the directory under which the NS chain will be
+            stored
+        :returns: a NS chain instance
+
+        """
+        
+        basePath = nsAbsPath + '/' + storedName + '/'
+        props = None
+
+        # Read from files
+        with open(basePath + 'props.json', 'r') as f:
+            props = json.load(f)
+        chain = nx.read_gml(basePath + 'chain.gml')
+        
+        # Instance the NS chain
+        ns = NS()
+        ns.setChain(chain)
+        ns.setBranchNum(props['branches'])
+        ns.setSplitsNum(props['splits'])
+        
+        return ns
 

@@ -23,31 +23,57 @@ class NsTester(object):
         """
         # Create the mock chain
         mockChain = nx.Graph()
-        mockChain.add_node('start')
-        mockChain.add_edge('start', 1)
-        mockChain.add_node(1)
-        mockChain.add_node(2)
-        mockChain.add_node(4)
-        mockChain.add_edge(1, 2)
-        mockChain.add_edge(1, 4)
+        mockChain.add_node('start', memory=2, disk=3, cpu=4)
+        mockChain.add_edge('start', 1, bw=2, delay=3)
+        mockChain.add_node(1, memory=2, disk=3, cpu=4)
+        mockChain.add_node(2, memory=2, disk=3, cpu=4)
+        mockChain.add_node(4, memory=2, disk=3, cpu=4)
+        mockChain.add_edge(1, 2, bw=2, delay=3)
+        mockChain.add_edge(1, 4, bw=2, delay=3)
 
-        mockChain.add_node(3)
-        mockChain.add_edge(2, 3)
-        mockChain.add_node(5)
-        mockChain.add_node(6)
-        mockChain.add_edge(3, 5)
-        mockChain.add_edge(3, 6)
+        mockChain.add_node(3, memory=2, disk=3, cpu=4)
+        mockChain.add_edge(2, 3, bw=2, delay=3)
+        mockChain.add_node(5, memory=2, disk=3, cpu=4)
+        mockChain.add_node(6, memory=2, disk=3, cpu=4)
+        mockChain.add_edge(3, 5, bw=2, delay=3)
+        mockChain.add_edge(3, 6, bw=2, delay=3)
 
-        mockChain.add_node(7)
-        mockChain.add_edge(5, 7)
-        mockChain.add_edge(4, 7)
-        mockChain.add_edge(6, 7)
+        mockChain.add_node(7, memory=2, disk=3, cpu=4)
+        mockChain.add_edge(5, 7, bw=2, delay=3)
+        mockChain.add_edge(4, 7, bw=2, delay=3)
+        mockChain.add_edge(6, 7, bw=2, delay=3)
 
-        mockChain.add_node('end')
-        mockChain.add_edge(7, 'end')
+        mockChain.add_node('end', memory=2, disk=3, cpu=4)
+        mockChain.add_edge(7, 'end', bw=2, delay=3)
 
         return mockChain
 
+
+    def testReadWrite(self):
+        """Tests the reading and writing methods
+        :returns: Nothing
+
+        """
+
+        print '###################'
+        print '## testReadWrite ##'
+        print '###################'
+        
+        mockChain = self.__createMockChain()
+        ns = NS.NS()
+        ns.setChain(mockChain)
+        ns.setSplitsNum(2)
+        ns.setBranchNum(3)
+
+        
+        ns.write('test')
+        nsRead = NS.NS.read('test')
+
+        if nsRead.compare(ns):
+            print '  read and write is performed correctly!'
+        else:
+            print '  read and written NSs are not the same'
+        
 
     def testIteration(self):
         """Tests the iteration methods over a fixed mock NS chain that could
@@ -115,5 +141,6 @@ class NsTester(object):
 if __name__ == '__main__':
     tester = NsTester()
     tester.testIteration()
+    tester.testReadWrite()
 
 

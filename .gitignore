@@ -4,3 +4,4 @@
 *.pc
 *.pdf
 graphs/*
+ns-chains/*
