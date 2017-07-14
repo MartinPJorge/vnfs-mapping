@@ -1,4 +1,6 @@
 import heapq
+from NS import NS
+from MultiDomain import MultiDomain as MD
 
 class NsMapper(object):
 
@@ -30,35 +32,38 @@ class NsMapper(object):
 
         """
         
+        visited = { serverS: True }
         delay = { serverS: 0 }
         prev = {}
         Q = []
         heapq.heappush(Q, (0, serverS))
 
         while Q:
-            nodeDist, node = heapq.heappop(Q)
+            nodeDelay, node = heapq.heappop(Q)
+
+            # Lower node delay is higher than the limit => impossible to map
+            if nodeDelay > delay:
+                return None
 
             # Found end server (iterate through prevs to obtain path)
             if node in serversE:
                 path = []
                 filledPath = False
-                currNode = node
                 
                 while not filledPath:
                     path.insert(0, (prev[node], node))
-                    currNode = prev[node]
-                    if currNode == serverS:
+                    node = prev[node]
+                    if node == serverS:
                         filledPath = True
                 
                 return path
-
 
             neighbors = self.__multiDomain.getNodeNeighs(node)
             for neighbor in neighbors:
                 linkRes = self.__multiDomain.getLinkRes(domain, node, neighbor)
 
-               # Check if link satisfies requirements
-               if linkRes['bw'] > bw\
+                # Check if link satisfies requirements
+                if linkRes['bw'] > bw\
                        and delay[node] + linkRes['delay'] < delay:
                     refreshDelay = True
 
@@ -72,7 +77,10 @@ class NsMapper(object):
                         delay[neighbor] = delay[node] + linkRes['delay']
                         prev[neighbor] = node
 
-        # TODO - check when it should return None
+                # Include neighbor in list
+                if neighbor not in visited:
+                    Q.append(neighbor)
+                    visited[neighbor] = True
 
 
     def greedy(self, domain, entryServer,  ns):
@@ -85,6 +93,30 @@ class NsMapper(object):
 
         """
         
+        ns.initIter()
+        serverS = ns.currIterId()
+        nextVNFs = ns.iterNext()
+
+        paths = dict()
+
+        while nextVNFs:
+            for vnf in nextVNFs:
+                res = ns.getVnf(vnf)
+                link = ns.getLink(serverS, vnf)
+
+                capable = self.__multiDomain.getCapableServers(domain,
+                        res['cpu'], res['mem'], res['disk'])
+                path = self.constrainedDijkstra(domain, serverS, capable,
+                        link['delay'], link['bw'])
+
+                if not path:
+                    # TODO - restore resources cosumed during placement
+                    return False
+                else:
+                    paths[serverS, vnf] = path
+                
+                
+
         
 
 

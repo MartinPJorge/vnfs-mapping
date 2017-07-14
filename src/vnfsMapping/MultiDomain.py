@@ -115,6 +115,53 @@ class MultiDomain(object):
         return nx.get_node_attributes(view, 'res')[A]
 
 
+    def getServers(self, domain):
+        """Retrieves the servers available under a certain domain
+
+        :domain: domain index
+        :returns: list of server nodes of the networkx graph of the domain
+            { 1: res:{'bw':_, 'cpu':_, 'mem':_}, ... }
+
+        """
+        
+        domView = self.__domainsViews[domain]
+        domNodes = nx.get_node_attributes(domView, 'fatType')
+        servers = [ node for node in domNodes.keys() if domNodes[node] ==
+                'server' ]
+
+        serverNodes = dict()
+        for server in servers:
+            res = self.getServerRes(domain, server)
+            serverNodes[server] = res
+
+        return serverNodes
+
+
+    def getCapableServers(self, domain, cpu, memory, disk):
+        """Obtains the servers capable of deal with computational requirements
+        under the given domain.
+
+        :domain: domain index
+        :cpu: cpu requirements
+        :memory: memory requirements
+        :disk: disk requirements
+        :returns: dictionary of capable servers with the getServers() format
+
+        """
+        
+        servers = self.getServers(domain)
+        capable = dict()
+
+        for server in servers.keys():
+            if servers[server]['cpu'] > cpu and\
+                    servers[server]['memory'] > memory and\
+                    servers[disk]['disk'] > disk:
+                capable[server] = severs[server]
+
+        return capable
+
+
+
     # TODO - maybe it's not needed
     @staticmethod
     def yieldMultiDomain(domains, meshDegree, fatTreeDegrees, meshLnkRes,
