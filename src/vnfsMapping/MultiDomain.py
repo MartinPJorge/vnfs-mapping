@@ -366,6 +366,22 @@ class MultiDomain(object):
         return True
 
 
+    def getNodeNeighs(self, domain, node):
+        """Obtains the neighbors of a node contained in a certain domain
+
+        :domain: domain number
+        :node: node ID contained in the domain
+        :returns: a list of nodes with its resources, None in case of error
+
+        """
+        
+        if domain > len(self.__domainViews):
+            return None
+
+        domView = self.__domainViews[domain]
+        
+        return domView.neighbors(node)
+
 
 if __name__ == '__main__':
     # md = MultiDomain.yieldRandMultiDomain()
