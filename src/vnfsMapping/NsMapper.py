@@ -1,4 +1,5 @@
 import heapq
+from ResourcesWatchDog import ResourcesWatchDog as WD
 from NS import NS
 from MultiDomain import MultiDomain as MD
 
@@ -14,6 +15,7 @@ class NsMapper(object):
 
         """
         self.__multiDomain = multiDomain
+        self.__watchDogs = []
         
 
     def constrainedDijkstra(self, domain, serverS, serversE, delay, bw):
@@ -94,10 +96,11 @@ class NsMapper(object):
         """
         
         ns.initIter()
-        serverS = ns.currIterId()
+        vnfS = ns.currIterId()
+        serverS = entryServer
         nextVNFs = ns.iterNext()
-
-        paths = dict()
+        watchDog = WD.ResourcesWatchDog(self.__multiDomain, ns, domain)
+        mappings = dict()
 
         while nextVNFs:
             for vnf in nextVNFs:
@@ -110,12 +113,19 @@ class NsMapper(object):
                         link['delay'], link['bw'])
 
                 if not path:
-                    # TODO - restore resources cosumed during placement
+                    watchDog.unWatch() # free previously allocated resources
                     return False
                 else:
-                    paths[serverS, vnf] = path
+                    mappings[vnf] = path[-1][-1] # Final server
+                    watchDog.watch(vnfS, vnf, path)
                 
-                
+            # Next VNFs
+            vnfS = ns.currIterId()
+            serverS = mappings[vnfS]
+            nextVNFs = ns.iterNext()
+
+        # Add the watch dog to the list of mapped NSs
+        self.__watchDogs.append(watchDog)
 
         
 
