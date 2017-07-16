@@ -23,7 +23,6 @@ class NsMapper(object):
         serverS to one of the multiple end serversE. Aggregated delay is
         ensured to be less than the given as parameter, and the bw is ensured
         along the path.
-
         :domain: domain number
         :serverS: starting server id
         :serversE: possible ending servers ids in a dictionary {idA: _, ...}
@@ -31,11 +30,9 @@ class NsMapper(object):
         :bw: required bw for the path (each link will have enough bw)
         :returns: None if no mapping was founded,
             [(serverS, node1), ..., (serverN, serverE)] path
-
         """
         
-        visited = { serverS: True }
-        delay = { serverS: 0 }
+        delays = { serverS: 0 }
         prev = {}
         Q = []
         heapq.heappush(Q, (0, serverS))
@@ -44,6 +41,7 @@ class NsMapper(object):
             nodeDelay, node = heapq.heappop(Q)
 
             # Lower node delay is higher than the limit => impossible to map
+            # TODO - I think this situation isn't encountered: edges filtered
             if nodeDelay > delay:
                 return None
 
@@ -60,29 +58,29 @@ class NsMapper(object):
                 
                 return path
 
-            neighbors = self.__multiDomain.getNodeNeighs(node)
+            neighbors = self.__multiDomain.getNodeNeighs(domain, node)
             for neighbor in neighbors:
-                linkRes = self.__multiDomain.getLinkRes(domain, node, neighbor)
+                linkRes = self.__multiDomain.getLnkRes(domain, node, neighbor)
 
                 # Check if link satisfies requirements
                 if linkRes['bw'] > bw\
-                       and delay[node] + linkRes['delay'] < delay:
-                    refreshDelay = True
-
-                    # Neighbor already in
-                    if neighbor in delay.keys() and\
-                        delay[neighbor] <= delay[node] + linkRes['delay']:
-                        refreshDelay = False
+                       and delays[node] + linkRes['delay'] < delay:
 
                     # New neighbor
-                    if refreshDelay:
-                        delay[neighbor] = delay[node] + linkRes['delay']
+                    if neighbor not in delays:
+                        delays[neighbor] = delays[node] + linkRes['delay']
+                        heapq.heappush(Q, (delays[neighbor], neighbor))
                         prev[neighbor] = node
 
-                # Include neighbor in list
-                if neighbor not in visited:
-                    Q.append(neighbor)
-                    visited[neighbor] = True
+                    # Already visited, better path
+                    elif delays[node] + linkRes['delay'] < delays[neighbor]:
+                        neighIdx = Q.index((delays[neighbor], neighbor))
+                        delays[neighbor] = delays[node] + linkRes['delay']
+                        Q[neighIdx] = (delays[neighbor], neighbor)
+                        heapq.heapify(Q)
+                        prev[neighbor] = node
+
+        return None
 
 
     def greedy(self, domain, entryServer,  ns):
@@ -127,6 +125,15 @@ class NsMapper(object):
         # Add the watch dog to the list of mapped NSs
         self.__watchDogs.append(watchDog)
 
+        return True
+
         
+    def freeMappings(self):
+        """Frees all the resources mapped to NSs
+        :returns: Nothing
+
+        """
+        for watchDog in self.__watchDogs:
+            watchDog.unWatch()
 
 

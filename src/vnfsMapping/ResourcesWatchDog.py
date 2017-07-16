@@ -41,7 +41,7 @@ class ResourcesWatchDog(object):
                     'bw', -1 * nslinkBw)
 
         # Alloc server resources
-        if vnf2 is not in self.__watchingVnfs:
+        if vnf2 not in self.__watchingVnfs:
             server = path[-1][-1]
             vnfRes = self.__ns.getVnf(vnf2)
             self.__incrServVNFsRes(vnfRes, server, decrease=True)

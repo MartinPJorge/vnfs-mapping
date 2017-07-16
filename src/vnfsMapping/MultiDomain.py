@@ -89,7 +89,11 @@ class MultiDomain(object):
             print 'graph view don\'t have that link'
             return False
 
-        return nx.get_edge_attributes(view, 'res')[(A, B)]
+        lnksRes = nx.get_edge_attributes(view, 'res')
+        if (A, B) in lnksRes:
+            return lnksRes[(A, B)]
+        else:
+            return lnksRes[(B, A)]
 
 
     def getServerRes(self, domain, A):
@@ -422,10 +426,10 @@ class MultiDomain(object):
 
         """
         
-        if domain > len(self.__domainViews):
+        if domain > len(self.__domainsViews):
             return None
 
-        domView = self.__domainViews[domain]
+        domView = self.__domainsViews[domain]
         
         return domView.neighbors(node)
 
