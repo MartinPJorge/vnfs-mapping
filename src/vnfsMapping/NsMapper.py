@@ -97,18 +97,30 @@ class NsMapper(object):
         vnfS = ns.currIterId()
         serverS = entryServer
         nextVNFs = ns.iterNext()
-        watchDog = WD.ResourcesWatchDog(self.__multiDomain, ns, domain)
+        watchDog = WD(self.__multiDomain, ns, domain)
         mappings = dict()
 
         while nextVNFs:
             for vnf in nextVNFs:
                 res = ns.getVnf(vnf)
-                link = ns.getLink(serverS, vnf)
+                link = ns.getLink(vnfS, vnf)
 
+                print vnf
+                print 'requirements: cpu:' + str(res['cpu']) + ' memory: ' +\
+                    str(res['memory']) + ' disk: ' + str(res['disk'])
                 capable = self.__multiDomain.getCapableServers(domain,
-                        res['cpu'], res['mem'], res['disk'])
-                path = self.constrainedDijkstra(domain, serverS, capable,
-                        link['delay'], link['bw'])
+                        res['cpu'], res['memory'], res['disk'])
+
+                print capable
+
+                # If last VNF server can contain it, place it there
+                if serverS in capable:
+                    mappings[vnf] = serverS
+                    watchDog.watch(vnfS, vnf, [(serverS, serverS)])
+                    path = [(serverS, serverS)]
+                else:
+                    path = self.constrainedDijkstra(domain, serverS, capable,
+                            link['delay'], link['bw'])
 
                 if not path:
                     watchDog.unWatch() # free previously allocated resources

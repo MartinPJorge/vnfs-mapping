@@ -25,12 +25,18 @@ class NsMapperTester(object):
 
         """
         graph = nx.Graph()
-        graph.add_node(1, memory=2, disk=50, cpu=4)
-        graph.add_node(2, memory=2, disk=50, cpu=4)
-        graph.add_node(3, memory=2, disk=50, cpu=4)
-        graph.add_node(4, memory=2, disk=50, cpu=4)
-        graph.add_node(5, memory=2, disk=50, cpu=4)
-        graph.add_node(6, memory=2, disk=50, cpu=4)
+        graph.add_node(1, res={'memory': 2, 'disk': 50, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(2, res={'memory': 2, 'disk': 50, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(3, res={'memory': 2, 'disk': 50, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(4, res={'memory': 2, 'disk': 50, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(5, res={'memory': 2, 'disk': 50, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(6, res={'memory': 2, 'disk': 50, 'cpu': 4},\
+			 fatType='server')
         graph.add_edge(1, 2, res={'bw': 300, 'delay': 7})
         graph.add_edge(1, 3, res={'bw': 300, 'delay': 9})
         graph.add_edge(1, 6, res={'bw': 100, 'delay': 14})
@@ -103,11 +109,36 @@ class NsMapperTester(object):
         print '############'
 
 
+        # Stress test links consumption
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=10, cpu=1)
+        chain.add_node(2, memory=0, disk=10, cpu=1)
+        chain.add_edge('start', 1, bw=0, delay=90)
+        chain.add_edge(1, 2, bw=0, delay=90)
+        ns.setChain(chain)
+
+        path = mapper.greedy(0, 1, ns)
+        if path != [(1, 3), (3, 4), (4, 4)]:
+            print '  first mapping was: ' + str(path) + ', instead of:\
+ [(1, 3), (3, 4), (4, 4)]'
+
+        path = mapper.greedy(0, 1, ns)
+        if path != [(1, 3), (3, 4), (4, 5)]:
+            print '  first mapping was: ' + str(path) + ', instead of:\
+ [(1, 3), (3, 4), (4, 5)]'
+        
+        mapper.freeMappings()
+
+    
+
 
 
 if __name__ == '__main__':
     tester = NsMapperTester()
     tester.testConstrainedDijkstra()
+    tester.testGreedy()
 
 
 

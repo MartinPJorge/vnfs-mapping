@@ -101,7 +101,7 @@ class MultiDomain(object):
 
         :domain: domain index, (-1 for global view link)
         :A: server index
-        :returns: dictionary with domain link
+        :returns: dictionary with server resources from that domain
             False if an error ocurs
 
         """
@@ -157,10 +157,12 @@ class MultiDomain(object):
         capable = dict()
 
         for server in servers.keys():
-            if servers[server]['cpu'] > cpu and\
-                    servers[server]['memory'] > memory and\
-                    servers[disk]['disk'] > disk:
-                capable[server] = severs[server]
+            res = self.getServerRes(domain, server)
+
+            if res['cpu'] > cpu and\
+                    res['memory'] > memory and\
+                    res['disk'] > disk:
+                capable[server] = servers[server]
 
         return capable
 

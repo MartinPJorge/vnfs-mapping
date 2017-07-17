@@ -109,6 +109,20 @@ class NS(object):
         return prevs
 
 
+    def getPrevIdx(self):
+        """Obtains the previous index in the iterator
+        :returns: None in case there is no previous, 'start', or a VNF index
+
+        """
+        prevIdx = None
+        if self.__iterIdx == 1:
+            prevIdx = 'start'
+        else:
+            prevIdx = self.__iterIdx - 1
+
+        return prevIdx
+
+
     def iterNext(self):
         """Retrieves the next VNFs' ids after the current one and advances the
             iterator pointer to the next id

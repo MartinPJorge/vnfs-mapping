@@ -30,15 +30,17 @@ class ResourcesWatchDog(object):
         :vnf1: id of vnf1
         :vnf2: id of vnf2
         :path: links between both domains [(nd1, nd2), ..., (ndA, ndB)]
+            if vnf2 is placed under same server as vnf2: [(nd1, nd1)]
         :returns: Nothing
 
         """
         nsLinkBw = self.__ns.getLink(vnf1, vnf2)['bw']
 
-        # Decrease available bandwidth
-        for (nodeA, nodeB) in path:
-            self.__multidomain.incrlnkresource(self.__domain, nodeA, nodeB,
-                    'bw', -1 * nslinkBw)
+        # Decrease available bandwidth (if vnf1 and vnf2 under dif servers)
+        if path[-1][0] == path[-1][-1]:
+            for (nodeA, nodeB) in path:
+                self.__multiDomain.incrLnkResource(self.__domain, nodeA,
+                    nodeB, 'bw', -1 * nsLinkBw)
 
         # Alloc server resources
         if vnf2 not in self.__watchingVnfs:
@@ -64,15 +66,16 @@ class ResourcesWatchDog(object):
 
         # Release link resources
         for (vnf1, vnf2, path) in self.__watchingPaths:
-            nsLinkBw = self.__ns.getLink(vnf1, vnf2)['bw']
-            for (nodeA, nodeB) in path:
-                self.__multidomain.incrLnkResource(self.__domain, nodeA,
-                        nodeB, 'bw', nslinkBw)
+            # Ensure vnf1 and vnf2 are located under different servers
+            if len(path) > 1 and path[-1][0] != path[-1][-1]:
+                nsLinkBw = self.__ns.getLink(vnf1, vnf2)['bw']
+                for (nodeA, nodeB) in path:
+                    self.__multidomain.incrLnkResource(self.__domain, nodeA,
+                            nodeB, 'bw', nslinkBw)
 
         self.__watchingVnfs = dict()
         self.__watchingPaths = []
                 
-
 
     def __incrServVNFsRes(self, vnfRes, server, decrease=False):
         """Increases/decreases the vnf resources used in the server
