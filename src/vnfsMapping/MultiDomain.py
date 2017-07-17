@@ -159,9 +159,9 @@ class MultiDomain(object):
         for server in servers.keys():
             res = self.getServerRes(domain, server)
 
-            if res['cpu'] > cpu and\
-                    res['memory'] > memory and\
-                    res['disk'] > disk:
+            if res['cpu'] >= cpu and\
+                    res['memory'] >= memory and\
+                    res['disk'] >= disk:
                 capable[server] = servers[server]
 
         return capable
@@ -411,6 +411,7 @@ class MultiDomain(object):
             
             globalRes[resource] += incr
             domainRes[resource] += incr
+
             nx.set_node_attributes(self.__globalView, 'res', {A: globalRes})
             nx.set_node_attributes(domainView, 'res', {A: domainRes})
         else:

@@ -25,18 +25,14 @@ class NsMapperTester(object):
 
         """
         graph = nx.Graph()
-        graph.add_node(1, res={'memory': 2, 'disk': 50, 'cpu': 4},\
-			 fatType='server')
-        graph.add_node(2, res={'memory': 2, 'disk': 50, 'cpu': 4},\
-			 fatType='server')
-        graph.add_node(3, res={'memory': 2, 'disk': 50, 'cpu': 4},\
-			 fatType='server')
+        graph.add_node(1)
+        graph.add_node(2)
+        graph.add_node(3)
         graph.add_node(4, res={'memory': 2, 'disk': 50, 'cpu': 4},\
 			 fatType='server')
         graph.add_node(5, res={'memory': 2, 'disk': 50, 'cpu': 4},\
 			 fatType='server')
-        graph.add_node(6, res={'memory': 2, 'disk': 50, 'cpu': 4},\
-			 fatType='server')
+        graph.add_node(6)
         graph.add_edge(1, 2, res={'bw': 300, 'delay': 7})
         graph.add_edge(1, 3, res={'bw': 300, 'delay': 9})
         graph.add_edge(1, 6, res={'bw': 100, 'delay': 14})
@@ -50,7 +46,7 @@ class NsMapperTester(object):
         multiDomain = MD.MultiDomain()
         multiDomain._MultiDomain__domains = 1
         multiDomain._MultiDomain__globalView = graph
-        multiDomain._MultiDomain__domainsViews = [graph]
+        multiDomain._MultiDomain__domainsViews = [graph.copy()]
 
         return multiDomain
     
@@ -109,7 +105,7 @@ class NsMapperTester(object):
         print '############'
 
 
-        # Stress test links consumption
+        # Stress test server consumption
         ns = NS.NS()
         chain = nx.Graph()
         chain.add_node('start')
@@ -121,18 +117,93 @@ class NsMapperTester(object):
 
         path = mapper.greedy(0, 1, ns)
         if path != [(1, 3), (3, 4), (4, 4)]:
-            print '  first mapping was: ' + str(path) + ', instead of:\
- [(1, 3), (3, 4), (4, 4)]'
+            print '  first server-stress mapping was: ' + str(path) +\
+                ', instead of: [(1, 3), (3, 4), (4, 4)]'
+        else:
+            print '  first server-stress mapping: OK'
 
+        ns = NS.NS() # node 4 can only host one of the VNFs
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=10, cpu=2)
+        chain.add_node(2, memory=0, disk=10, cpu=2)
+        chain.add_edge('start', 1, bw=0, delay=90)
+        chain.add_edge(1, 2, bw=0, delay=90)
+        ns.setChain(chain)
         path = mapper.greedy(0, 1, ns)
         if path != [(1, 3), (3, 4), (4, 5)]:
-            print '  first mapping was: ' + str(path) + ', instead of:\
- [(1, 3), (3, 4), (4, 5)]'
+            print '  second server-stress mapping was: ' + str(path) +\
+                ', instead of: [(1, 3), (3, 4), (4, 5)]'
+        else:
+            print '  second server-stress mapping: OK\n'
         
         mapper.freeMappings()
 
-    
+        # Link stress testing
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=0, cpu=0)
+        chain.add_edge('start', 1, bw=200, delay=90)
+        ns.setChain(chain)
 
+        path = mapper.greedy(0, 1, ns)
+        if path != [(1, 3), (3, 4)]:
+            print '  first link-stress mapping was: ' + str(path) +\
+                ', instead of: [(1, 3), (3, 4)]'
+        else:
+            print '  first link-stress mapping: OK'
+
+
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=0, cpu=4)
+        chain.add_node(2, memory=0, disk=0, cpu=1)
+        chain.add_edge('start', 1, bw=0, delay=90)
+        chain.add_edge(1, 2, bw=250, delay=90)
+        ns.setChain(chain)
+    
+        path = mapper.greedy(0, 1, ns)
+        if path != [(1, 3), (3, 4), (4, 5)]:
+            print '  second link-stress mapping was: ' + str(path) +\
+                ', instead of: [(1, 3), (3, 4), (4, 5)]'
+        else:
+            print '  second link-stress mapping: OK'
+
+
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=10, cpu=0)
+        chain.add_node(2, memory=0, disk=10, cpu=0)
+        chain.add_edge('start', 1, bw=50, delay=90)
+        chain.add_edge(1, 2, bw=30000, delay=0)
+        ns.setChain(chain)
+    
+        path = mapper.greedy(0, 1, ns)
+        if path != [(1, 3), (3, 6), (6, 5), (5, 5)]:
+            print '  third link-stress mapping was: ' + str(path) +\
+                ', instead of: [(1, 3), (3, 6), (6, 5), (5, 5)]'
+        else:
+            print '  third link-stress mapping: OK'
+
+
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=0, cpu=0)
+        chain.add_edge('start', 1, bw=200, delay=19)
+        ns.setChain(chain)
+
+        path = mapper.greedy(0, 1, ns)
+        if path != []:
+            print '  fourth link-stress mapping was: ' + str(path) +\
+                ', []'
+        else:
+            print '  fourth link-stress mapping: OK'
+
+        mapper.freeMappings()
 
 
 if __name__ == '__main__':

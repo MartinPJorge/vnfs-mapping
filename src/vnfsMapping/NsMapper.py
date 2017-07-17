@@ -63,8 +63,8 @@ class NsMapper(object):
                 linkRes = self.__multiDomain.getLnkRes(domain, node, neighbor)
 
                 # Check if link satisfies requirements
-                if linkRes['bw'] > bw\
-                       and delays[node] + linkRes['delay'] < delay:
+                if linkRes['bw'] >= bw\
+                       and delays[node] + linkRes['delay'] <= delay:
 
                     # New neighbor
                     if neighbor not in delays:
@@ -89,7 +89,7 @@ class NsMapper(object):
         :domain: entry domain for the NS chain
         :entryServer: server entry point for the NS
         :ns: NS chain instance
-        :returns: True/False if the mapping can be performed
+        :returns: [(node1, node2), ..., (nodeN, nodeN+1)] path or empty list
 
         """
         
@@ -99,19 +99,20 @@ class NsMapper(object):
         nextVNFs = ns.iterNext()
         watchDog = WD(self.__multiDomain, ns, domain)
         mappings = dict()
+        fullPath = []
 
         while nextVNFs:
             for vnf in nextVNFs:
                 res = ns.getVnf(vnf)
                 link = ns.getLink(vnfS, vnf)
 
-                print vnf
-                print 'requirements: cpu:' + str(res['cpu']) + ' memory: ' +\
-                    str(res['memory']) + ' disk: ' + str(res['disk'])
                 capable = self.__multiDomain.getCapableServers(domain,
                         res['cpu'], res['memory'], res['disk'])
 
-                print capable
+                # print '  required: ' + str(res)
+                # print '  capable: '
+                # for cap in capable:
+                #     print '  resources: ' + str(self.__multiDomain.getServerRes(domain, cap))
 
                 # If last VNF server can contain it, place it there
                 if serverS in capable:
@@ -124,10 +125,11 @@ class NsMapper(object):
 
                 if not path:
                     watchDog.unWatch() # free previously allocated resources
-                    return False
+                    return []
                 else:
                     mappings[vnf] = path[-1][-1] # Final server
                     watchDog.watch(vnfS, vnf, path)
+                    fullPath += path
                 
             # Next VNFs
             vnfS = ns.currIterId()
@@ -137,7 +139,7 @@ class NsMapper(object):
         # Add the watch dog to the list of mapped NSs
         self.__watchDogs.append(watchDog)
 
-        return True
+        return fullPath
 
         
     def freeMappings(self):

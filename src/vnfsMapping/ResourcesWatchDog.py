@@ -37,7 +37,7 @@ class ResourcesWatchDog(object):
         nsLinkBw = self.__ns.getLink(vnf1, vnf2)['bw']
 
         # Decrease available bandwidth (if vnf1 and vnf2 under dif servers)
-        if path[-1][0] == path[-1][-1]:
+        if path[-1][0] != path[-1][-1]:
             for (nodeA, nodeB) in path:
                 self.__multiDomain.incrLnkResource(self.__domain, nodeA,
                     nodeB, 'bw', -1 * nsLinkBw)
@@ -70,8 +70,8 @@ class ResourcesWatchDog(object):
             if len(path) > 1 and path[-1][0] != path[-1][-1]:
                 nsLinkBw = self.__ns.getLink(vnf1, vnf2)['bw']
                 for (nodeA, nodeB) in path:
-                    self.__multidomain.incrLnkResource(self.__domain, nodeA,
-                            nodeB, 'bw', nslinkBw)
+                    self.__multiDomain.incrLnkResource(self.__domain, nodeA,
+                            nodeB, 'bw', nsLinkBw)
 
         self.__watchingVnfs = dict()
         self.__watchingPaths = []
