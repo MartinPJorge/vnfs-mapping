@@ -1,5 +1,6 @@
 import sys
 import os
+import random
 import networkx as nx
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
@@ -7,6 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
 from vnfsMapping import MultiDomain as MD
 from vnfsMapping import NS
 from vnfsMapping import NsMapper as NSM
+from vnfsMapping import NsGenerator as NSG
 
 
 class NsMapperTester(object):
@@ -206,10 +208,66 @@ class NsMapperTester(object):
         mapper.freeMappings()
 
 
+    def greedyNsBunch(self, numNs):
+        """Launches a bunch of NS requests to be mapped on top of an existing
+        multiDomain. In case it is not already created, a multiDomain will be
+        generated. Is just to check if some errors appear.
+
+        :numNs: number of NSs to be within the bunch
+        :returns: Nothing
+
+        """
+        # Create the NS requests bunch
+        bwTh = {'min': 100, 'max': 200}
+        delayTh = {'min': 2, 'max': 5}
+        memoryTh = {'min': 1, 'max': 3}
+        diskTh = {'min': 20, 'max': 100}
+        cpuTh = {'min': 1, 'max': 4}
+        nsGen = NSG.NSgenerator(bwTh, delayTh, memoryTh, diskTh, cpuTh)
+        NSs = []
+        for _ in range(numNs):
+            ns = nsGen.yieldChain(2, 3, 3, 6)
+            NSs.append(ns)
+
+        # Generate/read the multiDomain
+        md = None
+        if not os.path.exists('../../graphs/greedyNsBunch/') or\
+                not os.path.isdir('../../graphs/greedyBunch/'):
+            print 'a escribir'
+            md = MD.MultiDomain.yieldRandMultiDomain()
+            md.write('greedyNsBunch')
+        else:
+            md = MD.MultiDomain.read('greedyNsBunch')
+
+        # Execute the mappings
+        failed = 0
+        mapper = NSM.NsMapper(md)
+        domains = len(md.getDomainsViews())
+        print 'Multidomain has ' + str(domains) + ' domains'
+        for ns in NSs:
+            domain = random.randint(0, domains - 1)
+            servers = md.getServers(domain).keys()
+            entryS = random.randint(0, len(servers) - 1)
+            print 'entryServer=' + str(entryS) + ', possibleEntryServers=' +\
+                str(len(servers)) + ', domain=' + str(domain)
+            print ns
+            path = mapper.greedy(domain, servers[entryS], ns)
+            print str(path) + '\n========================\n'
+            failed += 1 if path == [] else 0
+
+        mapper.freeMappings()
+    
+        print '  successful requests: ' + str(numNs - failed)
+        print '  failed requests: ' + str(failed)
+
+
+
 if __name__ == '__main__':
     tester = NsMapperTester()
-    tester.testConstrainedDijkstra()
-    tester.testGreedy()
+    # tester.testConstrainedDijkstra()
+    # tester.testGreedy()
+
+    tester.greedyNsBunch(100)
 
 
 

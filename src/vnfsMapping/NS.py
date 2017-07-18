@@ -23,6 +23,51 @@ class NS(object):
         self.__maxSplitW = None
 
 
+    def __str__(self):
+        """String representation with the NS chain
+        :returns: string representation
+
+        """
+        prevIterIdx = self.__iterIdx
+        self.initIter()
+        neighs = True
+        currVnf =  self.currIterId()
+        vnfInfos = []
+        linkInfos = []
+
+        while neighs != [] and currVnf != 'end':
+            neighs = self.iterNext()
+            
+            # VNF requirements
+            if currVnf == 'start':
+                vnfInfo = 'START'
+            else:
+                vnfData = self.getVnf(currVnf)
+                vnfInfo = str(currVnf) + ':: cpu=' + str(vnfData['cpu']) + ',\
+ memory=' + str(vnfData['memory']) + ', disk=' + str(vnfData['disk'])
+                vnfInfos.append(vnfInfo)
+
+            # Links requirements
+            for neigh in neighs:
+                linkData = self.getLink(currVnf, neigh)
+                linkInfo = str(currVnf) + '<-->' + str(neigh) + ':: bw=' +\
+str(linkData['bw']) + ', delay=' + str(linkData['delay'])
+                linkInfos.append(linkInfo)
+
+            currVnf = self.currIterId()
+
+        # Compose final string
+        st = '# NS info\n'
+        st += 'VNFs requirements:\n'
+        for vnfInfo in vnfInfos:
+            st += '  ' + vnfInfo + '\n'
+        st += 'Links requirements:\n'
+        for linkInfo in linkInfos:
+            st += '  ' + linkInfo + '\n'
+
+        return st
+        
+
     @staticmethod
     def create(vnfs, links):
         """Initializes a Network Service instance

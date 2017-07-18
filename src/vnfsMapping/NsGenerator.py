@@ -222,7 +222,6 @@ class NSgenerator(object):
 
                 i += 1
 
-        print ''
         # Add starting and ending link requirements and star/end points
         chain.add_node('start')
         self.__createLink(chain, 'start', 1)

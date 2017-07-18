@@ -48,8 +48,8 @@ class DomainsGenerator(object):
         # Links and server resources
         meshLnkRes = {
             'bw': {
-                'min': 1000,
-                'max': 3000
+                'min': 3000,
+                'max': 9000
             },
             'delay': {
                 'min': 1,
@@ -59,15 +59,15 @@ class DomainsGenerator(object):
         fatLnkRes = meshLnkRes
         servRes = {
             'memory': {
-                'min': 1,
-                'max': 128000
+                'min': 64,
+                'max': 128
             },
             'cpu': {
-                'min': 1,
-                'max': 16
+                'min': 30,
+                'max': 50
             },
             'disk': {
-                'min': 1,
+                'min': 2000,
                 'max': 2000000000
             }
         }
@@ -172,7 +172,7 @@ class DomainsGenerator(object):
         """
         memory = random.randint(self.__servRes['memory']['min'],
                 self.__servRes['memory']['max'])
-        cpu = random.randint(self.__servRes['memory']['min'],
+        cpu = random.randint(self.__servRes['cpu']['min'],
                 self.__servRes['cpu']['max'])
         disk = random.randint(self.__servRes['disk']['min'],
                 self.__servRes['disk']['max'])
@@ -366,7 +366,7 @@ class DomainsGenerator(object):
             propIdx = None
 
             # Avoid having all proportions to zero
-            if domain == domains - 1 and reduce(lambda x,y: x+y, props) == 0:
+            if domain == domains - 1 and reduce(lambda x,y: x+y, props, 0) == 0:
                 propIdx = random.randint(1, len(allowedProps) - 1)
             else:
                 if nullsCounter[domain] > 0 and random.random() > 0.5:

@@ -109,11 +109,6 @@ class NsMapper(object):
                 capable = self.__multiDomain.getCapableServers(domain,
                         res['cpu'], res['memory'], res['disk'])
 
-                # print '  required: ' + str(res)
-                # print '  capable: '
-                # for cap in capable:
-                #     print '  resources: ' + str(self.__multiDomain.getServerRes(domain, cap))
-
                 # If last VNF server can contain it, place it there
                 if serverS in capable:
                     mappings[vnf] = serverS
