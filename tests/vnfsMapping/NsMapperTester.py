@@ -208,6 +208,76 @@ class NsMapperTester(object):
         mapper.freeMappings()
 
 
+    def testRandomWalk(self):
+        """Tests the random walk to find paths for VNF allocation
+        :returns: Nothing
+
+        """
+        md = self.__genMultiDomain()
+        mapper = NSM.NsMapper(md)
+        err = False
+
+        print '#################'
+        print '## Random walk ##'
+        print '#################'
+
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=10, cpu=0)
+        chain.add_edge('start', 1, bw=250, delay=90)
+        ns.setChain(chain)
+
+        path = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 250)
+        if path == None or path == [(1, 3), (3, 6), (6, 5)]:
+            print '  first mapping worked!'
+        else:
+            print '  first mapping did not work as expected'
+
+        path = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 200)
+        if path == None or path == [(1, 3), (3, 6), (6, 5)] or\
+                path == [(1, 2), (2, 4)] or path == [(1, 3), (3, 4)]:
+            print '  second mapping worked!'
+        else:
+            print '  second mapping did not work as expected'
+
+
+    def testSmartRandomWalk(self):
+        """Tests the backtracking random walk to find paths for VNF allocation
+        :returns: Nothing
+
+        """
+        md = self.__genMultiDomain()
+        mapper = NSM.NsMapper(md)
+        err = False
+
+        print '#######################'
+        print '## Smart random walk ##'
+        print '#######################'
+
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=10, cpu=0)
+        chain.add_edge('start', 1, bw=250, delay=90)
+        ns.setChain(chain)
+
+        path = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 20, 250)
+        if path == [(1, 3), (3, 6), (6, 5)]:
+            print '  first mapping worked!'
+        else:
+            print '  first mapping did not work as expected'
+        print '  given path=' + str(path)
+
+        path = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 90, 200)
+        if path == [(1, 3), (3, 6), (6, 5)] or\
+                path == [(1, 2), (2, 4)] or path == [(1, 3), (3, 4)]:
+            print '  second mapping worked!'
+        else:
+            print '  second mapping did not work as expected'
+        print '  given path=' + str(path)
+
+
     def greedyNsBunch(self, numNs):
         """Launches a bunch of NS requests to be mapped on top of an existing
         multiDomain. In case it is not already created, a multiDomain will be
@@ -266,8 +336,9 @@ if __name__ == '__main__':
     tester = NsMapperTester()
     # tester.testConstrainedDijkstra()
     # tester.testGreedy()
-
-    tester.greedyNsBunch(100)
+    # tester.testRandomWalk()
+    tester.testSmartRandomWalk()
+    # tester.greedyNsBunch(100)
 
 
 
