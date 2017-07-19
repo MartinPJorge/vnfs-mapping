@@ -219,7 +219,7 @@ class NsMapperTester(object):
         """
         # Create the NS requests bunch
         bwTh = {'min': 100, 'max': 200}
-        delayTh = {'min': 2, 'max': 5}
+        delayTh = {'min': 5, 'max': 15}
         memoryTh = {'min': 1, 'max': 3}
         diskTh = {'min': 20, 'max': 100}
         cpuTh = {'min': 1, 'max': 4}
@@ -231,8 +231,8 @@ class NsMapperTester(object):
 
         # Generate/read the multiDomain
         md = None
-        if not os.path.exists('../../graphs/greedyNsBunch/') or\
-                not os.path.isdir('../../graphs/greedyBunch/'):
+        if not os.path.exists('graphs/greedyNsBunch') or\
+                not os.path.isdir('graphs/greedyNsBunch'):
             print 'a escribir'
             md = MD.MultiDomain.yieldRandMultiDomain()
             md.write('greedyNsBunch')
@@ -248,7 +248,7 @@ class NsMapperTester(object):
             domain = random.randint(0, domains - 1)
             servers = md.getServers(domain).keys()
             entryS = random.randint(0, len(servers) - 1)
-            print 'entryServer=' + str(entryS) + ', possibleEntryServers=' +\
+            print 'entryServer=' + str(servers[entryS]) + ', possibleEntryServers=' +\
                 str(len(servers)) + ', domain=' + str(domain)
             print ns
             path = mapper.greedy(domain, servers[entryS], ns)

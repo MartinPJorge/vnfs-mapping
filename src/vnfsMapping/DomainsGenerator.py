@@ -366,7 +366,8 @@ class DomainsGenerator(object):
             propIdx = None
 
             # Avoid having all proportions to zero
-            if domain == domains - 1 and reduce(lambda x,y: x+y, props, 0) == 0:
+            if domain == domains - 1 and\
+                    reduce(lambda x, y: x+y, props, 0) == 0:
                 propIdx = random.randint(1, len(allowedProps) - 1)
             else:
                 if nullsCounter[domain] > 0 and random.random() > 0.5:
@@ -374,7 +375,8 @@ class DomainsGenerator(object):
                     nullsCounter[domain] -= 1
                 else:
                     propIdx = random.randint(1, len(allowedProps) - 1)
-                props.append(allowedProps[propIdx])
+
+            props.append(allowedProps[propIdx])
 
         return props
 
