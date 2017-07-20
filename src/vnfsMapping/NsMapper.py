@@ -150,55 +150,75 @@ class NsMapper(object):
             [(serverS, node1), ..., (serverN, serverE)] path
 
         """
-        def recursive(md, node, aggDelay, serversE, chain, delay, bw, st=''):
+        def recursive(node, aggDelay, chain, st=''):
             """Recursive function to perform the backtracking approach of the
             random walks.
 
-            :md: MultiDomain instance
             :node: starting node
             :aggDelay: aggregated delay in the current path search
-            :serversE: possible ending servers ids in a dictionary {idA: _, ..}
             :chain: set with current chain composed
-            :delay: required delay for the path (the final path will have less)
-            :bw: required bw for the path (each link will have enough bw)
             :st: string to be concatenated in debug printing
             :returns: [] if no mapping was founded or node==serverE,
                 [(serverS, node1), ..., (serverN, serverE)] path
 
             """
             if node in serversE:
-                # print st + 'final one encountered!'
                 return []
 
             # Get neighbors not inside current chain
-            neighbors = md.getNodeNeighs(domain, node)
+            neighbors = self.__multiDomain.getNodeNeighs(domain, node)
             neighbors = filter(lambda neigh: neigh not in chain, neighbors)
             random.shuffle(neighbors)
-            # print st + 'try with node=' + str(node) + ' neighbors=' +\
-            #     str(neighbors) + ' aggDelay=' + str(aggDelay)
-            # print st + 'chain=' + str(chain)
 
             for neighbor in neighbors:
-                linkRes = md.getLnkRes(domain, node, neighbor)
-                # print st + 'let\'s see neighbor=' + str(neighbor) + ' bw=' +\
-                #     str(linkRes['bw']) + ', delay=' + str(linkRes['delay']) +\
-                #     ' have aggDelay=' + str(aggDelay)
+                linkRes = self.__multiDomain.getLnkRes(domain, node, neighbor)
                 if linkRes['bw'] >= bw and delay >= linkRes['delay'] +\
                         aggDelay:
                     # Link requirements ok, keep recursion!
                     nextChain = Set(chain)
                     nextChain.add(neighbor)
-                    path = recursive(md, neighbor, aggDelay + linkRes['delay'],
-                            serversE, nextChain, delay, bw, st + '  ')
+                    path = recursive(neighbor, aggDelay + linkRes['delay'],
+                            nextChain, st + '  ')
 
                     if path != None:
                         return [(node, neighbor)] + path
 
             return None
 
-        path = recursive(self.__multiDomain, serverS, 0, serversE,
-                Set([serverS]), delay, bw)
-        return None if path == [] else path
+        return recursive(serverS, 0, Set([serverS]))
+
+
+    def bfs(self, domain, serverS, serversE, delay, bw, depth=None):
+        """Performs a BFS to find possible paths from serverS to any serverE
+        under the delay and bw requirements.
+
+        :domain: domain number
+        :serverS: starting server id
+        :serversE: possible ending servers ids in a dictionary {idA: _, ...}
+        :delay: required delay for the path (the final path will have less)
+        :bw: required bw for the path (each link will have enough bw)
+        :depth: specify limit depth for searching
+        :returns: None if no mapping was founded,
+            [(serverS, node1), ..., (serverN, serverE)] path
+
+        """
+        toVisit = [(serverS, 0, [], Set())]
+        keepVisiting = True
+
+        while keepVisiting:
+            nextToVisit = []
+
+            # Visit and add neighbors
+            while len(toVisit) > 0:
+                node, aggDelay, chain, chainSet = toVisit[0]
+                del toVisit[0]
+                neighbors = self.__multiDomain.getNodeNeighs(domain, node)
+                neighbors = filter(lambda neigh: neigh not in chainSet,
+                        neighbors)
+                # Insert neighbors
+                for neighbor in neighbors:
+                    linkRes = self.__multiDomain.getLnkRes(domain, node, neighbor)
+                    if 
 
 
 

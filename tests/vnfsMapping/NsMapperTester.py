@@ -277,6 +277,13 @@ class NsMapperTester(object):
             print '  second mapping did not work as expected'
         print '  given path=' + str(path)
 
+        path = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 90, 1000)
+        if path == None:
+            print '  third mapping worked!'
+        else:
+            print '  third mapping did not work as expected'
+        print '  given path=' + str(path)
+
 
     def greedyNsBunch(self, numNs):
         """Launches a bunch of NS requests to be mapped on top of an existing
