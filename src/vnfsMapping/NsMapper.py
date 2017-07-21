@@ -188,7 +188,7 @@ class NsMapper(object):
         return recursive(serverS, 0, Set([serverS]))
 
 
-    def bfs(self, domain, serverS, serversE, delay, bw, depth=None):
+    def BFS(self, domain, serverS, serversE, delay, bw, depth=None):
         """Performs a BFS to find possible paths from serverS to any serverE
         under the delay and bw requirements.
 
@@ -202,33 +202,52 @@ class NsMapper(object):
             [(serverS, node1), ..., (serverN, serverE)] path
 
         """
-        toVisit = [(serverS, 0, [], Set())]
+        toVisit = [(serverS, 0, [], Set([serverS]))]
         keepVisiting = True
+        i = 0
 
         while keepVisiting:
             nextToVisit = []
+            keepVisiting = False if depth != None and i > depth else True
 
             # Visit and add neighbors
-            while len(toVisit) > 0:
+            while len(toVisit) > 0 and keepVisiting:
+                # Get curr node and neighbors
                 node, aggDelay, chain, chainSet = toVisit[0]
+                if node in serversE:
+                    return chain
                 del toVisit[0]
                 neighbors = self.__multiDomain.getNodeNeighs(domain, node)
                 neighbors = filter(lambda neigh: neigh not in chainSet,
                         neighbors)
+
                 # Insert neighbors
-                for neighbor in neighbors:
+                for neighbor in [n for n in neighbors if n not in chainSet]:
                     linkRes = self.__multiDomain.getLnkRes(domain, node, neighbor)
-                    if 
+                    if linkRes['bw'] >= bw and\
+                            aggDelay + linkRes['delay'] <= delay:
+                        newChainSet = Set(chainSet)
+                        newChainSet.add(neighbor)
+                        nextToVisit += [(neighbor,
+                            aggDelay + linkRes['delay'],
+                            list(chain) + [(node, neighbor)], newChainSet)]
+
+            toVisit = nextToVisit
+            keepVisiting = len(toVisit) > 0
+            i += 1
+    
+        return None
 
 
-
-    def greedy(self, domain, entryServer,  ns, method='Dijkstra'):
+    def greedy(self, domain, entryServer, ns, method='Dijkstra', depth=None):
         """Performs a greedy mapping for the NS chain passed as argument
 
         :domain: entry domain for the NS chain
         :entryServer: server entry point for the NS
         :ns: NS chain instance
-        :method: search method between VNFs
+        :method: search method between VNFs - ['Dijkstra', 'BFS',
+            'backtracking', 'random']
+        :depth: maximum search depth for 'BFS'
         :returns: [(node1, node2), ..., (nodeN, nodeN+1)] path or empty list
 
         """
@@ -258,6 +277,12 @@ class NsMapper(object):
                     if method == 'Dijkstra':
                         path = self.constrainedDijkstra(domain, serverS,
                                 capable, link['delay'], link['bw'])
+                    elif method == 'BFS':
+                        path = self.BFS(domain, serverS,
+                                capable, link['delay'], link['bw'], depth)
+                    elif method == 'backtracking':
+                        path = self.smartRandomWalk(domain, serverS,
+                                capable, link['delay'], link['bw'])
                     else:
                         path = self.randomWalk(domain, serverS, capable,
                                 link['delay'], link['bw'])
@@ -280,6 +305,37 @@ class NsMapper(object):
 
         return fullPath
 
+
+    def popurri(self, domain, entryServer, ns, method='Dijkstra', depth=None):
+        """Popurri mapping is performed by choosing randomly servers and
+        placing VNFs in those servers. Then a routing is performed between the
+        chosen servers.
+
+        :domain: entry domain for the NS chain
+        :entryServer: server entry point for the NS
+        :ns: NS chain instance
+        :method: search method between VNFs - ['Dijkstra', 'BFS',
+            'backtracking', 'random']
+        :depth: maximum search depth for 'BFS'
+        :returns: [(node1, node2), ..., (nodeN, nodeN+1)] path or empty list
+
+        """
+        pass
+
+
+    def tabu(self, domain, entryServer, ns, method='Dijkstra', depth=None):
+        """Performs a tabu search to map the NS in the underneath domain view.
+
+        :domain: entry domain for the NS chain
+        :entryServer: server entry point for the NS
+        :ns: NS chain instance
+        :method: search method between VNFs - ['Dijkstra', 'BFS',
+            'backtracking', 'random']
+        :depth: maximum search depth for 'BFS'
+        :returns: [(node1, node2), ..., (nodeN, nodeN+1)] path or empty list
+
+        """
+        pass
         
     def freeMappings(self):
         """Frees all the resources mapped to NSs

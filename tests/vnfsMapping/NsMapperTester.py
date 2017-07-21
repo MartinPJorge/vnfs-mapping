@@ -285,6 +285,51 @@ class NsMapperTester(object):
         print '  given path=' + str(path)
 
 
+    def testBFS(self):
+        """Tests the BFS algorithm to find paths between certain nodes-
+        :returns: Nothing
+
+        """
+        md = self.__genMultiDomain()
+        mapper = NSM.NsMapper(md)
+        err = False
+
+        print '#########'
+        print '## BFS ##'
+        print '#########'
+
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=10, cpu=0)
+        chain.add_edge('start', 1, bw=250, delay=90)
+        ns.setChain(chain)
+
+        path = mapper.BFS(0, 1, {4: None, 5: None}, 20, 250)
+        if path == [(1, 3), (3, 6), (6, 5)]:
+            print '  first mapping worked!'
+        else:
+            print '  first mapping did not work as expected'
+
+        path = mapper.BFS(0, 1, {4: None, 5: None}, 20, 250, depth=2)
+        if path == None:
+            print '  second mapping worked!'
+        else:
+            print '  second mapping did not work as expected'
+
+        path = mapper.BFS(0, 1, {4: None, 5: None}, 90, 200)
+        if path == [(1, 2), (2, 4)]:
+            print '  third mapping worked!'
+        else:
+            print '  third mapping did not work as expected'
+
+        path = mapper.BFS(0, 1, {4: None, 5: None}, 90, 200, depth=1)
+        if path == None:
+            print '  fourth mapping worked!'
+        else:
+            print '  fourth mapping did not work as expected'
+
+
     def greedyNsBunch(self, numNs):
         """Launches a bunch of NS requests to be mapped on top of an existing
         multiDomain. In case it is not already created, a multiDomain will be
@@ -328,7 +373,8 @@ class NsMapperTester(object):
             print 'entryServer=' + str(servers[entryS]) + ', possibleEntryServers=' +\
                 str(len(servers)) + ', domain=' + str(domain)
             print ns
-            path = mapper.greedy(domain, servers[entryS], ns)
+            path = mapper.greedy(domain, servers[entryS], ns,
+                    method='Dijkstra')
             print str(path) + '\n========================\n'
             failed += 1 if path == [] else 0
 
@@ -344,8 +390,9 @@ if __name__ == '__main__':
     # tester.testConstrainedDijkstra()
     # tester.testGreedy()
     # tester.testRandomWalk()
-    tester.testSmartRandomWalk()
-    # tester.greedyNsBunch(100)
+    # tester.testSmartRandomWalk()
+    # tester.testBFS()
+    tester.greedyNsBunch(100)
 
 
 
