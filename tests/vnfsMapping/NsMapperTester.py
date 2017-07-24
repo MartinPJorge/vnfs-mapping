@@ -51,8 +51,8 @@ class NsMapperTester(object):
         multiDomain._MultiDomain__domainsViews = [graph.copy()]
 
         return multiDomain
-    
-        
+   
+
     def testConstrainedDijkstra(self):
         """Tests the constrained Dijkstra method
         :returns: Nothing
@@ -66,25 +66,27 @@ class NsMapperTester(object):
         print '## constrainedDijkstra ##'
         print '#########################'
 
-        path = mapper.constrainedDijkstra(0, 1, [4, 5], delay=50, bw=190)
-        if path != [(1, 3), (3, 4)]:
+        path, delay = mapper.constrainedDijkstra(0, 1, [4, 5], delay=50,
+                bw=190)
+        if path != [(1, 3), (3, 4)] or delay != 20:
             print '  first search failed, got:' + str(path) + ' instead of:\
 [(1, 3), (3, 4)]'
             err = True
 
-        path = mapper.constrainedDijkstra(0, 1, [4, 5], delay=50, bw=240)
-        if path != [(1, 3), (3, 6), (6, 5)]:
+        path, delay = mapper.constrainedDijkstra(0, 1, [4, 5], delay=50,
+                bw=240)
+        if path != [(1, 3), (3, 6), (6, 5)] or delay != 20:
             print '  second search failed, got:' + str(path) + ' instead of:\
 [(1, 3), (3, 6), (6, 5)]'
             err = True
 
         # Unfeasible delays and bandwidths
-        path = mapper.constrainedDijkstra(0, 1, [4, 5], delay=50, bw=1000)
+        path, _ = mapper.constrainedDijkstra(0, 1, [4, 5], delay=50, bw=1000)
         if path is not None:
             print '  it should not have found any possible path'
             err = True
 
-        path = mapper.constrainedDijkstra(0, 1, [4, 5], delay=19, bw=0)
+        path, _ = mapper.constrainedDijkstra(0, 1, [4, 5], delay=19, bw=0)
         if path is not None:
             print '  it should not have found any possible path'
             err = True
@@ -117,12 +119,13 @@ class NsMapperTester(object):
         chain.add_edge(1, 2, bw=0, delay=90)
         ns.setChain(chain)
 
-        path = mapper.greedy(0, 1, ns)
-        if path != [(1, 3), (3, 4), (4, 4)]:
+        path, mappings, delay = mapper.greedy(0, 1, ns)
+        if path == [(1, 3), (3, 4), (4, 4)] and mappings[1] == 4 and\
+                mappings[2] == 4 and delay == 20:
+            print '  first server-stress mapping: OK'
+        else:
             print '  first server-stress mapping was: ' + str(path) +\
                 ', instead of: [(1, 3), (3, 4), (4, 4)]'
-        else:
-            print '  first server-stress mapping: OK'
 
         ns = NS.NS() # node 4 can only host one of the VNFs
         chain = nx.Graph()
@@ -132,12 +135,13 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=0, delay=90)
         chain.add_edge(1, 2, bw=0, delay=90)
         ns.setChain(chain)
-        path = mapper.greedy(0, 1, ns)
-        if path != [(1, 3), (3, 4), (4, 5)]:
+        path, mappings, delay = mapper.greedy(0, 1, ns)
+        if path == [(1, 3), (3, 4), (4, 5)] and mappings[1] == 4 and\
+                mappings[2] == 5 and delay == 26:
+            print '  second server-stress mapping: OK\n'
+        else:
             print '  second server-stress mapping was: ' + str(path) +\
                 ', instead of: [(1, 3), (3, 4), (4, 5)]'
-        else:
-            print '  second server-stress mapping: OK\n'
         
         mapper.freeMappings()
 
@@ -149,12 +153,12 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=200, delay=90)
         ns.setChain(chain)
 
-        path = mapper.greedy(0, 1, ns)
-        if path != [(1, 3), (3, 4)]:
+        path, mappings, delay = mapper.greedy(0, 1, ns)
+        if path == [(1, 3), (3, 4)] and mappings[1] == 4 and delay == 20:
+            print '  first link-stress mapping: OK'
+        else:
             print '  first link-stress mapping was: ' + str(path) +\
                 ', instead of: [(1, 3), (3, 4)]'
-        else:
-            print '  first link-stress mapping: OK'
 
 
         ns = NS.NS()
@@ -166,12 +170,13 @@ class NsMapperTester(object):
         chain.add_edge(1, 2, bw=250, delay=90)
         ns.setChain(chain)
     
-        path = mapper.greedy(0, 1, ns)
-        if path != [(1, 3), (3, 4), (4, 5)]:
+        path, mappings, delay = mapper.greedy(0, 1, ns)
+        if path == [(1, 3), (3, 4), (4, 5)] and mappings[1] == 4 and\
+                mappings[2] == 5 and delay == 26:
+            print '  second link-stress mapping: OK'
+        else:
             print '  second link-stress mapping was: ' + str(path) +\
                 ', instead of: [(1, 3), (3, 4), (4, 5)]'
-        else:
-            print '  second link-stress mapping: OK'
 
 
         ns = NS.NS()
@@ -183,12 +188,13 @@ class NsMapperTester(object):
         chain.add_edge(1, 2, bw=30000, delay=0)
         ns.setChain(chain)
     
-        path = mapper.greedy(0, 1, ns)
-        if path != [(1, 3), (3, 6), (6, 5), (5, 5)]:
+        path, mappings, delay = mapper.greedy(0, 1, ns)
+        if path == [(1, 3), (3, 6), (6, 5), (5, 5)] and mappings[1] == 5 and\
+                mappings[2] == 5 and delay == 20:
+            print '  third link-stress mapping: OK'
+        else:
             print '  third link-stress mapping was: ' + str(path) +\
                 ', instead of: [(1, 3), (3, 6), (6, 5), (5, 5)]'
-        else:
-            print '  third link-stress mapping: OK'
 
 
         ns = NS.NS()
@@ -198,7 +204,7 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=200, delay=19)
         ns.setChain(chain)
 
-        path = mapper.greedy(0, 1, ns)
+        path, _, _ = mapper.greedy(0, 1, ns)
         if path != []:
             print '  fourth link-stress mapping was: ' + str(path) +\
                 ', []'
@@ -228,15 +234,17 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=250, delay=90)
         ns.setChain(chain)
 
-        path = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 250)
-        if path == None or path == [(1, 3), (3, 6), (6, 5)]:
+        path, delay = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 250)
+        if path == None or (path == [(1, 3), (3, 6), (6, 5)] and delay == 20):
             print '  first mapping worked!'
         else:
             print '  first mapping did not work as expected'
 
-        path = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 200)
-        if path == None or path == [(1, 3), (3, 6), (6, 5)] or\
-                path == [(1, 2), (2, 4)] or path == [(1, 3), (3, 4)]:
+        path, delay = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 200)
+        if path == None or\
+                (path == [(1, 3), (3, 6), (6, 5)] and delay == 20) or\
+                (path == [(1, 2), (2, 4)] and delay == 22) or\
+                (path == [(1, 3), (3, 4)] and delay == 20):
             print '  second mapping worked!'
         else:
             print '  second mapping did not work as expected'
@@ -262,22 +270,26 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=250, delay=90)
         ns.setChain(chain)
 
-        path = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 20, 250)
-        if path == [(1, 3), (3, 6), (6, 5)]:
+        path, delay = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 20,
+                250)
+        if path == [(1, 3), (3, 6), (6, 5)] and delay == 20:
             print '  first mapping worked!'
         else:
             print '  first mapping did not work as expected'
-        print '  given path=' + str(path)
+        print '  given path=' + str(path) + ' delay=' + str(delay)
 
-        path = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 90, 200)
-        if path == [(1, 3), (3, 6), (6, 5)] or\
-                path == [(1, 2), (2, 4)] or path == [(1, 3), (3, 4)]:
+        path, delay = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 90,
+                200)
+        if (path == [(1, 3), (3, 6), (6, 5)] and delay == 11) or\
+                (path == [(1, 2), (2, 4)] and delay == 22) or\
+                (path == [(1, 3), (3, 4)] and delay == 20):
             print '  second mapping worked!'
         else:
             print '  second mapping did not work as expected'
-        print '  given path=' + str(path)
+        print '  given path=' + str(path) + ' delay=' + str(delay)
 
-        path = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 90, 1000)
+        path, delay = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 90,
+                1000)
         if path == None:
             print '  third mapping worked!'
         else:
@@ -305,25 +317,25 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=250, delay=90)
         ns.setChain(chain)
 
-        path = mapper.BFS(0, 1, {4: None, 5: None}, 20, 250)
-        if path == [(1, 3), (3, 6), (6, 5)]:
+        path, delay = mapper.BFS(0, 1, {4: None, 5: None}, 20, 250)
+        if path == [(1, 3), (3, 6), (6, 5)] and delay == 20:
             print '  first mapping worked!'
         else:
             print '  first mapping did not work as expected'
 
-        path = mapper.BFS(0, 1, {4: None, 5: None}, 20, 250, depth=2)
+        path, _= mapper.BFS(0, 1, {4: None, 5: None}, 20, 250, depth=2)
         if path == None:
             print '  second mapping worked!'
         else:
             print '  second mapping did not work as expected'
 
-        path = mapper.BFS(0, 1, {4: None, 5: None}, 90, 200)
-        if path == [(1, 2), (2, 4)]:
+        path, delay = mapper.BFS(0, 1, {4: None, 5: None}, 90, 200)
+        if path == [(1, 2), (2, 4)] and delay == 22:
             print '  third mapping worked!'
         else:
             print '  third mapping did not work as expected'
 
-        path = mapper.BFS(0, 1, {4: None, 5: None}, 90, 200, depth=1)
+        path, _ = mapper.BFS(0, 1, {4: None, 5: None}, 90, 200, depth=1)
         if path == None:
             print '  fourth mapping worked!'
         else:
@@ -373,7 +385,7 @@ class NsMapperTester(object):
             print 'entryServer=' + str(servers[entryS]) + ', possibleEntryServers=' +\
                 str(len(servers)) + ', domain=' + str(domain)
             print ns
-            path = mapper.greedy(domain, servers[entryS], ns,
+            path, _, _ = mapper.greedy(domain, servers[entryS], ns,
                     method='Dijkstra')
             print str(path) + '\n========================\n'
             failed += 1 if path == [] else 0
@@ -388,11 +400,11 @@ class NsMapperTester(object):
 if __name__ == '__main__':
     tester = NsMapperTester()
     # tester.testConstrainedDijkstra()
-    # tester.testGreedy()
+    tester.testGreedy()
     # tester.testRandomWalk()
     # tester.testSmartRandomWalk()
     # tester.testBFS()
-    tester.greedyNsBunch(100)
+    # tester.greedyNsBunch(100)
 
 
 

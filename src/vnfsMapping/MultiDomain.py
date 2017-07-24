@@ -167,6 +167,23 @@ class MultiDomain(object):
         return capable
 
 
+    def getPathDelay(self, domain, path):
+        """Retrieves the path delay
+
+        :domain: domain index
+        :path: tuples list in the format of the NsMapper class search methods
+            e.g.: [(node1, node2), (node2, node2), (node2, node3), ...]
+        :returns: the path delay
+
+        """
+        delay = 0
+        for nodesPair in path:
+            if nodesPair[0] != nodesPair[1]:
+                linkRes = self.getLnkRes(domain, nodesPair[0], nodesPair[1])
+                delay += linkRes['delay']
+
+        return delay
+
 
     # TODO - maybe it's not needed
     @staticmethod

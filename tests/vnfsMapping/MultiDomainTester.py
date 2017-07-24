@@ -3,6 +3,7 @@ import os
 import random
 import itertools
 import networkx as nx
+import NsMapperTester as NSMT
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
     '../../src')))
 from vnfsMapping import MultiDomain as MD
@@ -16,6 +17,31 @@ class MultiDomainTester(object):
     def __init__(self):
         """__init__ """
         self.__multiDomain = MD.MultiDomain.yieldRandMultiDomain()
+
+    
+    def testGetPathDelay(self):
+        """Tests the path delay retrieval
+        :returns: Nothing
+
+        """
+        print '\n#######################'
+        print '### getPathDelay test ###'
+        print '#########################'
+
+        nsMapperTester = NSMT.NsMapperTester()
+        md = nsMapperTester._NsMapperTester__genMultiDomain()
+
+        delay = md.getPathDelay(0, [(1, 3), (3, 6), (6, 5), (5, 5)])
+        if delay != 20:
+            print '  first retrieved delay is not 20, it is:' + str(delay)
+        else:
+            print '  first retrieved delay is OK!'
+
+        delay = md.getPathDelay(0, [(1, 3), (3, 4), (4, 4), (4, 5), (5, 5)])
+        if delay != 26:
+            print '  second retrieved delay is not 20, it is:' + str(delay)
+        else:
+            print '  second retrieved delay is OK!'
 
 
     def testIncrLnkResource(self):
@@ -285,7 +311,8 @@ class MultiDomainTester(object):
         
 if __name__ == '__main__':
     mdTester = MultiDomainTester()
+    mdTester.testGetPathDelay()
     # mdTester.testIncrLnkResource()
     # mdTester.testIncrServerResource()
-    mdTester.testWriteRead()
+    # mdTester.testWriteRead()
 
