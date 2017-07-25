@@ -230,6 +230,16 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
         self.__branches = branchNum
 
 
+    def setIterIdx(self, iterIdx):
+        """Sets the iterator index
+
+        :iterIdx: iterator index
+        :returns: Nothing
+
+        """
+        self.__iterIdx = iterIdx
+
+
     def setSplitsNum(self, splits):
         """Sets the number of splits of the NS chain
 

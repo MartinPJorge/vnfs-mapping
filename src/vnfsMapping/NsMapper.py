@@ -365,14 +365,15 @@ class NsMapper(object):
 
         # Initialize blocking and iterators dictionaries
         ns.initIter()
-        while iterNext() != []:
+        while ns.iterNext() != []:
             vnf = ns.currIterId()
             capable = self.__multiDomain.getCapableServers(domain,
                     vnfRes['cpu'], vnfRes['memory'], vnfRes['disk'])
             for server in capable:
-                blocks[vnf][server] = False
-            iterators['it'] = 0
-            iterators['len'] = len(capable) 
+                blocks[vnf][server] = False if server != mappings[vnf]\
+                    else iters
+            iterators[vnf]['it'] = 0
+            iterators[vnf]['len'] = len(capable) 
 
         ns.initIter()
         for _ in range(iters * vnfsNum):
@@ -388,7 +389,7 @@ class NsMapper(object):
             # Obtain info. to perform new mapping
             prevVnf = vnf - 1 if vnf > 1 else 'start'
             prevServer = mappings[vnf - 1] if vnf > 1 else entryServer
-            currCapables= [server for server in blocks[currVnf].keys() if not
+            currCapables = [server for server in blocks[currVnf].keys() if not
                     blocks[currVnf][server]]
             linkRes = ns.getLink(prevVnf, currVnf)
 
@@ -408,29 +409,38 @@ class NsMapper(object):
                         currCapables, linkRes['delay'], linkRes['bw'])
 
             # Block the performed mapping - even if path to next not possible
-            blocks[currVnf][mappings[currVnf]] = iters * vnfsNum
+            if path != None:
+                blocks[currVnf][path[-1][-1]] = iters * vnfsNum
 
             # Search path from new vnf to next one
-            if path != None:
-                afterPath, afterDelay = None, None
-                nextVnf = currVnf + 1 if currVnf < vnfsNum else 'end'
-                if nextVnf != 'end':
-                    linkRes = ns.getLink(currVnf, nextVnf)
-                    if method == 'Dijkstra':
-                        afterPath, afterDelay = self.constrainedDijkstra(
-                                domain, prevServer, currCapables,
-                                linkRes['delay'], linkRes['bw'])
-                    elif method == 'BFS':
-                        afterPath, afterDelay = self.BFS(domain, prevServer,
-                                currCapables, linkRes['delay'], linkRes['bw'])
-                    elif method == 'backtracking':
-                        afterPath, afterDelay = self.smartRandomWalk(domain,
-                                prevServer, currCapables, linkRes['delay'],
-                                linkRes['bw'])
-                    elif method == 'random':
-                        afterPath, afterDelay = self.randomWalk(domain,
-                                prevServer, currCapables, linkRes['delay'],
-                                linkRes['bw'])
+            afterPath, afterDelay = None, None
+            if path != None and currVnf < vnfsNum:
+                linkRes = ns.getLink(currVnf, currVnf + 1)
+
+                if method == 'Dijkstra':
+                    afterPath, afterDelay = self.constrainedDijkstra(
+                            domain, prevServer, currCapables,
+                            linkRes['delay'], linkRes['bw'])
+                elif method == 'BFS':
+                    afterPath, afterDelay = self.BFS(domain, prevServer,
+                            currCapables, linkRes['delay'], linkRes['bw'])
+                elif method == 'backtracking':
+                    afterPath, afterDelay = self.smartRandomWalk(domain,
+                            prevServer, currCapables, linkRes['delay'],
+                            linkRes['bw'])
+                elif method == 'random':
+                    afterPath, afterDelay = self.randomWalk(domain,
+                            prevServer, currCapables, linkRes['delay'],
+                            linkRes['bw'])
+
+            if path != None and afterPath != None:
+                newPath = self.modifyMappedPath(ns, currVnf, path[-1][-1],
+                        mappings, currSol, path, afterPath)
+                newDelay = self.__multiDomain.getPathDelay(domain, newPath)
+
+                if newDelay < bestDelay:
+                    pass
+
 
             # TODO - Refresh mapping (if mapping found)
             #      - modify path and curr Delay (if mapping found)
@@ -445,27 +455,68 @@ class NsMapper(object):
                     blocks[vnf][server] = blocked - 1 if blocked else False
 
     
-    def modifyMappedPath(self, vnf, server, mapping, prevPath, afterPath):
-        """TODO: Docstring for modifyMappedPath.
+    def modifyMappedPath(self, ns, vnf, server, mapping,
+            path, prevPath, afterPath):
+        """Obtain a new mapping path taking into account that vnf is placed
+        under the new server.
 
-        :vnf: TODO
-        :server: TODO
-        :mapping: TODO
-        :prevPath: TODO
-        :afterPath: TODO
-        :returns: TODO
+        :ns: NS instance
+        :vnf: VNF index that have been remapped
+        :server: new server where the vnf is placed
+        :mapping: dictionary with vnf server mappings { vnf1: serverA, ... }
+        :path: list with ns placed path [(1, 2), (2, 4), (4, 6), (6, 6), ...]
+        :prevPath: nodes path until the VNF server is reached
+        :afterPath: nodes path to reach next mapped server from VNF server
+        :returns: the path corresponding to the new mapping
+        :raise: UnboundLocalError in case previous and after paths are not ok
 
         """
         vnfs = len(mapping.keys())
-        if (vnf < vnfs prevPath[-1][-1] != server and\
-                afterPath[0][-1] != server) or\
-                (vnf == vnfs and prevPath[-1][-1] != server):
-            return None
+        if prevPath[-1][-1] != server:
+            raise UnboundLocalError('modifyMappedPath: last node in prevPath\
+ is not the new mapped server')
+        elif vnf < vnfs and afterPath[0][0] != server:
+            raise UnboundLocalError('modifyMappedPath: first node in afterPath\
+ is not the new mapped server')
+        elif vnf > 1 and mapping[vnf - 1] != prevPath[0][0]:
+            raise UnboundLocalError('modifyMappedPath:: first node in prevPath\
+ is not the server where previous vnf is mapped')
+        elif vnf < vnfs and mapping[vnf + 1] != afterPath[-1][-1]:
+            raise UnboundLocalError('modifyMappedPath:: last node in\
+ afterPath is not the server where next vnf is mapped')
 
-        # TODO - perform subpath substitution
-        
+        # Aux variables
+        pathIdx = 0
+        positions = dict()
+        iterIdx = ns.currIterId()
+        ns.initIter()
+        ns.iterNext()
+        currVnf = ns.currIterId()
 
-        
+        # Obtain the positions of each placement within the path chain
+        while currVnf != 'end' and currVnf != vnf + 2:
+            while mapping[currVnf] != path[pathIdx][-1]:
+                pathIdx += 1
+
+            positions[currVnf] = pathIdx
+            ns.iterNext()
+            currVnf = ns.currIterId()
+
+        # Copy until previous path
+        newPath = []
+        if vnf > 1:
+            newPath = path[0:positions[vnf - 1] + 1]
+    
+        # Copy new previous and after paths
+        newPath += prevPath + afterPath
+
+        # Copy remaining path tail
+        if vnf != vnfs:
+            newPath += path[positions[vnf + 1]+1:]
+
+        return newPath
+
+
     def freeMappings(self):
         """Frees all the resources mapped to NSs
         :returns: Nothing

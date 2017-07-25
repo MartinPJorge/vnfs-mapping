@@ -396,15 +396,142 @@ class NsMapperTester(object):
         print '  failed requests: ' + str(failed)
 
 
+    def testModifyMappedPath(self):
+        """Test the modifyMappedPath method
+        :returns: Nothing
+
+        """
+        print '######################'
+        print '## modifyMappedPath ##'
+        print '######################'
+
+        # First NS example
+        graph = nx.Graph()
+        graph.add_node('start')
+        graph.add_node(1)
+        graph.add_node(2)
+        graph.add_node(3)
+        graph.add_edge('start', 1)
+        graph.add_edge(1, 2)
+        graph.add_edge(2, 3)
+        ns = NS.NS()
+        ns.setChain(graph)
+
+        mapper = NSM.NsMapper(self.__genMultiDomain()) # the multiDomain does
+                                                       # not matter
+        mapping = {1: 3, 2: 5, 3: 6}
+        path = [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
+
+        # Remap VNF1 to server 2
+        newPath = mapper.modifyMappedPath(ns, 1, 2, mapping, path, [(0, 1), (1, 2)],
+                [(2, 3), (3, 4), (4, 'A'), ('A', 5)])
+        if newPath == [(0, 1), (1, 2), (2, 3), (3, 4), (4, 'A'), ('A', 5),
+                (5, 6)]:
+            print '  first remapping OK!'
+        else:
+            print '  first mapping BAD!, got newPath=' + str(newPath)
+
+        # Remap VNF2 to server 3
+        newPath = mapper.modifyMappedPath(ns, 2, 3, mapping, path, [(3, 3)],
+                [(3, 4), (4, 'A'), ('A', 'B'), ('B', 5), (5, 6)])
+        if newPath == [(1, 2), (2, 3), (3, 3), (3, 4), (4, 'A'),
+                ('A', 'B'), ('B', 5), (5, 6)]:
+            print '  second remapping OK!'
+        else:
+            print '  second mapping BAD!, got newPath=' + str(newPath)
+
+        # Remap VNF3 to server 7
+        newPath = mapper.modifyMappedPath(ns, 3, 7, mapping, path, [(5, 'C'),
+            ('C', 'D'), ('D', 7)], [])
+        if newPath == [(1, 2), (2, 3), (3, 4), (4, 5), (5, 'C'), ('C', 'D'),
+                ('D', 7)]:
+            print '  third remapping OK!'
+        else:
+            print '  third mapping BAD!, got newPath=' + str(newPath)
+
+        # Test if exceptions are risen properly
+        errorCatched = False
+        try:
+            newPath = mapper.modifyMappedPath(ns, 1, 2, mapping, path,
+                    [(0, 1), (1, 5)], [(2, 3), (3, 4), (4, 'A'), ('A', 5)])
+        except Exception as e:
+            errorCatched = True
+            print '  raise last node in prevPath != new server: OK!'
+        if not errorCatched:
+            print '  raise last node in prevPath != new server: ERR!'
+
+        errorCatched = False
+        try:
+            newPath = mapper.modifyMappedPath(ns, 1, 2, mapping, path,
+                    [(0, 1), (1, 2)], [(10, 3), (3, 4), (4, 'A'), ('A', 5)])
+        except Exception as e:
+            errorCatched = True
+            print '  raise first node in afterPath!= new server: OK!'
+        if not errorCatched:
+            print '  raise first node in afterPath!= new server: OK!'
+
+        errorCatched = False
+        try:
+            newPath = mapper.modifyMappedPath(ns, 2, 3, mapping, path,
+                    [(6, 3)], [(3, 4), (4, 'A'), ('A', 'B'), ('B', 5),
+                    (5, 6)])
+        except Exception as e:
+            errorCatched = True
+            print '  raise first node in prevPath != prev server: OK!'
+        if not errorCatched:
+            print '  raise first node in prevPath != prev server: OK!'
+
+        errorCatched = False
+        try:
+            newPath = mapper.modifyMappedPath(ns, 2, 3, mapping, path,
+                    [(3, 3)], [(3, 4), (4, 'A'), ('A', 'B'), ('B', 5),
+                    (5, 8)])
+        except Exception as e:
+            errorCatched = True
+            print '  raise last node in afterPath != next server: OK!'
+        if not errorCatched:
+            print '  raise last node in afterPath != next server: OK!'
+
+
+        # Second NS example
+        graph = nx.Graph()
+        graph.add_node('start')
+        graph.add_node(1)
+        graph.add_node(2)
+        graph.add_edge('start', 1)
+        graph.add_edge(1, 2)
+        ns = NS.NS()
+        ns.setChain(graph)
+
+        mapping = {1: 1, 2: 3}
+        path = [(1, 1), (1, 2), (2, 3)]
+
+        # Remap VNF2 to server 1
+        newPath = mapper.modifyMappedPath(ns, 2, 1, mapping, path, [(1, 1)],
+                [])
+        if newPath == [(1, 1), (1, 1)]:
+            print '  fourth remapping OK!'
+        else:
+            print '  fourth mapping BAD!, got newPath=' + str(newPath)
+        
+        # Remap VNF1 to server 3
+        newPath = mapper.modifyMappedPath(ns, 1, 3, mapping, path, [(1, 2),
+            (2, 3)], [(3, 3)])
+        if newPath == [(1, 2), (2, 3), (3, 3)]:
+            print '  fifth remapping OK!'
+        else:
+            print '  fifth mapping BAD!, got newPath=' + str(newPath)
+        
+
 
 if __name__ == '__main__':
     tester = NsMapperTester()
     # tester.testConstrainedDijkstra()
-    tester.testGreedy()
+    # tester.testGreedy()
     # tester.testRandomWalk()
     # tester.testSmartRandomWalk()
     # tester.testBFS()
     # tester.greedyNsBunch(100)
-
+    tester.testModifyMappedPath()
 
 
