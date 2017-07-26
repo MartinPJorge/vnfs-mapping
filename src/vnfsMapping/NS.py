@@ -156,7 +156,34 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
                 elif type(neigh) is str and neigh == 'start':
                     prevs += [neigh]
 
+            self.__prevNeighsCache[vnfId] = prevs
+
         return prevs
+
+
+    def getNextVNFs(self, vnfId):
+        """Obtains the next VNF neighbors og vnfId
+
+        :vnfId: VNF id from which to obtain the next neighbours
+        :returns: list of all the next neighbors (this may include node)
+
+        """
+        nexts = []
+        if vnfId in self.__nextNeighsCache:
+            nexts += self.__nextNeighsCache[vnfId]
+        else:
+            neighs = self.__chain.neighbors(vnfId)
+
+            if vnfId != 'start':
+                for neigh in neighs:
+                    if type(neigh) is int and neigh > vnfId:
+                        nexts += [neigh]
+            else:
+                nexts = neighs
+
+            self.__nextNeighsCache[vnfId] = nexts
+
+        return nexts
 
 
     def getPrevIdx(self):

@@ -115,10 +115,94 @@ class NsTester(object):
             print '  iteration over the NS works properly!'
 
 
+    def testPrevVNFs(self):
+        """Tests the previous VNFs retrieval method
+        :returns: Nothing
+
+        """
+        print '##############'
+        print '## prevVNFs ##'
+        print '##############'
+
+        mockChain = self.__createMockChain()
+        ns = NS.NS()
+        ns.setChain(mockChain)
+        ns.setSplitsNum(2)
+        ns.setBranchNum(3)
+        ns.setMaxSplitW(2)
+
+        prevs = ns.prevVNFs('start')
+        if prevs == []:
+            print '  first retrieval: OK!'
+        else:
+            print '  first retrieval: ERR!'
+
+        prevs = ns.prevVNFs(1)
+        if prevs == ['start']:
+            print '  second retrieval: OK!'
+        else:
+            print '  second retrieval: ERR!'
+
+        prevs = ns.prevVNFs(2)
+        if prevs == [1]:
+            print '  third retrieval: OK'
+        else:
+            print '  third retrieval: ERR'
+
+        if ns._NS__prevNeighsCache[1] == ['start'] and\
+                ns._NS__prevNeighsCache[2] == [1]:
+            print '  cache storage works: OK!'
+        else:
+            print '  cache storage works: ERR!'
+
+
+    def testNextVNFs(self):
+        """Tests the next VNFs retrieval method
+        :returns: Nothing
+
+        """
+        print '##############'
+        print '## nextVNFs ##'
+        print '##############'
+
+        mockChain = self.__createMockChain()
+        ns = NS.NS()
+        ns.setChain(mockChain)
+        ns.setSplitsNum(2)
+        ns.setBranchNum(3)
+        ns.setMaxSplitW(2)
+
+        nexts = ns.getNextVNFs('start')
+        if nexts == [1]:
+            print '  first retrieval: OK!'
+        else:
+            print '  first retrieval: ERR!'
+
+        nexts = ns.getNextVNFs(1)
+        if 2 in nexts and 4 in nexts:
+            print '  second retrieval: OK!'
+        else:
+            print '  second retrieval: ERR!'
+
+        nexts = ns.getNextVNFs(5)
+        if nexts == []:
+            print '  third retrieval: OK!'
+        else:
+            print '  third retrieval: ERR!'
+
+        if 2 in ns._NS__nextNeighsCache[1] and\
+                4 in ns._NS__nextNeighsCache[1] and\
+                [1] == ns._NS__nextNeighsCache['start'] and\
+                [] == ns._NS__nextNeighsCache[5]:
+            print '  cache storage: OK!'
+        else:
+            print '  cache storage: ERR!'
+
 
 if __name__ == '__main__':
     tester = NsTester()
     tester.testIteration()
     tester.testReadWrite()
-
+    tester.testPrevVNFs()
+    tester.testNextVNFs()
 

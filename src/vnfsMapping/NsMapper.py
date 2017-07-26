@@ -293,7 +293,7 @@ class NsMapper(object):
                     path = [(serverS, serverS)]
                 else:
                     if method == 'Dijkstra':
-                        path , pathDelay = self.constrainedDijkstra(domain,
+                        path, pathDelay = self.constrainedDijkstra(domain,
                                 serverS, capable, link['delay'], link['bw'])
                     elif method == 'BFS':
                         path, pathDelay = self.BFS(domain, serverS,
@@ -389,23 +389,37 @@ class NsMapper(object):
             iterators[vnf]['len'] = len(capable) 
 
         ns.initIter()
-        currVnf = ns.currIterId()
         for _ in range(iters * vnfsNum):
-            # Obtain neighbour VNFs to force their new mapping
+            # Obtain current VNFs to force their new mapping
+            ns.iterNext()
+            currVnf = ns.currIterId()
+            currServer = mappings[currVnf] if currVnf != 'start'\
+                    else entryServer
             if currVnf == 'end':
                 ns.initIter()
+                ns.iterNext()
                 currVnf = ns.currIterId()
-            nextVnfs = ns.iterNext()
 
-            prevServer = entryServer if vnf == 'start' else mappings[currVnf]
+            # Obtain info. to perform new mapping
+            currCapables = dict()
+            for server in blocks[prevVnf].keys():
+                if not blocks[prevVnf][server]:
+                    currCapables[server] = True
 
-            for nextVnf in nextVnfs:
-                nextVnfRes = ns.getVnf(nextVnf)
-                
-                # Obtain info. to perform new mapping
-                currCapables = [server for server in blocks[nextVnf].keys()\
-                        if not blocks[nextVnf][server]]
-                linkRes = ns.getLink(currVnf, nextVnf)
+            # Obtain servers where previous vnfs are mapped
+            prevMappings = []
+            prevDelays = []
+            prevServers = []
+            prevVnfs = ns.prevVNFs(currVnf)
+            for vnf in prevVnfs:
+                prevServers += [mappings[vnf] if neighbor != 'start'\
+                        else entryServer]
+
+            # Remap with previous VNFs
+            keepSearch, i, mappedVnfs = True, 0, zip(prevVnfs, prevServers)
+            while keepSearch and i < len(mappedVnfs):
+                prevVnf, prevServer = mappedVnfs[i]
+                linkRes = ns.getLink(prevVnf, currVnf)
 
                 # Perform the new mapping
                 path, pathDelay = None, None
@@ -423,58 +437,84 @@ class NsMapper(object):
                     path, pathDelay = self.randomWalk(domain, prevServer,
                             currCapables, linkRes['delay'], linkRes['bw'])
 
-                # Block the performed mapping - even if path to next not possible
-                if path != None:
-                    blocks[nextVnf][path[-1][-1]] = iters * vnfsNum
+                if path == None:
+                    keepSearch = False
+                else:
+                    currCapables = [path[-1][-1]]
+                    prevMappings.append(path)
+                    prevDelays.append(pathDelay)
+                    i += 1
 
-                # Search path from new vnf to next one
-                afterPath, afterDelay = None, None
-                if path != None and nextVnf < vnfsNum:
-                    linkRes = ns.getLink(nextVnf, nextVnf + 1)
-                    #nextServer = 
+            # currCapables=[endServer] if a path prev---curr has been found
+            mappedServer = None
+            if len(currCapables) == 1:
+                mappedServer == currCapables[0]
+                blocks[nextVnf][mappedServer] = iters * vnfsNum
+
+
+            # Search path from new vnf to next ones
+            haveAfters = ns.getNextVNFs(currVnf) != []
+            afterMappings, afterDelays, afterServers, afterVnfs =\
+                    [], [], [], []
+            if path != None and haveAfters:
+                # Obtain servers where next vnfs are mapped
+                afterVnfs = ns.nextVNFs(currVnf)
+                for vnf in afterVnfs:
+                    afterServers += [mappings[vnf]]
+
+                keepSearch, i = True, 0
+                while keepSearch and i < len(afterVnfs):
+                    linkRes = ns.getLink(currVnf, afterVnfs[i])
 
                     if method == 'Dijkstra':
                         afterPath, afterDelay = self.constrainedDijkstra(
-                                domain, prevServer, currCapables,
+                                domain, prevServer, [afterServers[i]],
                                 linkRes['delay'], linkRes['bw'])
                     elif method == 'BFS':
                         afterPath, afterDelay = self.BFS(domain, prevServer,
-                                currCapables, linkRes['delay'], linkRes['bw'])
+                                [afterServers[i]], linkRes['delay'],
+                                linkRes['bw'])
                     elif method == 'backtracking':
                         afterPath, afterDelay = self.smartRandomWalk(domain,
-                                prevServer, currCapables, linkRes['delay'],
-                                linkRes['bw'])
+                                prevServer, [afterServers[i]],
+                                linkRes['delay'], linkRes['bw'])
                     elif method == 'random':
                         afterPath, afterDelay = self.randomWalk(domain,
-                                prevServer, currCapables, linkRes['delay'],
-                                linkRes['bw'])
+                                prevServer, [afterServers[i]],
+                                linkRes['delay'], linkRes['bw'])
+                    
+                    if afterPath == None:
+                        keepSearch = False
+                    else:
+                        afterMappings.append(afterPath)
+                        afterDelays.append(afterDelay)
+                        i += 1
 
-                if path != None and afterPath != None:
-                    ###### TODO - change watchDog vigilation
-                    lastWatchDog = self.getLastWatchDog()
-                    lastWatchDog.changeConnection()
-                    ###############################################
-                    newPath = self.modifyMappedPath(ns, nextVnf, path[-1][-1],
-                            mappings, currSol, path, afterPath)
-                    newDelay = self.__multiDomain.getPathDelay(domain, newPath)
+            # All remappings successfully performed
+            if len(prevMappings) == len(prevServers) and\
+                    len(afterMappings) == len(afterServers):
 
-                    if newDelay < bestDelay:
-                        pass
+                lastWatchDog = self.getLastWatchDog()
+                for prevVnf, prevMap in zip(prevVnfs, prevMappings):
+                    lastWatchDog.changeConnection(prevVnf, currVnf, prevMap)
+                for afterVnf, afterMap in zip(afterVnfs, afterMappings):
+                    lastWatchDog.changeConnection(currVnf, afterVnf, afterMap)
 
+                # TODO - refresh NsMapping instance
+                #      - retrieve new delay to see if it is best solution
 
-            # TODO - Refresh mapping (if mapping found)
-            #      - modify path and curr Delay (if mapping found)
-            #      - free last watchdog resources (if mapping found)
-            #      - rotate the capable servers iterator, so next trial is not
+            # TODO - rotate the capable servers iterator, so next trial is not
             #        the same as last one (lo hablado con Carlos [CJBC])
                     
+
             # Decrement blocking counters
             for vnf in blocks.keys():
                 for server in blocks[vnf].keys():
                     blocked = blocks[vnf][server]
                     blocks[vnf][server] = blocked - 1 if blocked else False
 
-    
+
+    # TODO - is this neccesary?
     def modifyMappedPath(self, ns, vnf, server, mapping,
             path, prevPath, afterPath):
         """Obtain a new mapping path taking into account that vnf is placed
