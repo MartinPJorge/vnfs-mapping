@@ -20,6 +20,14 @@ class NsMapper(object):
         self.__watchDogs = []
         
 
+    def getLastWatchDog(self):
+        """Retrieves the last watch dog in the list
+        :returns: ReourcesWatchDog instance, None if there are no watchdogs
+
+        """
+        return None if len(self.__watchDogs) == 1 else self.__watchDogs[-1]
+
+
     def constrainedDijkstra(self, domain, serverS, serversE, delay, bw):
         """Finds a path acomplishing network constraints from the start server
         serverS to one of the multiple end serversE. Aggregated delay is
@@ -351,7 +359,7 @@ class NsMapper(object):
         iterators = dict()
         currSol, bestDelay = None, None
         vnfsNum = ns.getVNFsNumber()
-        currVnf = 1
+        currVnf = None
 
         if initial == 'greedy':
             currSol, mappings, bestDelay = self.greedy(domain, entryServer,
@@ -376,70 +384,77 @@ class NsMapper(object):
             iterators[vnf]['len'] = len(capable) 
 
         ns.initIter()
+        currVnf = ns.currIterId()
         for _ in range(iters * vnfsNum):
-            # Obtain current VNF to force its new mapping
-            ns.iterNext()
-            currVnf = ns.currIterId()
+            # Obtain neighbour VNFs to force their new mapping
             if currVnf == 'end':
                 ns.initIter()
-                ns.iterNext()
                 currVnf = ns.currIterId()
-            currVnfRes = ns.getVnf(currVnf)
-            
-            # Obtain info. to perform new mapping
-            prevVnf = vnf - 1 if vnf > 1 else 'start'
-            prevServer = mappings[vnf - 1] if vnf > 1 else entryServer
-            currCapables = [server for server in blocks[currVnf].keys() if not
-                    blocks[currVnf][server]]
-            linkRes = ns.getLink(prevVnf, currVnf)
+            nextVnfs = ns.iterNext()
 
-            # Perform the new mapping
-            path, pathDelay = None, None
-            if method == 'Dijkstra':
-                path, pathDelay = self.constrainedDijkstra(domain, prevServer,
-                        currCapables, linkRes['delay'], linkRes['bw'])
-            elif method == 'BFS':
-                path, pathDelay = self.BFS(domain, prevServer, currCapables,
-                        linkRes['delay'], linkRes['bw'])
-            elif method == 'backtracking':
-                path, pathDelay = self.smartRandomWalk(domain, prevServer,
-                         currCapables, linkRes['delay'], linkRes['bw'])
-            elif method == 'random':
-                path, pathDelay = self.randomWalk(domain, prevServer,
-                        currCapables, linkRes['delay'], linkRes['bw'])
+            prevServer = entryServer if vnf == 'start' else mappings[currVnf]
 
-            # Block the performed mapping - even if path to next not possible
-            if path != None:
-                blocks[currVnf][path[-1][-1]] = iters * vnfsNum
+            for nextVnf in nextVnfs:
+                nextVnfRes = ns.getVnf(nextVnf)
+                
+                # Obtain info. to perform new mapping
+                currCapables = [server for server in blocks[nextVnf].keys()\
+                        if not blocks[nextVnf][server]]
+                linkRes = ns.getLink(currVnf, nextVnf)
 
-            # Search path from new vnf to next one
-            afterPath, afterDelay = None, None
-            if path != None and currVnf < vnfsNum:
-                linkRes = ns.getLink(currVnf, currVnf + 1)
-
+                # Perform the new mapping
+                path, pathDelay = None, None
                 if method == 'Dijkstra':
-                    afterPath, afterDelay = self.constrainedDijkstra(
-                            domain, prevServer, currCapables,
-                            linkRes['delay'], linkRes['bw'])
+                    path, pathDelay = self.constrainedDijkstra(domain,
+                            prevServer, currCapables, linkRes['delay'],
+                            linkRes['bw'])
                 elif method == 'BFS':
-                    afterPath, afterDelay = self.BFS(domain, prevServer,
+                    path, pathDelay = self.BFS(domain, prevServer,
                             currCapables, linkRes['delay'], linkRes['bw'])
                 elif method == 'backtracking':
-                    afterPath, afterDelay = self.smartRandomWalk(domain,
-                            prevServer, currCapables, linkRes['delay'],
-                            linkRes['bw'])
+                    path, pathDelay = self.smartRandomWalk(domain, prevServer,
+                             currCapables, linkRes['delay'], linkRes['bw'])
                 elif method == 'random':
-                    afterPath, afterDelay = self.randomWalk(domain,
-                            prevServer, currCapables, linkRes['delay'],
-                            linkRes['bw'])
+                    path, pathDelay = self.randomWalk(domain, prevServer,
+                            currCapables, linkRes['delay'], linkRes['bw'])
 
-            if path != None and afterPath != None:
-                newPath = self.modifyMappedPath(ns, currVnf, path[-1][-1],
-                        mappings, currSol, path, afterPath)
-                newDelay = self.__multiDomain.getPathDelay(domain, newPath)
+                # Block the performed mapping - even if path to next not possible
+                if path != None:
+                    blocks[nextVnf][path[-1][-1]] = iters * vnfsNum
 
-                if newDelay < bestDelay:
-                    pass
+                # Search path from new vnf to next one
+                afterPath, afterDelay = None, None
+                if path != None and nextVnf < vnfsNum:
+                    linkRes = ns.getLink(nextVnf, nextVnf + 1)
+                    nextServer = 
+
+                    if method == 'Dijkstra':
+                        afterPath, afterDelay = self.constrainedDijkstra(
+                                domain, prevServer, currCapables,
+                                linkRes['delay'], linkRes['bw'])
+                    elif method == 'BFS':
+                        afterPath, afterDelay = self.BFS(domain, prevServer,
+                                currCapables, linkRes['delay'], linkRes['bw'])
+                    elif method == 'backtracking':
+                        afterPath, afterDelay = self.smartRandomWalk(domain,
+                                prevServer, currCapables, linkRes['delay'],
+                                linkRes['bw'])
+                    elif method == 'random':
+                        afterPath, afterDelay = self.randomWalk(domain,
+                                prevServer, currCapables, linkRes['delay'],
+                                linkRes['bw'])
+
+                if path != None and afterPath != None:
+                    ###### TODO - change watchDog vigilation
+                    lastWatchDog = self.getLastWatchDog()
+                    lastWatchDog.changeConnection()
+                    ###############################################
+                    newPath = self.modifyMappedPath(ns, nextVnf, path[-1][-1],
+                            mappings, currSol, path, afterPath)
+                    newDelay = self.__multiDomain.getPathDelay(domain, newPath)
+
+                    if newDelay < bestDelay:
+                        pass
 
 
             # TODO - Refresh mapping (if mapping found)

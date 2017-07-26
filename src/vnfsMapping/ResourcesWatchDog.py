@@ -80,7 +80,7 @@ class ResourcesWatchDog(object):
 
         nsLinkBw = self.__ns.getLink(vnf1, vnf2)['bw']
 
-        # Decrease link resources in the path (if there are links)
+        # Increase link resources in the previous path (if there are links)
         if path[-1][0] != path[-1][-1]:
             for (nodeA, nodeB) in path:
                 self.__multiDomain.incrLnkResource(self.__domain, nodeA,
@@ -102,6 +102,9 @@ class ResourcesWatchDog(object):
 
             self.__incrServVNFsRes(vnfRes, newServer, decrease=True)
             self.__watchingVnfs[vnf2] = newServer
+
+        del self.__watchingPaths[i - 1]
+        self.__watchingPaths.append((vnf1, vnf2, newPath))
 
         return True
 

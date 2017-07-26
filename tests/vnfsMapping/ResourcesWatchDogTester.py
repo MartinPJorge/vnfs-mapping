@@ -31,7 +31,7 @@ class ResourcesWatchDogTester(object):
 
 
     def testWatch(self):
-        """Tests the watch method
+        """Tests the watch method, unwatch method, changeConnection method
         :returns: Nothing
 
         """
@@ -67,14 +67,57 @@ class ResourcesWatchDogTester(object):
 
         # Map the second VNF
         watchDog.watch(1, 2, [(5, 5)])
-        servRes = md.getServerRes(0, 5)
+        servRes5 = md.getServerRes(0, 5)
         
-        if servRes['memory'] != 1 or servRes['disk'] != 49 or\
-                servRes['cpu'] != 3:
+        if servRes5['memory'] != 1 or servRes5['disk'] != 49 or\
+                servRes5['cpu'] != 3:
             print '  second watch: ERR'
         else:
             print '  second watch: OK'
 
+        print '######################'
+        print '## changeConnection ##'
+        print '######################'
+
+        watchDog.changeConnection('start', 1, [(1, 6), (6, 5)])
+        lnkRes13 = md.getLnkRes(0, 1, 3)
+        lnkRes34 = md.getLnkRes(0, 3, 4)
+        lnkRes16 = md.getLnkRes(0, 1, 6)
+        lnkRes65 = md.getLnkRes(0, 6, 5)
+        servRes4 = md.getServerRes(0, 4)
+        servRes5 = md.getServerRes(0, 5)
+        
+        if lnkRes13['bw'] != 300 or lnkRes34['bw'] != 200 or\
+                lnkRes16['bw'] != 50 or lnkRes65['bw'] != 200 or\
+                servRes4['memory'] != 2 or servRes4['disk'] != 50 or\
+                servRes4['cpu'] != 4 or servRes5['memory'] != 0 or\
+                servRes5['disk'] != 48 or servRes5['cpu'] != 2:
+            print '  first change of connection: ERR!'
+        else:
+            print '  first change of connection: OK!'
+
+
+        print '#############'
+        print '## unwatch ##'
+        print '#############'
+
+        watchDog.unWatch()
+        lnkRes13 = md.getLnkRes(0, 1, 3)
+        lnkRes34 = md.getLnkRes(0, 3, 4)
+        lnkRes16 = md.getLnkRes(0, 1, 6)
+        lnkRes65 = md.getLnkRes(0, 6, 5)
+        servRes4 = md.getServerRes(0, 4)
+        servRes5 = md.getServerRes(0, 5)
+        
+        if lnkRes13['bw'] != 300 or lnkRes34['bw'] != 200 or\
+                lnkRes16['bw'] != 100 or lnkRes65['bw'] != 250 or\
+                servRes4['memory'] != 2 or servRes4['disk'] != 50 or\
+                servRes4['cpu'] != 4 or servRes5['memory'] != 2 or\
+                servRes5['disk'] != 50 or servRes5['cpu'] != 4:
+            print '  resource liberation: ERR!'
+        else:
+            print '  resource liberation: OK!'
+        
 
 
 if __name__ == '__main__':

@@ -21,6 +21,8 @@ class NS(object):
         self.__branches = None
         self.__splits = None
         self.__maxSplitW = None
+        self.__prevNeighsCache = dict()
+        self.__nextNeighsCache = dict()
 
 
     def __str__(self):
@@ -143,13 +145,16 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
         if vnfId == 'start':
             return []
 
-        neighs = self.__chain.neighbors(vnfId)
         prevs = []
-        for neigh in neighs:
-            if type(neigh) is int and neigh < vnfId:
-                prevs += [neigh]
-            elif type(neigh) is str and neigh == 'start':
-                prevs += [neigh]
+        if vnfId in self.__prevNeighsCache:
+            prevs += self.__prevNeighsCache[vnfId]
+        else:
+            neighs = self.__chain.neighbors(vnfId)
+            for neigh in neighs:
+                if type(neigh) is int and neigh < vnfId:
+                    prevs += [neigh]
+                elif type(neigh) is str and neigh == 'start':
+                    prevs += [neigh]
 
         return prevs
 
