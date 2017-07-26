@@ -53,6 +53,35 @@ class NsMapperTester(object):
         return multiDomain
    
 
+    def __genSquareMultiDomain(self):
+        """Generates a square multi domain to test mapping algorithms under
+        vnfs that are join points.
+        :returns: MultiDomain instance
+
+        """
+        graph = nx.Graph()
+        graph.add_node(1, res={'memory': 2, 'disk': 51, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(2, res={'memory': 2, 'disk': 52, 'cpu': 3},\
+			 fatType='server')
+        graph.add_node(3, res={'memory': 2, 'disk': 53, 'cpu': 2},\
+			 fatType='server')
+        graph.add_node(4, res={'memory': 2, 'disk': 54, 'cpu': 1},\
+			 fatType='server')
+        graph.add_node(6)
+        graph.add_edge(1, 2, res={'bw': 300, 'delay': 1})
+        graph.add_edge(1, 3, res={'bw': 300, 'delay': 1})
+        graph.add_edge(3, 4, res={'bw': 300, 'delay': 1})
+        graph.add_edge(2, 4, res={'bw': 300, 'delay': 1})
+
+        multiDomain = MD.MultiDomain()
+        multiDomain._MultiDomain__domains = 1
+        multiDomain._MultiDomain__globalView = graph
+        multiDomain._MultiDomain__domainsViews = [graph.copy()]
+
+        return multiDomain
+
+
     def testConstrainedDijkstra(self):
         """Tests the constrained Dijkstra method
         :returns: Nothing
@@ -210,6 +239,52 @@ class NsMapperTester(object):
                 ', []'
         else:
             print '  fourth link-stress mapping: OK'
+
+        mapper.freeMappings()
+
+        #################################
+        ## Test joining VNF in a chain ##
+        #################################
+        print ''
+        md = self.__genSquareMultiDomain()
+        ns = NS.NS()
+        chain = nx.Graph()
+        chain.add_node('start')
+        chain.add_node(1, memory=0, disk=51, cpu=4)
+        chain.add_node(2, memory=0, disk=52, cpu=3)
+        chain.add_node(3, memory=0, disk=53, cpu=2)
+        chain.add_node(4, memory=0, disk=54, cpu=1)
+        chain.add_edge('start', 1, bw=100, delay=100)
+        chain.add_edge(1, 2, bw=100, delay=100)
+        chain.add_edge(1, 3, bw=100, delay=100)
+        chain.add_edge(3, 4, bw=100, delay=100)
+        chain.add_edge(2, 4, bw=100, delay=100)
+        ns.setChain(chain)
+
+        mapper = NSM.NsMapper(md)
+        path, mappings, _ = mapper.greedy(0, 1, ns)
+        link13 = md.getLnkRes(0, 1, 3)
+        link12 = md.getLnkRes(0, 1, 2)
+        link34 = md.getLnkRes(0, 3, 4)
+        link24 = md.getLnkRes(0, 2, 4)
+        serv1 = md.getServerRes(0, 1)
+        serv2 = md.getServerRes(0, 2)
+        serv3 = md.getServerRes(0, 3)
+        serv4 = md.getServerRes(0, 4)
+
+        mappingsOk = mappings[1] == 1 and mappings[2] == 2 and\
+                mappings[3] == 3 and mappings[4] == 4
+        linksOk = link12['bw'] == link13['bw'] == link34['bw'] ==\
+                link24['bw'] == 200
+        serversOk = serv1['disk'] == serv1['cpu'] ==\
+                serv2['disk'] == serv2['cpu'] ==\
+                serv3['disk'] == serv3['cpu'] ==\
+                serv4['disk'] == serv4['cpu']
+
+        if mappingsOk and linksOk and serversOk:
+            print '  joint VNFs mapping: OK!'
+        else:
+            print '  joint VNFs mapping: ERR!'
 
         mapper.freeMappings()
 
@@ -527,11 +602,11 @@ class NsMapperTester(object):
 if __name__ == '__main__':
     tester = NsMapperTester()
     # tester.testConstrainedDijkstra()
-    # tester.testGreedy()
+    tester.testGreedy()
     # tester.testRandomWalk()
     # tester.testSmartRandomWalk()
     # tester.testBFS()
     # tester.greedyNsBunch(100)
-    tester.testModifyMappedPath()
+    # tester.testModifyMappedPath()
 
 

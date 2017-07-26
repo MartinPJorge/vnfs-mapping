@@ -277,8 +277,13 @@ class NsMapper(object):
                 res = ns.getVnf(vnf)
                 link = ns.getLink(vnfS, vnf)
 
-                capable = self.__multiDomain.getCapableServers(domain,
-                        res['cpu'], res['memory'], res['disk'])
+                # VNF already mapped, force path to reach mapped server
+                capable = None
+                if vnf in mappings:
+                    capable = [mappings[vnf]]
+                else:
+                    capable = self.__multiDomain.getCapableServers(domain,
+                            res['cpu'], res['memory'], res['disk'])
 
                 # If last VNF server can contain it, place it there
                 path, pathDelay = None, 0
@@ -308,7 +313,7 @@ class NsMapper(object):
                     watchDog.watch(vnfS, vnf, path)
                     fullPath += path
                     totalDelay += pathDelay
-                
+ 
             # Next VNFs
             vnfS = ns.currIterId()
             serverS = mappings[vnfS]
@@ -426,7 +431,7 @@ class NsMapper(object):
                 afterPath, afterDelay = None, None
                 if path != None and nextVnf < vnfsNum:
                     linkRes = ns.getLink(nextVnf, nextVnf + 1)
-                    nextServer = 
+                    #nextServer = 
 
                     if method == 'Dijkstra':
                         afterPath, afterDelay = self.constrainedDijkstra(
