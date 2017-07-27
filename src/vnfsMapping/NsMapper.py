@@ -402,8 +402,8 @@ class NsMapper(object):
 
             # Obtain info. to perform new mapping
             currCapables = dict()
-            for server in blocks[prevVnf].keys():
-                if not blocks[prevVnf][server]:
+            for server in blocks[currVnf].keys():
+                if not blocks[currVnf][server]:
                     currCapables[server] = True
 
             # Obtain servers where previous vnfs are mapped
@@ -412,13 +412,14 @@ class NsMapper(object):
             prevServers = []
             prevVnfs = ns.prevVNFs(currVnf)
             for vnf in prevVnfs:
-                prevServers += [mappings[vnf] if neighbor != 'start'\
+                prevServers += [mappings[vnf] if vnf != 'start'\
                         else entryServer]
 
             # Remap with previous VNFs
-            keepSearch, i, mappedVnfs = True, 0, zip(prevVnfs, prevServers)
+            keepSearch, i = True, 0
             while keepSearch and i < len(mappedVnfs):
-                prevVnf, prevServer = mappedVnfs[i]
+                prevVnf = prevVnfs[i]
+                prevServer = prevServers[i]
                 linkRes = ns.getLink(prevVnf, currVnf)
 
                 # Perform the new mapping
@@ -453,12 +454,13 @@ class NsMapper(object):
 
 
             # Search path from new vnf to next ones
-            haveAfters = ns.getNextVNFs(currVnf) != []
-            afterMappings, afterDelays, afterServers, afterVnfs =\
-                    [], [], [], []
-            if path != None and haveAfters:
+            prevSuccess = len(prevMappings) == len(prevVnf) and\
+                    None not in prevMappings
+            afterVnfs = ns.getNextVNFs(currVnf)
+            afterMappings, afterDelays, afterServers = [], [], []
+
+            if prevSuccess and afterVnfs != []:
                 # Obtain servers where next vnfs are mapped
-                afterVnfs = ns.nextVNFs(currVnf)
                 for vnf in afterVnfs:
                     afterServers += [mappings[vnf]]
 
@@ -491,8 +493,7 @@ class NsMapper(object):
                         i += 1
 
             # All remappings successfully performed
-            if len(prevMappings) == len(prevServers) and\
-                    len(afterMappings) == len(afterServers):
+            if prevSuccess and len(afterMappings) == len(afterVnfs):
 
                 lastWatchDog = self.getLastWatchDog()
                 for prevVnf, prevMap in zip(prevVnfs, prevMappings):

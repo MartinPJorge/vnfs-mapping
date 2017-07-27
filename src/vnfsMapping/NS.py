@@ -318,6 +318,14 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
             return self.__chain.get_edge_data(A, B)
 
 
+    def getChain(self):
+        """Retrieves the NS chain
+        :returns: networkx instance
+
+        """
+        return self.__chain
+
+
     def getVnf(self, vnf):
         """Obtains the requested resources of the VNF with id 'vnf'
 

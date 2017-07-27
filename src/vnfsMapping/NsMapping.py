@@ -5,37 +5,74 @@ class NsMapping(object):
 
     """Class to model a NS mapping"""
 
-    def __init__(self):
-        """Initializes the NS mapping graph, and adds the 'start' node """
-        self.__mapping = nx.Graph()
-        self.__mapping.add_node('start')
-        self.__delays = dict()
-        self.__linkDelays = dict()
-        self.__previous = dict()
-        self.__nexts = { 'start': [] }
+    idCounter = 0
+
+    def __init__(self, ns):
+        """Initializes the instance. """
+        self.__ns = ns
+        NsMapping.idCounter += 1
+        self.__id = 'mapping' + str(NsMapping.idCounter)
 
 
-    def insertVnf(self, prevVnf, vnf, delay):
-        """Inserts the VNF in the mapping graph
+    def setLnkDelay(self, vnf1, vnf2, delay):
+        """Sets the mapping delay between vnf1 and vnf2.
+            It sets/refresh vnf2 delay as well.
+        WARNING: method assumes that vnf1 delay is set
 
-        :prevVnf: previous, and already inserted, VNFs
-        :vnf: VNF to be inserted
-        :delay: delay between the previous VNFs and the inserted one
+        :vnf1: vnf1 id
+        :vnf2: vnf2 id
+        :delay: delay between vnf1 vnf2
         :returns: Nothing
 
         """
-        totalDelay = self.__delays[prevVnf] + delay
+        nx.set_edge_attributes(self.__ns.getChain(), self.__id + str('delay'),
+                { (vnf1, vnf2): delay })
+        aggDelay = delay + self.getVnfDelay(vnf1)
 
-        if (vnf in self.__delays and totalDelay > self.__delays[vnf]) or\
-                vnf not in self.__delays:
-            self.__delays[vnf] = totalDelay
+        vnf2Delay = self.getVnfDelay(vnf2)
+        if vnf2Delay != None and aggDelay > vnf2Delay:
+            self.setVnfDelay(vnf2, aggDelay)
 
-        if vnf not in self.__previous:
-            self.__previous[vnf] = []
-        self.__previous[vnf] += [prevVnf]
-        self.__nexts[prevVnf] += [vnf]
-        self.__linkDelays[(prevVnf, vnf)] = delay
 
+    def setVnfDelay(self, vnf, delay):
+        """Sets the maximum delay it takes to reach vnf
+
+        :vnf: vnf id
+        :delay: maximum delay to reach vnf
+        :returns: Nothing
+
+        """
+        nx.set_node_attributes(self.__ns.getChain(), self.__id + str('delay'),
+                { vnf: delay })
+
+    
+    def getVnfDelay(self, vnf):
+        """Retrieves the mapping delay to reach vnf
+
+        :vnf: vnf id
+        :returns: delay to reach vnf, or None in case it is not set
+
+        """
+        vnfDelays = nx.get_node_attributes(self.__ns.getChain(),
+                self.__id + str('delay'))
+
+        return None if vnf not in vnfDelays else vnfDelays[vnf]
+
+
+    def getLnkDelay(self, vnf1, vnf2):
+        """TODO: Docstring for getLnkDelay.
+
+        :vnf1: vnf1 id
+        :vnf2: vnf2 id
+        :returns: None in case mapping delay is not set
+            otherwise (vnf1, vnf2) link delay
+
+        """
+        delaysDict = nx.get_edge_attributes(self.__ns.getChain(), self.__id +
+                str('delay'))
+
+        return None if (vnf1, vnf2) not in delaysDict else delaysDict[(vnf1,
+            vnf2)]
     
     def changeVnfMapping(self, prevVnf, nextVnf, vnf, prevDelay, nextDelay):
         """Changes the VNF mapping and refreshes the NS mapping delay
