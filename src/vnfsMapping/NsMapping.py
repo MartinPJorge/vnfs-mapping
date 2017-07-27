@@ -12,9 +12,32 @@ class NsMapping(object):
         self.__ns = ns
         NsMapping.idCounter += 1
         self.__id = 'mapping' + str(NsMapping.idCounter)
+        self.__mappingDelay = 0
+        self.__vnfDelays = dict()
+        self.__lnkDelays = dict()
+
+        self.__vnfDelays['start'] = 0
+
+
+    def getDelay(self):
+        """Retrieves the NS mapping delay"""
+        return self.__mappingDelay
 
 
     def setLnkDelay(self, vnf1, vnf2, delay):
+        """Sets the mapping delay between vnf1 and vnf2.
+        WARNING: method assumes that vnf1 delay is set
+
+        :vnf1: vnf1 id
+        :vnf2: vnf2 id
+        :delay: delay between vnf1 vnf2
+        :returns: Nothing
+
+        """
+        self.__lnkDelays[(vnf1, vnf2)] = delay
+
+
+    def setLnkDelayAndRefresh(self, vnf1, vnf2, delay):
         """Sets the mapping delay between vnf1 and vnf2.
             It sets/refresh vnf2 delay as well.
         WARNING: method assumes that vnf1 delay is set
@@ -25,16 +48,18 @@ class NsMapping(object):
         :returns: Nothing
 
         """
-        nx.set_edge_attributes(self.__ns.getChain(), self.__id + str('delay'),
-                { (vnf1, vnf2): delay })
+        self.setLnkDelay(vnf1, vnf2, delay)
         aggDelay = delay + self.getVnfDelay(vnf1)
 
+        # Refresh VNF2 delay and maximum NS delay if necessary
         vnf2Delay = self.getVnfDelay(vnf2)
-        if vnf2Delay != None and aggDelay > vnf2Delay:
-            self.setVnfDelay(vnf2, aggDelay)
+        if vnf2Delay == None or (vnf2Delay != None and aggDelay > vnf2Delay):
+            self.__setVnfDelay(vnf2, aggDelay)
+            if vnf2Delay > self.__mappingDelay:
+                self.__mappingDelay = vnf2Delay
 
 
-    def setVnfDelay(self, vnf, delay):
+    def __setVnfDelay(self, vnf, delay):
         """Sets the maximum delay it takes to reach vnf
 
         :vnf: vnf id
@@ -42,8 +67,7 @@ class NsMapping(object):
         :returns: Nothing
 
         """
-        nx.set_node_attributes(self.__ns.getChain(), self.__id + str('delay'),
-                { vnf: delay })
+        self.__vnfDelays[vnf] = delay
 
     
     def getVnfDelay(self, vnf):
@@ -53,14 +77,11 @@ class NsMapping(object):
         :returns: delay to reach vnf, or None in case it is not set
 
         """
-        vnfDelays = nx.get_node_attributes(self.__ns.getChain(),
-                self.__id + str('delay'))
-
-        return None if vnf not in vnfDelays else vnfDelays[vnf]
+        return None if vnf not in self.__vnfDelays else self.__vnfDelays[vnf]
 
 
     def getLnkDelay(self, vnf1, vnf2):
-        """TODO: Docstring for getLnkDelay.
+        """Retrieves the link delay between vnf1 and vnf2
 
         :vnf1: vnf1 id
         :vnf2: vnf2 id
@@ -68,23 +89,58 @@ class NsMapping(object):
             otherwise (vnf1, vnf2) link delay
 
         """
-        delaysDict = nx.get_edge_attributes(self.__ns.getChain(), self.__id +
-                str('delay'))
-
-        return None if (vnf1, vnf2) not in delaysDict else delaysDict[(vnf1,
-            vnf2)]
+        return None if (vnf1, vnf2) not in self.__lnkDelays\
+                else self.__lnkDelays[(vnf1, vnf2)]
     
-    def changeVnfMapping(self, prevVnf, nextVnf, vnf, prevDelay, nextDelay):
-        """Changes the VNF mapping and refreshes the NS mapping delay
 
-        :prevVnf: TODO
-        :nextVnf: TODO
-        :vnf: TODO
-        :prevDelay: TODO
-        :nextDelay: TODO
-        :returns: TODO
-
+    def changeVnfMapping(self, vnf, prevVnfs, afterVnfs, prevDelays,
+            afterDelays):
+        """Changes the mapping of vnf and refresh the maximum delay of the NS,
+        the delays of each link, and maximum delays of each VNF.
+        
+        :vnf: vnf id
+        :prevVnfs: list of previous VNFs' ids
+        :afterVnfs: list of next VNFs' ids
+        :prevDelays: list of previous VNF' delays
+        :afterDelays: list of after VNFs' delays
+        :returns: Nothing
         """
-        pass
+        refreshed = dict()
+        def DFS(accumDelay, vnf):
+            """Performs a DFS to refresh delays of VNFs after vnf
+            
+            :accumDelay: accumulated delay to reach vnf
+            :vnf: index VNF to be refreshed
+            :returns: Nothing
+            """
+            # Refresh the VNF delay if neccessary
+            vnfDelay = self.getVnfDelay(vnf)
+            maxDelay = vnfDelay
+            if vnf not in refreshed or (vnf in refreshed\
+                    and accumDelay > vnfDelay):
+                refreshed[vnf] = True
+                self.__setVnfDelay(vnf, accumDelay)
+                maxDelay = accumDelay
+            if self.__mappingDelay < maxDelay:
+                self.__mappingDelay = maxDelay
 
-    
+            # Recurse into next VNFs to refresh their delays
+            nextVnfs = self.__ns.getNextVNFs(vnf)
+            for nextVnf in nextVnfs:
+                lnkDelay = self.getLnkDelay(vnf, nextVnf)
+                DFS(maxDelay + lnkDelay, nextVnf)
+
+        # Set previous links' delays and changed VNF delay
+        self.__mappingDelay = -1 # force NS delay refresh
+        self.__vnfDelays[vnf] = None # force VNF delay refresh
+        for prevVnf, prevDelay in zip(prevVnfs, prevDelays):
+            self.setLnkDelayAndRefresh(prevVnf, vnf, prevDelay)
+        refreshed[vnf] = True
+
+        # Set after links delay and refresh NS delay
+        for afterVnf, afterDelay in zip(afterVnfs, afterDelays):
+            self.setLnkDelay(vnf, afterVnf, afterDelay)
+        DFS(self.getVnfDelay(vnf), vnf)
+
+
+

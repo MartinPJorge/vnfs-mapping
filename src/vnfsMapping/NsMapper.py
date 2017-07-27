@@ -4,6 +4,7 @@ from sets import Set
 from ResourcesWatchDog import ResourcesWatchDog as WD
 from NS import NS
 from MultiDomain import MultiDomain as MD
+from NsMapping import NsMapping as NSm
 
 class NsMapper(object):
 
@@ -257,9 +258,10 @@ class NsMapper(object):
         :method: search method between VNFs - ['Dijkstra', 'BFS',
             'backtracking', 'random']
         :depth: maximum search depth for 'BFS'
-        :returns: [ [(node1, node2), ..., (nodeN, nodeN+1)], mappings, delay],
+        :returns: [ [(node1, node2), ..., (nodeN, nodeN+1)], mappings, delay,
+            NsMapping],
             where mappings is a dictionary like { vnf1: server1, ... };
-            Or [ [], mappings ]
+            Or [ [], mappings, None, None ]
 
         """
         
@@ -271,6 +273,7 @@ class NsMapper(object):
         mappings = dict()
         fullPath = []
         totalDelay = 0
+        nsMapping = NSm(ns)
 
         while nextVNFs:
             for vnf in nextVNFs:
@@ -289,6 +292,7 @@ class NsMapper(object):
                 path, pathDelay = None, 0
                 if serverS in capable:
                     mappings[vnf] = serverS
+                    nsMapping.setLnkDelayAndRefresh(vnfS, vnf, 0)
                     watchDog.watch(vnfS, vnf, [(serverS, serverS)])
                     path = [(serverS, serverS)]
                 else:
@@ -307,9 +311,10 @@ class NsMapper(object):
 
                 if not path:
                     watchDog.unWatch() # free previously allocated resources
-                    return [], mappings, totalDelay
+                    return [], mappings, totalDelay, None
                 else:
                     mappings[vnf] = path[-1][-1] # Final server
+                    nsMapping.setLnkDelayAndRefresh(vnfS, vnf, pathDelay)
                     watchDog.watch(vnfS, vnf, path)
                     fullPath += path
                     totalDelay += pathDelay
@@ -322,7 +327,7 @@ class NsMapper(object):
         # Add the watch dog to the list of mapped NSs
         self.__watchDogs.append(watchDog)
 
-        return fullPath, mappings, totalDelay
+        return fullPath, mappings, totalDelay, nsMapping
 
 
     def popurri(self, domain, entryServer, ns, method='Dijkstra', depth=None):
@@ -365,10 +370,11 @@ class NsMapper(object):
         currSol, bestDelay = None, None
         vnfsNum = ns.getVNFsNumber()
         currVnf = None
+        nsMapping = None
 
         if initial == 'greedy':
-            currSol, mappings, bestDelay = self.greedy(domain, entryServer,
-                    ns, method=method, depth=depth)
+            currSol, mappings, bestDelay, nsMapping = self.greedy(domain,
+                    entryServer, ns, method=method, depth=depth)
         else:
             # TODO - other methods to retrieve an initial solution
             pass
@@ -501,12 +507,11 @@ class NsMapper(object):
                 for afterVnf, afterMap in zip(afterVnfs, afterMappings):
                     lastWatchDog.changeConnection(currVnf, afterVnf, afterMap)
 
-                # TODO - refresh NsMapping instance
-                #      - retrieve new delay to see if it is best solution
-
-            # TODO - rotate the capable servers iterator, so next trial is not
-            #        the same as last one (lo hablado con Carlos [CJBC])
-                    
+                nsMapping.changeVnfMapping(currVnf, prevVnf, afterVnfs,
+                        prevDelays, afterDelays)
+                newDelay = nsMapping.getDelay()
+                if newDelay < bestDelay:
+                    # TODO - set this mapping as best one
 
             # Decrement blocking counters
             for vnf in blocks.keys():
