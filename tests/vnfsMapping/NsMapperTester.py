@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
 from vnfsMapping import MultiDomain as MD
 from vnfsMapping import NS
 from vnfsMapping import NsMapper as NSM
+from vnfsMapping import NsMapping as NSm
 from vnfsMapping import NsGenerator as NSG
 
 
@@ -82,6 +83,143 @@ class NsMapperTester(object):
         return multiDomain
 
 
+    def __genTabuMultiDomain(self):
+        """Generates a MultiDomain instance on top ow which tabu search is
+        tested.
+        :returns: MultiDomain instance
+
+        """
+        graph = nx.Graph()
+
+        # Base three down
+        graph.add_node(1, res={'memory': 0, 'disk': 0, 'cpu': 4},\
+			 fatType='server')
+        graph.add_node(2, res={'memory': 10, 'disk': 0, 'cpu': 0},\
+			 fatType='server')
+        graph.add_node(3, res={'memory': 0, 'disk': 100, 'cpu': 0},\
+			 fatType='server')
+
+        # Top three left
+        graph.add_node(4, res={'memory': 1, 'disk': 0, 'cpu': 1},\
+			 fatType='server')
+        graph.add_node(5, res={'memory': 1, 'disk': 1, 'cpu': 0},\
+			 fatType='server')
+        graph.add_node(6, res={'memory': 0, 'disk': 1, 'cpu': 1},\
+			 fatType='server')
+
+        # Top three middle
+        graph.add_node(7, res={'memory': 1, 'disk': 0, 'cpu': 1},\
+			 fatType='server')
+        graph.add_node(8, res={'memory': 1, 'disk': 1, 'cpu': 0},\
+			 fatType='server')
+        graph.add_node(9, res={'memory': 0, 'disk': 1, 'cpu': 1},\
+			 fatType='server')
+
+        # Top three right
+        graph.add_node(10, res={'memory': 1, 'disk': 0, 'cpu': 1},\
+			 fatType='server')
+        graph.add_node(11, res={'memory': 1, 'disk': 1, 'cpu': 0},\
+			 fatType='server')
+        graph.add_node(12, res={'memory': 0, 'disk': 1, 'cpu': 1},\
+			 fatType='server')
+
+        # Switch nodes
+        graph.add_node(20)
+        graph.add_node(21)
+        graph.add_node(23)
+        graph.add_node(24)
+        graph.add_node(25)
+        graph.add_node(26)
+        graph.add_node(27)
+        graph.add_node(28)
+        graph.add_node(30)
+        graph.add_node(31)
+        graph.add_node(32)
+        graph.add_node(33)
+        graph.add_node(34)
+        graph.add_node(35)
+
+        # Links between nodes
+        # Down links
+        graph.add_edge(1, 20, res={'bw': 300, 'delay': 1})
+        graph.add_edge(1, 21, res={'bw': 300, 'delay': 1})
+        graph.add_edge(21, 3, res={'bw': 300, 'delay': 1})
+        graph.add_edge(20, 2, res={'bw': 300, 'delay': 1})
+
+        # Links between 3 and others
+        graph.add_edge(3, 23, res={'bw': 300, 'delay': 10})
+        graph.add_edge(3, 25, res={'bw': 300, 'delay': 20})
+        graph.add_edge(3, 27, res={'bw': 300, 'delay': 30})
+        graph.add_edge(23, 4, res={'bw': 300, 'delay': 10})
+        graph.add_edge(25, 7, res={'bw': 300, 'delay': 20})
+        graph.add_edge(27, 10, res={'bw': 300, 'delay': 30})
+
+        # Links between 2 and others
+        graph.add_edge(2, 24, res={'bw': 300, 'delay': 10})
+        graph.add_edge(2, 26, res={'bw': 300, 'delay': 20})
+        graph.add_edge(2, 28, res={'bw': 300, 'delay': 30})
+        graph.add_edge(24, 4, res={'bw': 300, 'delay': 10}) 
+        graph.add_edge(26, 7, res={'bw': 300, 'delay': 20})
+        graph.add_edge(28, 10, res={'bw': 300, 'delay': 30})
+
+        # Links between top left
+        graph.add_edge(4, 30, res={'bw': 300, 'delay': 50})
+        graph.add_edge(4, 31, res={'bw': 300, 'delay': 50})
+        graph.add_edge(30, 5, res={'bw': 300, 'delay': 50})
+        graph.add_edge(31, 6, res={'bw': 300, 'delay': 50})
+
+        # Links between top middle
+        graph.add_edge(7, 32, res={'bw': 300, 'delay': 40})
+        graph.add_edge(7, 33, res={'bw': 300, 'delay': 40})
+        graph.add_edge(32, 8, res={'bw': 300, 'delay': 40})
+        graph.add_edge(33, 9, res={'bw': 300, 'delay': 40})
+
+        # Links between top right
+        graph.add_edge(10, 34, res={'bw': 300, 'delay': 1})
+        graph.add_edge(10, 35, res={'bw': 300, 'delay': 1})
+        graph.add_edge(34, 11, res={'bw': 300, 'delay': 1})
+        graph.add_edge(35, 12, res={'bw': 300, 'delay': 1})
+
+
+        multiDomain = MD.MultiDomain()
+        multiDomain._MultiDomain__domains = 1
+        multiDomain._MultiDomain__globalView = graph
+        multiDomain._MultiDomain__domainsViews = [graph.copy()]
+
+        return multiDomain
+
+
+    def __genTabuNS(self):
+        """Generates the NS chain used to test the tabu search
+        :returns: NS instance
+
+        """
+        chain = nx.Graph()
+        chain.add_node('start', memory=2, disk=3, cpu=4)
+        chain.add_node(1, memory=0, disk=0, cpu=4)
+        chain.add_node(2, memory=10, disk=0, cpu=0)
+        chain.add_node(3, memory=0, disk=100, cpu=0)
+        chain.add_node(4, memory=1, disk=0, cpu=1)
+        chain.add_node(5, memory=0, disk=1, cpu=1)
+        chain.add_node(6, memory=1, disk=1, cpu=0)
+
+        chain.add_edge('start', 1, bw=0, delay=0)
+        chain.add_edge(1, 2, bw=0, delay=3)
+        chain.add_edge(1, 3, bw=0, delay=3)
+        chain.add_edge(2, 4, bw=0, delay=70)
+        chain.add_edge(3, 4, bw=0, delay=70)
+        chain.add_edge(4, 5, bw=0, delay=110)
+        chain.add_edge(4, 6, bw=0, delay=110)
+
+        ns = NS.NS()
+        ns.setChain(chain)
+        ns.setSplitsNum(2)
+        ns.setBranchNum(2)
+        ns.setMaxSplitW(2)
+
+        return ns
+
+
     def testConstrainedDijkstra(self):
         """Tests the constrained Dijkstra method
         :returns: Nothing
@@ -148,13 +286,16 @@ class NsMapperTester(object):
         chain.add_edge(1, 2, bw=0, delay=90)
         ns.setChain(chain)
 
-        path, mappings, delay = mapper.greedy(0, 1, ns)
-        if path == [(1, 3), (3, 4), (4, 4)] and mappings[1] == 4 and\
-                mappings[2] == 4 and delay == 20:
+        nsMapping = mapper.greedy(0, 1, ns)
+        if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
+                nsMapping.getPath(1, 2) == [(4, 4)] and\
+                nsMapping.getServerMapping(1) == 4 and\
+                nsMapping.getServerMapping(2) == 4 and\
+                nsMapping.getDelay() == 20:
             print '  first server-stress mapping: OK'
         else:
-            print '  first server-stress mapping was: ' + str(path) +\
-                ', instead of: [(1, 3), (3, 4), (4, 4)]'
+            print '  first server-stress mapping: ERR'
+
 
         ns = NS.NS() # node 4 can only host one of the VNFs
         chain = nx.Graph()
@@ -164,13 +305,15 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=0, delay=90)
         chain.add_edge(1, 2, bw=0, delay=90)
         ns.setChain(chain)
-        path, mappings, delay = mapper.greedy(0, 1, ns)
-        if path == [(1, 3), (3, 4), (4, 5)] and mappings[1] == 4 and\
-                mappings[2] == 5 and delay == 26:
+        nsMapping = mapper.greedy(0, 1, ns)
+        if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
+                nsMapping.getPath(1, 2) == [(4, 5)] and\
+                nsMapping.getServerMapping(1) == 4 and\
+                nsMapping.getServerMapping(2) == 5 and\
+                nsMapping.getDelay() == 26:
             print '  second server-stress mapping: OK\n'
         else:
-            print '  second server-stress mapping was: ' + str(path) +\
-                ', instead of: [(1, 3), (3, 4), (4, 5)]'
+            print '  second server-stress mapping: ERR'
         
         mapper.freeMappings()
 
@@ -182,13 +325,13 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=200, delay=90)
         ns.setChain(chain)
 
-        path, mappings, delay = mapper.greedy(0, 1, ns)
-        if path == [(1, 3), (3, 4)] and mappings[1] == 4 and delay == 20:
+        nsMapping = mapper.greedy(0, 1, ns)
+        if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
+            nsMapping.getServerMapping(1) == 4 and\
+            nsMapping.getDelay() == 20:
             print '  first link-stress mapping: OK'
         else:
-            print '  first link-stress mapping was: ' + str(path) +\
-                ', instead of: [(1, 3), (3, 4)]'
-
+            print '  first link-stress mapping: ERR'
 
         ns = NS.NS()
         chain = nx.Graph()
@@ -199,14 +342,15 @@ class NsMapperTester(object):
         chain.add_edge(1, 2, bw=250, delay=90)
         ns.setChain(chain)
     
-        path, mappings, delay = mapper.greedy(0, 1, ns)
-        if path == [(1, 3), (3, 4), (4, 5)] and mappings[1] == 4 and\
-                mappings[2] == 5 and delay == 26:
+        nsMapping = mapper.greedy(0, 1, ns)
+        if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
+                nsMapping.getPath(1, 2) == [(4, 5)] and\
+                nsMapping.getServerMapping(1) == 4 and\
+                nsMapping.getServerMapping(2) == 5 and\
+                nsMapping.getDelay() == 26:
             print '  second link-stress mapping: OK'
         else:
-            print '  second link-stress mapping was: ' + str(path) +\
-                ', instead of: [(1, 3), (3, 4), (4, 5)]'
-
+            print '  second link-stress mapping: ERR'
 
         ns = NS.NS()
         chain = nx.Graph()
@@ -217,13 +361,15 @@ class NsMapperTester(object):
         chain.add_edge(1, 2, bw=30000, delay=0)
         ns.setChain(chain)
     
-        path, mappings, delay = mapper.greedy(0, 1, ns)
-        if path == [(1, 3), (3, 6), (6, 5), (5, 5)] and mappings[1] == 5 and\
-                mappings[2] == 5 and delay == 20:
+        nsMapping = mapper.greedy(0, 1, ns)
+        if nsMapping.getPath('start', 1) == [(1, 3), (3, 6), (6, 5)] and\
+                nsMapping.getPath(1, 2) == [(5, 5)] and\
+                nsMapping.getServerMapping(1) == 5 and\
+                nsMapping.getServerMapping(2) == 5 and\
+                nsMapping.getDelay() == 20:
             print '  third link-stress mapping: OK'
         else:
-            print '  third link-stress mapping was: ' + str(path) +\
-                ', instead of: [(1, 3), (3, 6), (6, 5), (5, 5)]'
+            print '  third link-stress mapping: ERR'
 
 
         ns = NS.NS()
@@ -233,14 +379,14 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=200, delay=19)
         ns.setChain(chain)
 
-        path, _, _ = mapper.greedy(0, 1, ns)
-        if path != []:
-            print '  fourth link-stress mapping was: ' + str(path) +\
-                ', []'
+        nsMapping = mapper.greedy(0, 1, ns)
+        if nsMapping != None:
+            print '  fourth link-stress mapping: ERR'
         else:
             print '  fourth link-stress mapping: OK'
 
         mapper.freeMappings()
+
 
         #################################
         ## Test joining VNF in a chain ##
@@ -262,7 +408,7 @@ class NsMapperTester(object):
         ns.setChain(chain)
 
         mapper = NSM.NsMapper(md)
-        path, mappings, _ = mapper.greedy(0, 1, ns)
+        nsMapping = mapper.greedy(0, 1, ns)
         link13 = md.getLnkRes(0, 1, 3)
         link12 = md.getLnkRes(0, 1, 2)
         link34 = md.getLnkRes(0, 3, 4)
@@ -272,8 +418,10 @@ class NsMapperTester(object):
         serv3 = md.getServerRes(0, 3)
         serv4 = md.getServerRes(0, 4)
 
-        mappingsOk = mappings[1] == 1 and mappings[2] == 2 and\
-                mappings[3] == 3 and mappings[4] == 4
+        mappingsOk = nsMapping.getServerMapping(1) == 1 and\
+                nsMapping.getServerMapping(2) == 2 and\
+                nsMapping.getServerMapping(3) == 3 and\
+                nsMapping.getServerMapping(4) == 4
         linksOk = link12['bw'] == link13['bw'] == link34['bw'] ==\
                 link24['bw'] == 200
         serversOk = serv1['disk'] == serv1['cpu'] ==\
@@ -460,10 +608,14 @@ class NsMapperTester(object):
             print 'entryServer=' + str(servers[entryS]) + ', possibleEntryServers=' +\
                 str(len(servers)) + ', domain=' + str(domain)
             print ns
-            path, _, _ = mapper.greedy(domain, servers[entryS], ns,
+            nsMapping = mapper.greedy(domain, servers[entryS], ns,
                     method='Dijkstra')
-            print str(path) + '\n========================\n'
-            failed += 1 if path == [] else 0
+            if nsMapping == None:
+                print 'nsMapping: None'
+                failed += 1
+            else:
+                print nsMapping
+                print '=======================\n'
 
         mapper.freeMappings()
     
@@ -598,15 +750,43 @@ class NsMapperTester(object):
             print '  fifth mapping BAD!, got newPath=' + str(newPath)
         
 
+    def testTabu(self):
+        """Tests the tabu search algorithm
+        :returns: Nothing
+
+        """
+        md = self.__genTabuMultiDomain()
+        ns = self.__genTabuNS()
+        mapper = NSM.NsMapper(md)
+
+        # No tabu iterations (same as greedy)
+        mapping = mapper.tabu(0, 1, ns, 10, 0)
+        if mapping.getPath('start', 1) == [(1, 2)] and\
+                mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
+                mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
+                mapping.getPath(2, 4) == [(2, 24), (24, 4)] and\
+                mapping.getPath(3, 4) == [(3, 23), (23, 4)] and\
+                mapping.getPath(4, 6) == [(4, 30), (30, 5)] and\
+                mapping.getPath(4, 5) == [(4, 31), (31, 6)] and\
+                mapping.getServerMapping(1) == 1 and\
+                mapping.getServerMapping(2) == 2 and\
+                mapping.getServerMapping(3) == 3 and\
+                mapping.getServerMapping(4) == 4 and\
+                mapping.getServerMapping(5) == 6 and\
+                mapping.getServerMapping(6) == 5:
+            print '  first tabu mapping 0 iterations: OK'
+        else:
+            print '  first tabu mapping 0 iterations: ERR'
+
 
 if __name__ == '__main__':
     tester = NsMapperTester()
     # tester.testConstrainedDijkstra()
-    tester.testGreedy()
+    # tester.testGreedy()
     # tester.testRandomWalk()
     # tester.testSmartRandomWalk()
     # tester.testBFS()
     # tester.greedyNsBunch(100)
-    # tester.testModifyMappedPath()
+    tester.testModifyMappedPath()
 
 

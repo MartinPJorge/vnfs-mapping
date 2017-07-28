@@ -5,23 +5,92 @@ class NsMapping(object):
 
     """Class to model a NS mapping"""
 
-    idCounter = 0
-
     def __init__(self, ns):
         """Initializes the instance. """
         self.__ns = ns
-        NsMapping.idCounter += 1
-        self.__id = 'mapping' + str(NsMapping.idCounter)
         self.__mappingDelay = 0
         self.__vnfDelays = dict()
         self.__lnkDelays = dict()
+        self.__mappings = dict()
+        self.__serverMappings = dict()
 
         self.__vnfDelays['start'] = 0
+
+
+    def __str__(self):
+        """String representation of a mapping
+        :returns: string
+
+        """
+        st = 'Overall delay: ' + str(self.__mappingDelay)
+        st += '\nVNF mappings: '
+        for vnf in self.__serverMappings:
+            st += '\n  vnf:' + str(vnf) + ' --- server:' +\
+                str(self.__serverMappings[vnf])
+        st += '\nPaths:'
+        for (vnf1, vnf2) in self.__mappings:
+            st += '\n  (' + str(vnf1) + ', ' + str(vnf2) + '): ' +\
+                str(self.__mappings[(vnf1, vnf2)])
+
+        return st
+
+
+    def copy(self):
+        """Creates a new NsMapping object that is a copy of the current one.
+            The NS reference is not copied, it is still a pointer to the NS.
+        :returns: NsMapping
+
+        """
+        nsMappingCopy = NsMapping(self.__ns)
+        nsMappingCopy._NsMapping__mappingDelay = self.__mappingDelay
+        nsMappingCopy._NsMapping__vnfDelays = dict(self.__vnfDelays)
+        nsMappingCopy._NsMapping__lnkDelays = dict(self.__lnkDelays)
+        nsMappingCopy._NsMapping__mappings = dict(self.__mappings)
+
+        return nsMappingCopy
 
 
     def getDelay(self):
         """Retrieves the NS mapping delay"""
         return self.__mappingDelay
+
+
+    def setPath(self, vnf1, vnf2, path):
+        """Sets the mapping path to connect vnf1 and vnf2
+
+        :vnf1: vnf1 id
+        :vnf2: vnf2 id
+        :path: path between vnf1 and vnf2
+        :returns: Nothing
+
+        """
+        self.__serverMappings[vnf1] = path[0][0]
+        self.__serverMappings[vnf2] = path[-1][-1]
+        self.__mappings[(vnf1, vnf2)] = path
+
+
+    def getServerMapping(self, vnf):
+        """Retrieves the server where the vnf has been mapped
+
+        :vnf: VNF id
+        :returns: None in case it has not been mapped, server id otherwise
+
+        """
+        return None if vnf not in self.__serverMappings else\
+                self.__serverMappings[vnf]
+
+
+    def getPath(self, vnf1, vnf2):
+        """Retrieves the path to connect vnf1 and vnf2
+
+        :vnf1: vnf1 id
+        :vnf2: vnf2 id
+        :returns: None in case there is no such path, a list like [(nodeA,
+            nodeB), (nodeB, nodeC), ...] otherwise
+
+        """
+        return None if (vnf1, vnf2) not in self.__mappings else\
+            self.__mappings[(vnf1, vnf2)]
 
 
     def setLnkDelay(self, vnf1, vnf2, delay):
@@ -55,8 +124,8 @@ class NsMapping(object):
         vnf2Delay = self.getVnfDelay(vnf2)
         if vnf2Delay == None or (vnf2Delay != None and aggDelay > vnf2Delay):
             self.__setVnfDelay(vnf2, aggDelay)
-            if vnf2Delay > self.__mappingDelay:
-                self.__mappingDelay = vnf2Delay
+            if aggDelay > self.__mappingDelay:
+                self.__mappingDelay = aggDelay
 
 
     def __setVnfDelay(self, vnf, delay):
@@ -137,7 +206,7 @@ class NsMapping(object):
             self.setLnkDelayAndRefresh(prevVnf, vnf, prevDelay)
         refreshed[vnf] = True
 
-        # Set after links delay and refresh NS delay
+        # Set after links delay and refresh NS delay
         for afterVnf, afterDelay in zip(afterVnfs, afterDelays):
             self.setLnkDelay(vnf, afterVnf, afterDelay)
         DFS(self.getVnfDelay(vnf), vnf)

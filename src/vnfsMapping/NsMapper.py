@@ -258,10 +258,8 @@ class NsMapper(object):
         :method: search method between VNFs - ['Dijkstra', 'BFS',
             'backtracking', 'random']
         :depth: maximum search depth for 'BFS'
-        :returns: [ [(node1, node2), ..., (nodeN, nodeN+1)], mappings, delay,
-            NsMapping],
-            where mappings is a dictionary like { vnf1: server1, ... };
-            Or [ [], mappings, None, None ]
+        :returns: NsMapping instance or None in case the mapping couldn't be
+            performed
 
         """
         
@@ -270,9 +268,6 @@ class NsMapper(object):
         serverS = entryServer
         nextVNFs = ns.iterNext()
         watchDog = WD(self.__multiDomain, ns, domain)
-        mappings = dict()
-        fullPath = []
-        totalDelay = 0
         nsMapping = NSm(ns)
 
         while nextVNFs:
@@ -282,8 +277,9 @@ class NsMapper(object):
 
                 # VNF already mapped, force path to reach mapped server
                 capable = None
-                if vnf in mappings:
-                    capable = [mappings[vnf]]
+                mappedServer = nsMapping.getServerMapping(vnf)
+                if mappedServer != None:
+                    capable = [mappedServer]
                 else:
                     capable = self.__multiDomain.getCapableServers(domain,
                             res['cpu'], res['memory'], res['disk'])
@@ -291,10 +287,10 @@ class NsMapper(object):
                 # If last VNF server can contain it, place it there
                 path, pathDelay = None, 0
                 if serverS in capable:
-                    mappings[vnf] = serverS
+                    path = [(serverS, serverS)]
+                    nsMapping.setPath(vnfS, vnf, path)
                     nsMapping.setLnkDelayAndRefresh(vnfS, vnf, 0)
                     watchDog.watch(vnfS, vnf, [(serverS, serverS)])
-                    path = [(serverS, serverS)]
                 else:
                     if method == 'Dijkstra':
                         path, pathDelay = self.constrainedDijkstra(domain,
@@ -311,23 +307,21 @@ class NsMapper(object):
 
                 if not path:
                     watchDog.unWatch() # free previously allocated resources
-                    return [], mappings, totalDelay, None
+                    return None
                 else:
-                    mappings[vnf] = path[-1][-1] # Final server
+                    nsMapping.setPath(vnfS, vnf, path)
                     nsMapping.setLnkDelayAndRefresh(vnfS, vnf, pathDelay)
                     watchDog.watch(vnfS, vnf, path)
-                    fullPath += path
-                    totalDelay += pathDelay
  
             # Next VNFs
             vnfS = ns.currIterId()
-            serverS = mappings[vnfS]
+            serverS = nsMapping.getServerMapping(vnfS)
             nextVNFs = ns.iterNext()
 
         # Add the watch dog to the list of mapped NSs
         self.__watchDogs.append(watchDog)
 
-        return fullPath, mappings, totalDelay, nsMapping
+        return nsMapping
 
 
     def popurri(self, domain, entryServer, ns, method='Dijkstra', depth=None):
@@ -370,11 +364,12 @@ class NsMapper(object):
         currSol, bestDelay = None, None
         vnfsNum = ns.getVNFsNumber()
         currVnf = None
-        nsMapping = None
+        nsMapping, bestNsMapping = None, None
 
         if initial == 'greedy':
             currSol, mappings, bestDelay, nsMapping = self.greedy(domain,
                     entryServer, ns, method=method, depth=depth)
+            bestNsMapping = nsMapping.copy()
         else:
             # TODO - other methods to retrieve an initial solution
             pass
@@ -394,6 +389,9 @@ class NsMapper(object):
             iterators[vnf]['it'] = 0
             iterators[vnf]['len'] = len(capable) 
 
+        ###############
+        ## Main loop ##
+        ###############
         ns.initIter()
         for _ in range(iters * vnfsNum):
             # Obtain current VNFs to force their new mapping
@@ -421,7 +419,9 @@ class NsMapper(object):
                 prevServers += [mappings[vnf] if vnf != 'start'\
                         else entryServer]
 
-            # Remap with previous VNFs
+            ###################
+            ## Previous VNFs ##
+            ###################
             keepSearch, i = True, 0
             while keepSearch and i < len(mappedVnfs):
                 prevVnf = prevVnfs[i]
@@ -458,7 +458,6 @@ class NsMapper(object):
                 mappedServer == currCapables[0]
                 blocks[nextVnf][mappedServer] = iters * vnfsNum
 
-
             # Search path from new vnf to next ones
             prevSuccess = len(prevMappings) == len(prevVnf) and\
                     None not in prevMappings
@@ -470,6 +469,9 @@ class NsMapper(object):
                 for vnf in afterVnfs:
                     afterServers += [mappings[vnf]]
 
+                ################
+                ## After VNFs ##
+                ################
                 keepSearch, i = True, 0
                 while keepSearch and i < len(afterVnfs):
                     linkRes = ns.getLink(currVnf, afterVnfs[i])
@@ -504,14 +506,17 @@ class NsMapper(object):
                 lastWatchDog = self.getLastWatchDog()
                 for prevVnf, prevMap in zip(prevVnfs, prevMappings):
                     lastWatchDog.changeConnection(prevVnf, currVnf, prevMap)
+                    nsMapping.setPath(prevVnf, currVnf, prevMap)
                 for afterVnf, afterMap in zip(afterVnfs, afterMappings):
                     lastWatchDog.changeConnection(currVnf, afterVnf, afterMap)
+                    nsMapping.setPath(currVnf, afterVnf, afterMap)
 
                 nsMapping.changeVnfMapping(currVnf, prevVnf, afterVnfs,
                         prevDelays, afterDelays)
                 newDelay = nsMapping.getDelay()
                 if newDelay < bestDelay:
-                    # TODO - set this mapping as best one
+                    bestNsMapping = nsMapping.copy()
+                    bestDelay = newDelay
 
             # Decrement blocking counters
             for vnf in blocks.keys():
