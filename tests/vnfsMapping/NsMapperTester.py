@@ -147,32 +147,32 @@ class NsMapperTester(object):
         graph.add_edge(20, 2, res={'bw': 300, 'delay': 1})
 
         # Links between 3 and others
-        graph.add_edge(3, 23, res={'bw': 300, 'delay': 10})
+        graph.add_edge(3, 23, res={'bw': 300, 'delay': 15})
         graph.add_edge(3, 25, res={'bw': 300, 'delay': 20})
         graph.add_edge(3, 27, res={'bw': 300, 'delay': 30})
-        graph.add_edge(23, 4, res={'bw': 300, 'delay': 10})
+        graph.add_edge(23, 4, res={'bw': 300, 'delay': 15})
         graph.add_edge(25, 7, res={'bw': 300, 'delay': 20})
         graph.add_edge(27, 10, res={'bw': 300, 'delay': 30})
 
         # Links between 2 and others
-        graph.add_edge(2, 24, res={'bw': 300, 'delay': 10})
+        graph.add_edge(2, 24, res={'bw': 300, 'delay': 15})
         graph.add_edge(2, 26, res={'bw': 300, 'delay': 20})
         graph.add_edge(2, 28, res={'bw': 300, 'delay': 30})
-        graph.add_edge(24, 4, res={'bw': 300, 'delay': 10}) 
+        graph.add_edge(24, 4, res={'bw': 300, 'delay': 15}) 
         graph.add_edge(26, 7, res={'bw': 300, 'delay': 20})
         graph.add_edge(28, 10, res={'bw': 300, 'delay': 30})
 
         # Links between top left
-        graph.add_edge(4, 30, res={'bw': 300, 'delay': 50})
-        graph.add_edge(4, 31, res={'bw': 300, 'delay': 50})
-        graph.add_edge(30, 5, res={'bw': 300, 'delay': 50})
-        graph.add_edge(31, 6, res={'bw': 300, 'delay': 50})
+        graph.add_edge(4, 30, res={'bw': 300, 'delay': 45})
+        graph.add_edge(4, 31, res={'bw': 300, 'delay': 45})
+        graph.add_edge(30, 5, res={'bw': 300, 'delay': 45})
+        graph.add_edge(31, 6, res={'bw': 300, 'delay': 45})
 
         # Links between top middle
-        graph.add_edge(7, 32, res={'bw': 300, 'delay': 40})
-        graph.add_edge(7, 33, res={'bw': 300, 'delay': 40})
-        graph.add_edge(32, 8, res={'bw': 300, 'delay': 40})
-        graph.add_edge(33, 9, res={'bw': 300, 'delay': 40})
+        graph.add_edge(7, 32, res={'bw': 300, 'delay': 30})
+        graph.add_edge(7, 33, res={'bw': 300, 'delay': 30})
+        graph.add_edge(32, 8, res={'bw': 300, 'delay': 30})
+        graph.add_edge(33, 9, res={'bw': 300, 'delay': 30})
 
         # Links between top right
         graph.add_edge(10, 34, res={'bw': 300, 'delay': 1})
@@ -208,8 +208,8 @@ class NsMapperTester(object):
         chain.add_edge(1, 3, bw=0, delay=3)
         chain.add_edge(2, 4, bw=0, delay=70)
         chain.add_edge(3, 4, bw=0, delay=70)
-        chain.add_edge(4, 5, bw=0, delay=110)
-        chain.add_edge(4, 6, bw=0, delay=110)
+        chain.add_edge(4, 5, bw=0, delay=200)
+        chain.add_edge(4, 6, bw=0, delay=200)
 
         ns = NS.NS()
         ns.setChain(chain)
@@ -761,7 +761,28 @@ class NsMapperTester(object):
 
         # No tabu iterations (same as greedy)
         mapping = mapper.tabu(0, 1, ns, 10, 0)
-        if mapping.getPath('start', 1) == [(1, 2)] and\
+        if mapping.getPath('start', 1) == [(1, 1)] and\
+                mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
+                mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
+                mapping.getPath(2, 4) == [(2, 24), (24, 4)] and\
+                mapping.getPath(3, 4) == [(3, 23), (23, 4)] and\
+                mapping.getPath(4, 6) == [(4, 30), (30, 5)] and\
+                mapping.getPath(4, 5) == [(4, 31), (31, 6)] and\
+                mapping.getServerMapping(1) == 1 and\
+                mapping.getServerMapping(2) == 2 and\
+                mapping.getServerMapping(3) == 3 and\
+                mapping.getServerMapping(4) == 4 and\
+                mapping.getServerMapping(5) == 6 and\
+                mapping.getServerMapping(6) == 5:
+            print '  first tabu mapping 0 iterations: OK'
+        else:
+            print '  first tabu mapping 0 iterations: ERR'
+        mapper.freeMappings()
+
+        # 1 tabu iteration
+        mapping = mapper.tabu(0, 1, ns, 10, 1)
+        print mapping
+        if mapping.getPath('start', 1) == [(1, 1)] and\
                 mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
                 mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
                 mapping.getPath(2, 4) == [(2, 24), (24, 4)] and\
@@ -787,6 +808,7 @@ if __name__ == '__main__':
     # tester.testSmartRandomWalk()
     # tester.testBFS()
     # tester.greedyNsBunch(100)
-    tester.testModifyMappedPath()
+    # tester.testModifyMappedPath()
+    tester.testTabu()
 
 

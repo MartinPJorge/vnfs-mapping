@@ -367,8 +367,8 @@ class NsMapper(object):
         nsMapping, bestNsMapping = None, None
 
         if initial == 'greedy':
-            currSol, mappings, bestDelay, nsMapping = self.greedy(domain,
-                    entryServer, ns, method=method, depth=depth)
+            nsMapping = self.greedy(domain, entryServer, ns, method=method,
+                    depth=depth)
             bestNsMapping = nsMapping.copy()
         else:
             # TODO - other methods to retrieve an initial solution
@@ -379,15 +379,19 @@ class NsMapper(object):
 
         # Initialize blocking and iterators dictionaries
         ns.initIter()
-        while ns.iterNext() != []:
-            vnf = ns.currIterId()
+        vnf = ns.currIterId()
+        while vnf != 'end':
+            vnfRes = ns.getVnf(vnf)
             capable = self.__multiDomain.getCapableServers(domain,
                     vnfRes['cpu'], vnfRes['memory'], vnfRes['disk'])
+            blocks[vnf] = dict()
             for server in capable:
-                blocks[vnf][server] = False if server != mappings[vnf]\
-                    else iters
-            iterators[vnf]['it'] = 0
-            iterators[vnf]['len'] = len(capable) 
+                if server != nsMapping.getServerMapping(vnf):
+                    blocks[vnf][server] = False
+            blocks[vnf][nsMapping.getServerMapping(vnf)] = block
+
+            ns.iterNext()
+            vnf = ns.currIterId()
 
         ###############
         ## Main loop ##
@@ -397,12 +401,14 @@ class NsMapper(object):
             # Obtain current VNFs to force their new mapping
             ns.iterNext()
             currVnf = ns.currIterId()
-            currServer = mappings[currVnf] if currVnf != 'start'\
-                    else entryServer
+            currServer = nsMapping.getServerMapping(currVnf)\
+                    if currVnf != 'start' else entryServer
             if currVnf == 'end':
                 ns.initIter()
                 ns.iterNext()
                 currVnf = ns.currIterId()
+
+            print '  currVnf=' + str(currVnf)
 
             # Obtain info. to perform new mapping
             currCapables = dict()
@@ -416,14 +422,14 @@ class NsMapper(object):
             prevServers = []
             prevVnfs = ns.prevVNFs(currVnf)
             for vnf in prevVnfs:
-                prevServers += [mappings[vnf] if vnf != 'start'\
-                        else entryServer]
+                prevServers += [nsMapping.getServerMapping(vnf)
+                        if vnf != 'start' else entryServer]
 
             ###################
             ## Previous VNFs ##
             ###################
             keepSearch, i = True, 0
-            while keepSearch and i < len(mappedVnfs):
+            while keepSearch and i < len(prevVnfs):
                 prevVnf = prevVnfs[i]
                 prevServer = prevServers[i]
                 linkRes = ns.getLink(prevVnf, currVnf)
@@ -455,11 +461,13 @@ class NsMapper(object):
             # currCapables=[endServer] if a path prev---curr has been found
             mappedServer = None
             if len(currCapables) == 1:
-                mappedServer == currCapables[0]
-                blocks[nextVnf][mappedServer] = iters * vnfsNum
+                mappedServer = currCapables[0]
+                blocks[currVnf][mappedServer] = iters * vnfsNum
+            print '    mappedServer=' + str(mappedServer)
+            print '    prevMappings=' + str(prevMappings)
 
             # Search path from new vnf to next ones
-            prevSuccess = len(prevMappings) == len(prevVnf) and\
+            prevSuccess = len(prevMappings) == len(prevVnfs) and\
                     None not in prevMappings
             afterVnfs = ns.getNextVNFs(currVnf)
             afterMappings, afterDelays, afterServers = [], [], []
@@ -467,30 +475,31 @@ class NsMapper(object):
             if prevSuccess and afterVnfs != []:
                 # Obtain servers where next vnfs are mapped
                 for vnf in afterVnfs:
-                    afterServers += [mappings[vnf]]
+                    afterServers += [nsMapping.getServerMapping(vnf)]
 
                 ################
                 ## After VNFs ##
                 ################
+                print '    afterServers=' + str(afterServers)
                 keepSearch, i = True, 0
                 while keepSearch and i < len(afterVnfs):
                     linkRes = ns.getLink(currVnf, afterVnfs[i])
 
                     if method == 'Dijkstra':
                         afterPath, afterDelay = self.constrainedDijkstra(
-                                domain, prevServer, [afterServers[i]],
+                                domain, mappedServer, [afterServers[i]],
                                 linkRes['delay'], linkRes['bw'])
                     elif method == 'BFS':
-                        afterPath, afterDelay = self.BFS(domain, prevServer,
+                        afterPath, afterDelay = self.BFS(domain, mappedServer,
                                 [afterServers[i]], linkRes['delay'],
                                 linkRes['bw'])
                     elif method == 'backtracking':
                         afterPath, afterDelay = self.smartRandomWalk(domain,
-                                prevServer, [afterServers[i]],
+                                mappedServer, [afterServers[i]],
                                 linkRes['delay'], linkRes['bw'])
                     elif method == 'random':
                         afterPath, afterDelay = self.randomWalk(domain,
-                                prevServer, [afterServers[i]],
+                                mappedServer, [afterServers[i]],
                                 linkRes['delay'], linkRes['bw'])
                     
                     if afterPath == None:
@@ -500,9 +509,12 @@ class NsMapper(object):
                         afterDelays.append(afterDelay)
                         i += 1
 
+            print '  afterMappings=' + str(afterMappings)
+            print '  afterDelays=' + str(afterDelays)
             # All remappings successfully performed
             if prevSuccess and len(afterMappings) == len(afterVnfs):
-
+                print '    encontre solucion mejopr'
+                
                 lastWatchDog = self.getLastWatchDog()
                 for prevVnf, prevMap in zip(prevVnfs, prevMappings):
                     lastWatchDog.changeConnection(prevVnf, currVnf, prevMap)
@@ -511,18 +523,30 @@ class NsMapper(object):
                     lastWatchDog.changeConnection(currVnf, afterVnf, afterMap)
                     nsMapping.setPath(currVnf, afterVnf, afterMap)
 
-                nsMapping.changeVnfMapping(currVnf, prevVnf, afterVnfs,
+                nsMapping.changeVnfMapping(currVnf, prevVnfs, afterVnfs,
                         prevDelays, afterDelays)
-                newDelay = nsMapping.getDelay()
-                if newDelay < bestDelay:
+                print '    delay despyes=' + str(nsMapping.getDelay())
+                if nsMapping.getDelay() < bestNsMapping.getDelay():
+                    print ' entoooooooooooooooooooooo'
                     bestNsMapping = nsMapping.copy()
-                    bestDelay = newDelay
+
+                blocks[currVnf][mappedServer] = block + 1
 
             # Decrement blocking counters
             for vnf in blocks.keys():
                 for server in blocks[vnf].keys():
                     blocked = blocks[vnf][server]
                     blocks[vnf][server] = blocked - 1 if blocked else False
+            print '-----------------------------'
+            print nsMapping
+            print '-----------------------------'
+            print ''
+
+            
+        for vnf in range(1, 7):
+            print 'vnf:' + str(vnf) + ' delay=' + str(nsMapping.getVnfDelay(vnf))
+
+        return bestNsMapping
 
 
     # TODO - is this neccesary?

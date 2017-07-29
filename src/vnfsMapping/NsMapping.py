@@ -46,6 +46,7 @@ class NsMapping(object):
         nsMappingCopy._NsMapping__vnfDelays = dict(self.__vnfDelays)
         nsMappingCopy._NsMapping__lnkDelays = dict(self.__lnkDelays)
         nsMappingCopy._NsMapping__mappings = dict(self.__mappings)
+        nsMappingCopy._NsMapping__serverMappings = dict(self.__serverMappings)
 
         return nsMappingCopy
 
@@ -125,6 +126,8 @@ class NsMapping(object):
         if vnf2Delay == None or (vnf2Delay != None and aggDelay > vnf2Delay):
             self.__setVnfDelay(vnf2, aggDelay)
             if aggDelay > self.__mappingDelay:
+                print '    mappingDelay' + str(self.__mappingDelay)
+                print '    actualizo delay total: ' + str(aggDelay)
                 self.__mappingDelay = aggDelay
 
 
@@ -199,6 +202,9 @@ class NsMapping(object):
                 lnkDelay = self.getLnkDelay(vnf, nextVnf)
                 DFS(maxDelay + lnkDelay, nextVnf)
 
+        print '    allDelay-1=' + str(self.__mappingDelay)
+        print '    prevVnfs dentro=' + str(prevVnfs)
+        print '    prevDelays dentro=' + str(prevDelays)
         # Set previous links' delays and changed VNF delay
         self.__mappingDelay = -1 # force NS delay refresh
         self.__vnfDelays[vnf] = None # force VNF delay refresh
@@ -206,10 +212,13 @@ class NsMapping(object):
             self.setLnkDelayAndRefresh(prevVnf, vnf, prevDelay)
         refreshed[vnf] = True
 
+        print '    afterVNFs dentro=' + str(afterVnfs)
         # Set after links delay and refresh NS delay
         for afterVnf, afterDelay in zip(afterVnfs, afterDelays):
             self.setLnkDelay(vnf, afterVnf, afterDelay)
+        print '    allDelay=' + str(self.__mappingDelay)
         DFS(self.getVnfDelay(vnf), vnf)
+        print '    allDelay2=' + str(self.__mappingDelay)
 
 
 
