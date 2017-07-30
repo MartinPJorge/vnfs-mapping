@@ -13,7 +13,10 @@ class NsMapping(object):
         self.__lnkDelays = dict()
         self.__mappings = dict()
         self.__serverMappings = dict()
+        self.__branchHeadDelays = dict()
 
+        for branchHead in self.__ns.getBranchHeads():
+            self.__branchHeadDelays[branchHead] = 0
         self.__vnfDelays['start'] = 0
 
 
@@ -27,6 +30,17 @@ class NsMapping(object):
         for vnf in self.__serverMappings:
             st += '\n  vnf:' + str(vnf) + ' --- server:' +\
                 str(self.__serverMappings[vnf])
+
+        st += '\nVNF delays :'
+        for vnf in self.__vnfDelays:
+            st += '\n  vnf:' + str(vnf) + ', delay: ' +\
+                str(self.__vnfDelays[vnf])
+
+        st += '\nBranch head VNFs:'
+        for vnf in self.__branchHeadDelays:
+            st += '\n vnf:' + str(vnf) + ', delay: ' +\
+                str(self.__branchHeadDelays[vnf])
+
         st += '\nPaths:'
         for (vnf1, vnf2) in self.__mappings:
             st += '\n  (' + str(vnf1) + ', ' + str(vnf2) + '): ' +\
@@ -111,6 +125,7 @@ class NsMapping(object):
         """Sets the mapping delay between vnf1 and vnf2.
             It sets/refresh vnf2 delay as well.
         WARNING: method assumes that vnf1 delay is set
+        WARNING: this method is used on creation time
 
         :vnf1: vnf1 id
         :vnf2: vnf2 id
@@ -125,9 +140,9 @@ class NsMapping(object):
         vnf2Delay = self.getVnfDelay(vnf2)
         if vnf2Delay == None or (vnf2Delay != None and aggDelay > vnf2Delay):
             self.__setVnfDelay(vnf2, aggDelay)
+            if vnf2 in self.__branchHeadDelays:
+                self.__branchHeadDelays[vnf2] = aggDelay
             if aggDelay > self.__mappingDelay:
-                print '    mappingDelay' + str(self.__mappingDelay)
-                print '    actualizo delay total: ' + str(aggDelay)
                 self.__mappingDelay = aggDelay
 
 
@@ -164,6 +179,26 @@ class NsMapping(object):
         return None if (vnf1, vnf2) not in self.__lnkDelays\
                 else self.__lnkDelays[(vnf1, vnf2)]
     
+    
+    def __changeBranchHeadDelay(self, vnf, delay):
+        """Changes the delay of the vnf in a branch head, and refreshes the
+        overall NS mapping delay
+        
+        :vnf: id of the branch head VNF
+        :delay: maximum delay it takes to reach vnf
+        :returns: Nothing"""
+        self.__branchHeadDelays[vnf] = delay
+        self.__vnfDelays[vnf] = delay
+
+        # Get new biggest branch head delay
+        maxHeadDelay = 0
+        for branchHead in self.__branchHeadDelays:
+            branchHeadDelay = self.__branchHeadDelays[branchHead]
+            if branchHeadDelay > maxHeadDelay:
+                maxHeadDelay = branchHeadDelay
+
+        self.__mappingDelay = maxHeadDelay
+
 
     def changeVnfMapping(self, vnf, prevVnfs, afterVnfs, prevDelays,
             afterDelays):
@@ -177,48 +212,40 @@ class NsMapping(object):
         :afterDelays: list of after VNFs' delays
         :returns: Nothing
         """
-        refreshed = dict()
-        def DFS(accumDelay, vnf):
+        def DFS(vnf):
             """Performs a DFS to refresh delays of VNFs after vnf
             
-            :accumDelay: accumulated delay to reach vnf
             :vnf: index VNF to be refreshed
             :returns: Nothing
             """
-            # Refresh the VNF delay if neccessary
-            vnfDelay = self.getVnfDelay(vnf)
-            maxDelay = vnfDelay
-            if vnf not in refreshed or (vnf in refreshed\
-                    and accumDelay > vnfDelay):
-                refreshed[vnf] = True
-                self.__setVnfDelay(vnf, accumDelay)
-                maxDelay = accumDelay
-            if self.__mappingDelay < maxDelay:
-                self.__mappingDelay = maxDelay
+            # Retrieve max delay to reach vnf
+            prevVnfs = self.__ns.prevVNFs(vnf)
+            prevMaxDelay = -1
+            for prevVnf in prevVnfs:
+                prevDelay = self.getVnfDelay(prevVnf) +\
+                        self.getLnkDelay(prevVnf, vnf)
+                if prevDelay > prevMaxDelay:
+                    prevMaxDelay = prevDelay
 
-            # Recurse into next VNFs to refresh their delays
+            # Refresh vnf delay depending if it is branch head or not
+            if vnf in self.__branchHeadDelays:
+                self.__changeBranchHeadDelay(vnf, prevMaxDelay)
+            else:
+                self.__setVnfDelay(vnf, prevMaxDelay)
+
+            # Recurse into next VNFs
             nextVnfs = self.__ns.getNextVNFs(vnf)
             for nextVnf in nextVnfs:
-                lnkDelay = self.getLnkDelay(vnf, nextVnf)
-                DFS(maxDelay + lnkDelay, nextVnf)
+                DFS(nextVnf)
 
-        print '    allDelay-1=' + str(self.__mappingDelay)
-        print '    prevVnfs dentro=' + str(prevVnfs)
-        print '    prevDelays dentro=' + str(prevDelays)
-        # Set previous links' delays and changed VNF delay
-        self.__mappingDelay = -1 # force NS delay refresh
-        self.__vnfDelays[vnf] = None # force VNF delay refresh
+
+        # Set previous and after link delays
         for prevVnf, prevDelay in zip(prevVnfs, prevDelays):
-            self.setLnkDelayAndRefresh(prevVnf, vnf, prevDelay)
-        refreshed[vnf] = True
-
-        print '    afterVNFs dentro=' + str(afterVnfs)
-        # Set after links delay and refresh NS delay
+            self.setLnkDelay(prevVnf, vnf, prevDelay)
         for afterVnf, afterDelay in zip(afterVnfs, afterDelays):
             self.setLnkDelay(vnf, afterVnf, afterDelay)
-        print '    allDelay=' + str(self.__mappingDelay)
-        DFS(self.getVnfDelay(vnf), vnf)
-        print '    allDelay2=' + str(self.__mappingDelay)
+
+        DFS(vnf)
 
 
 

@@ -216,6 +216,7 @@ class NsMapperTester(object):
         ns.setSplitsNum(2)
         ns.setBranchNum(2)
         ns.setMaxSplitW(2)
+        ns.setBranchHeads([5, 6])
 
         return ns
 
@@ -785,19 +786,21 @@ class NsMapperTester(object):
         if mapping.getPath('start', 1) == [(1, 1)] and\
                 mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
                 mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
-                mapping.getPath(2, 4) == [(2, 24), (24, 4)] and\
-                mapping.getPath(3, 4) == [(3, 23), (23, 4)] and\
-                mapping.getPath(4, 6) == [(4, 30), (30, 5)] and\
-                mapping.getPath(4, 5) == [(4, 31), (31, 6)] and\
+                mapping.getPath(2, 4) == [(2, 26), (26, 7)] and\
+                mapping.getPath(3, 4) == [(3, 25), (25, 7)] and\
+                mapping.getPath(4, 6) == [(7, 32), (32, 8)] and\
+                mapping.getPath(4, 5) == [(7, 33), (33, 9)] and\
                 mapping.getServerMapping(1) == 1 and\
                 mapping.getServerMapping(2) == 2 and\
                 mapping.getServerMapping(3) == 3 and\
-                mapping.getServerMapping(4) == 4 and\
-                mapping.getServerMapping(5) == 6 and\
-                mapping.getServerMapping(6) == 5:
-            print '  first tabu mapping 0 iterations: OK'
+                mapping.getServerMapping(4) == 7 and\
+                mapping.getServerMapping(5) == 9 and\
+                mapping.getServerMapping(6) == 8 and\
+                mapping.getDelay() == 102:
+            print '  first tabu mapping 1 iterations: OK'
         else:
-            print '  first tabu mapping 0 iterations: ERR'
+            print '  first tabu mapping 1 iterations: ERR'
+
 
 
 if __name__ == '__main__':

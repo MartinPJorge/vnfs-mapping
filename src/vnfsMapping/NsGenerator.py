@@ -231,6 +231,7 @@ class NSgenerator(object):
         ns.setBranchNum(maxBranches)
         ns.setSplitsNum(maxSplits)
         ns.setMaxSplitW(maxSplitW)
+        ns.setBranchHeads(branchHeads)
 
         return ns
 

@@ -50,6 +50,7 @@ class NsMappingTester(object):
         ns.setSplitsNum(3)
         ns.setBranchNum(2)
         ns.setMaxSplitW(2)
+        ns.setBranchHeads([8, 9])
 
         return ns
 

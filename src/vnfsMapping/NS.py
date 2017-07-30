@@ -23,6 +23,7 @@ class NS(object):
         self.__maxSplitW = None
         self.__prevNeighsCache = dict()
         self.__nextNeighsCache = dict()
+        self.__branchHeads = dict()
 
 
     def __str__(self):
@@ -301,6 +302,38 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
         """
         
         self.__maxSplitW = maxSplitW
+
+
+    def addBranchHead(self, vnf):
+        """Include the vnf in the branch heads list.
+        
+        :vnf: vnf id of the branch head
+        :returns: Nothing"""
+        self.__branchHeads[vnf] = True
+
+
+    def setBranchHeads(self, branchHeads):
+        """Sets the branch heads of the NS chain
+        
+        :branchHeads: list with VNFs that are the branch heads
+        :returns: Nothing"""
+        for branchHead in branchHeads:
+            self.__branchHeads[branchHead] = True
+
+
+    def getBranchHeads(self):
+        """Returns the branch heads of the NS chain
+        
+        :returns: list of VNF id that are branch heads"""
+        return [branchHead for branchHead in self.__branchHeads]
+
+
+    def isBranchHead(self, vnf):
+        """Determines if the vnf is a branch head of the NS chain.
+        
+        :vnf: vnf id
+        :returns: True/False"""
+        return vnf in self.__branchHeads
 
 
     def getLink(self, A, B):
