@@ -61,6 +61,8 @@ class NsMapping(object):
         nsMappingCopy._NsMapping__lnkDelays = dict(self.__lnkDelays)
         nsMappingCopy._NsMapping__mappings = dict(self.__mappings)
         nsMappingCopy._NsMapping__serverMappings = dict(self.__serverMappings)
+        nsMappingCopy._NsMapping__branchHeadDelays =\
+            dict(self.__branchHeadDelays)
 
         return nsMappingCopy
 

@@ -408,8 +408,6 @@ class NsMapper(object):
                 ns.iterNext()
                 currVnf = ns.currIterId()
 
-            print '  currVnf=' + str(currVnf)
-
             # Obtain info. to perform new mapping
             currCapables = dict()
             for server in blocks[currVnf].keys():
@@ -463,8 +461,6 @@ class NsMapper(object):
             if len(currCapables) == 1:
                 mappedServer = currCapables[0]
                 blocks[currVnf][mappedServer] = iters * vnfsNum
-            print '    mappedServer=' + str(mappedServer)
-            print '    prevMappings=' + str(prevMappings)
 
             # Search path from new vnf to next ones
             prevSuccess = len(prevMappings) == len(prevVnfs) and\
@@ -480,7 +476,6 @@ class NsMapper(object):
                 ################
                 ## After VNFs ##
                 ################
-                print '    afterServers=' + str(afterServers)
                 keepSearch, i = True, 0
                 while keepSearch and i < len(afterVnfs):
                     linkRes = ns.getLink(currVnf, afterVnfs[i])
@@ -509,11 +504,8 @@ class NsMapper(object):
                         afterDelays.append(afterDelay)
                         i += 1
 
-            print '  afterMappings=' + str(afterMappings)
-            print '  afterDelays=' + str(afterDelays)
             # All remappings successfully performed
             if prevSuccess and len(afterMappings) == len(afterVnfs):
-                print '    encontre solucion mejopr'
                 
                 lastWatchDog = self.getLastWatchDog()
                 for prevVnf, prevMap in zip(prevVnfs, prevMappings):
@@ -525,9 +517,7 @@ class NsMapper(object):
 
                 nsMapping.changeVnfMapping(currVnf, prevVnfs, afterVnfs,
                         prevDelays, afterDelays)
-                print '    delay despyes=' + str(nsMapping.getDelay())
                 if nsMapping.getDelay() < bestNsMapping.getDelay():
-                    print ' entoooooooooooooooooooooo'
                     bestNsMapping = nsMapping.copy()
 
                 blocks[currVnf][mappedServer] = block + 1
@@ -537,14 +527,6 @@ class NsMapper(object):
                 for server in blocks[vnf].keys():
                     blocked = blocks[vnf][server]
                     blocks[vnf][server] = blocked - 1 if blocked else False
-            print '-----------------------------'
-            print nsMapping
-            print '-----------------------------'
-            print ''
-
-            
-        for vnf in range(1, 7):
-            print 'vnf:' + str(vnf) + ' delay=' + str(nsMapping.getVnfDelay(vnf))
 
         return bestNsMapping
 

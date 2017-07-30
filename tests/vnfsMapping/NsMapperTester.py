@@ -286,6 +286,7 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=0, delay=90)
         chain.add_edge(1, 2, bw=0, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([2])
 
         nsMapping = mapper.greedy(0, 1, ns)
         if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
@@ -306,6 +307,7 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=0, delay=90)
         chain.add_edge(1, 2, bw=0, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([2])
         nsMapping = mapper.greedy(0, 1, ns)
         if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
                 nsMapping.getPath(1, 2) == [(4, 5)] and\
@@ -325,6 +327,7 @@ class NsMapperTester(object):
         chain.add_node(1, memory=0, disk=0, cpu=0)
         chain.add_edge('start', 1, bw=200, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([1])
 
         nsMapping = mapper.greedy(0, 1, ns)
         if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
@@ -342,6 +345,7 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=0, delay=90)
         chain.add_edge(1, 2, bw=250, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([2])
     
         nsMapping = mapper.greedy(0, 1, ns)
         if nsMapping.getPath('start', 1) == [(1, 3), (3, 4)] and\
@@ -361,6 +365,7 @@ class NsMapperTester(object):
         chain.add_edge('start', 1, bw=50, delay=90)
         chain.add_edge(1, 2, bw=30000, delay=0)
         ns.setChain(chain)
+        ns.setBranchHeads([2])
     
         nsMapping = mapper.greedy(0, 1, ns)
         if nsMapping.getPath('start', 1) == [(1, 3), (3, 6), (6, 5)] and\
@@ -379,6 +384,7 @@ class NsMapperTester(object):
         chain.add_node(1, memory=0, disk=0, cpu=0)
         chain.add_edge('start', 1, bw=200, delay=19)
         ns.setChain(chain)
+        ns.setBranchHeads([1])
 
         nsMapping = mapper.greedy(0, 1, ns)
         if nsMapping != None:
@@ -407,6 +413,7 @@ class NsMapperTester(object):
         chain.add_edge(3, 4, bw=100, delay=100)
         chain.add_edge(2, 4, bw=100, delay=100)
         ns.setChain(chain)
+        ns.setBranchHeads([4])
 
         mapper = NSM.NsMapper(md)
         nsMapping = mapper.greedy(0, 1, ns)
@@ -457,6 +464,7 @@ class NsMapperTester(object):
         chain.add_node(1, memory=0, disk=10, cpu=0)
         chain.add_edge('start', 1, bw=250, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([1])
 
         path, delay = mapper.randomWalk(0, 1, {4: None, 5: None}, 90, 250)
         if path == None or (path == [(1, 3), (3, 6), (6, 5)] and delay == 20):
@@ -493,6 +501,7 @@ class NsMapperTester(object):
         chain.add_node(1, memory=0, disk=10, cpu=0)
         chain.add_edge('start', 1, bw=250, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([1])
 
         path, delay = mapper.smartRandomWalk(0, 1, {4: None, 5: None}, 20,
                 250)
@@ -540,6 +549,7 @@ class NsMapperTester(object):
         chain.add_node(1, memory=0, disk=10, cpu=0)
         chain.add_edge('start', 1, bw=250, delay=90)
         ns.setChain(chain)
+        ns.setBranchHeads([1])
 
         path, delay = mapper.BFS(0, 1, {4: None, 5: None}, 20, 250)
         if path == [(1, 3), (3, 6), (6, 5)] and delay == 20:
@@ -644,6 +654,7 @@ class NsMapperTester(object):
         graph.add_edge(2, 3)
         ns = NS.NS()
         ns.setChain(graph)
+        ns.setBranchHeads([3])
 
         mapper = NSM.NsMapper(self.__genMultiDomain()) # the multiDomain does
                                                        # not matter
@@ -730,6 +741,7 @@ class NsMapperTester(object):
         graph.add_edge(1, 2)
         ns = NS.NS()
         ns.setChain(graph)
+        ns.setBranchHeads([2])
 
         mapping = {1: 1, 2: 3}
         path = [(1, 1), (1, 2), (2, 3)]
@@ -760,6 +772,10 @@ class NsMapperTester(object):
         ns = self.__genTabuNS()
         mapper = NSM.NsMapper(md)
 
+        print '##########'
+        print '## tabu ##'
+        print '##########'
+
         # No tabu iterations (same as greedy)
         mapping = mapper.tabu(0, 1, ns, 10, 0)
         if mapping.getPath('start', 1) == [(1, 1)] and\
@@ -782,7 +798,6 @@ class NsMapperTester(object):
 
         # 1 tabu iteration
         mapping = mapper.tabu(0, 1, ns, 10, 1)
-        print mapping
         if mapping.getPath('start', 1) == [(1, 1)] and\
                 mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
                 mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
@@ -797,9 +812,52 @@ class NsMapperTester(object):
                 mapping.getServerMapping(5) == 9 and\
                 mapping.getServerMapping(6) == 8 and\
                 mapping.getDelay() == 102:
-            print '  first tabu mapping 1 iterations: OK'
+            print '  second tabu mapping 1 iterations: OK'
         else:
-            print '  first tabu mapping 1 iterations: ERR'
+            print '  second tabu mapping 1 iterations: ERR'
+        mapper.freeMappings()
+
+        # 2 tabu iteration
+        mapping = mapper.tabu(0, 1, ns, 10, 2)
+        if mapping.getPath('start', 1) == [(1, 1)] and\
+                mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
+                mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
+                mapping.getPath(2, 4) == [(2, 28), (28, 10)] and\
+                mapping.getPath(3, 4) == [(3, 27), (27, 10)] and\
+                mapping.getPath(4, 6) == [(10, 34), (34, 11)] and\
+                mapping.getPath(4, 5) == [(10, 35), (35, 12)] and\
+                mapping.getServerMapping(1) == 1 and\
+                mapping.getServerMapping(2) == 2 and\
+                mapping.getServerMapping(3) == 3 and\
+                mapping.getServerMapping(4) == 10 and\
+                mapping.getServerMapping(5) == 12 and\
+                mapping.getServerMapping(6) == 11 and\
+                mapping.getDelay() == 64:
+            print '  third tabu mapping 3 iterations: OK'
+        else:
+            print '  third tabu mapping 3 iterations: ERR'
+        mapper.freeMappings()
+
+        # 8 tabu iteration
+        mapping = mapper.tabu(0, 1, ns, 10, 2)
+        if mapping.getPath('start', 1) == [(1, 1)] and\
+                mapping.getPath(1, 2) == [(1, 20), (20, 2)] and\
+                mapping.getPath(1, 3) == [(1, 21), (21, 3)] and\
+                mapping.getPath(2, 4) == [(2, 28), (28, 10)] and\
+                mapping.getPath(3, 4) == [(3, 27), (27, 10)] and\
+                mapping.getPath(4, 6) == [(10, 34), (34, 11)] and\
+                mapping.getPath(4, 5) == [(10, 35), (35, 12)] and\
+                mapping.getServerMapping(1) == 1 and\
+                mapping.getServerMapping(2) == 2 and\
+                mapping.getServerMapping(3) == 3 and\
+                mapping.getServerMapping(4) == 10 and\
+                mapping.getServerMapping(5) == 12 and\
+                mapping.getServerMapping(6) == 11 and\
+                mapping.getDelay() == 64:
+            print '  fourth tabu mapping 8 iterations: OK'
+        else:
+            print '  fourth tabu mapping 8 iterations: ERR'
+        mapper.freeMappings()
 
 
 
@@ -810,8 +868,8 @@ if __name__ == '__main__':
     # tester.testRandomWalk()
     # tester.testSmartRandomWalk()
     # tester.testBFS()
-    # tester.greedyNsBunch(100)
+    tester.greedyNsBunch(100)
     # tester.testModifyMappedPath()
-    tester.testTabu()
+    # tester.testTabu()
 
 
