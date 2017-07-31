@@ -185,10 +185,10 @@ class MultiDomain(object):
         return delay
 
 
-    # TODO - maybe it's not needed
     @staticmethod
     def yieldMultiDomain(domains, meshDegree, fatTreeDegrees, meshLnkRes,
-            fatLnkRes, servRes):
+            fatLnkRes, servRes, meshProps=None, fatLnkProps=None,
+            fatSrvProps=None):
         """Generates a MultiDomain based on the specified arguments
 
         :param domains: number of domains composing the graph
@@ -197,6 +197,11 @@ class MultiDomain(object):
         :param meshLnkRes: dictionary with mesh links resources thresholds
         :param fatLnkRes: dictionary with fat-tree link resources thresholds
         :param serverRes: dictionary with server resources thresholds
+        :param meshProps: list of mesh proportions for resource sharing
+        :param fatLnkProps: list of lists with fat tree shared link
+            proportions
+        :param fatSrvProps: list of lists with fat tree shared server
+            proportions
 
         """
 
@@ -268,7 +273,8 @@ class MultiDomain(object):
 
 
     def initialize(self, domains, meshDegree, fatTreeDegrees, foreignPods,
-            meshLnkRes, fatLnkRes, servRes):
+            meshLnkRes, fatLnkRes, servRes, meshProps=None, fatLnkProps=None,
+            fatSrvProps=None):
         """Initializes a MultiDomain instance based on specified arguments
 
         :param domains: number of domains composing the graph
@@ -278,6 +284,11 @@ class MultiDomain(object):
         :param meshLnkRes: dictionary with mesh links resources thresholds
         :param fatLnkRes: dictionary with fat-tree link resources thresholds
         :param serverRes: dictionary with server resources thresholds
+        :param meshProps: list of mesh proportions for resource sharing
+        :param fatLnkProps: list of lists with fat tree shared link
+            proportions
+        :param fatSrvProps: list of lists with fat tree shared server
+            proportions
         :returns: Nothing
 
         """
@@ -305,8 +316,9 @@ class MultiDomain(object):
         for domain in range(self.__domains):
             domainsViews.append(generator.createDomainView(globalView, domain,
                 foreignPods[domain]))
-        generator.issueMeshBw(globalView, domainsViews)
-        generator.issueFatRes(globalView, domainsViews)
+        generator.issueMeshBw(globalView, domainsViews, shareProps=meshProps)
+        generator.issueFatRes(globalView, domainsViews,
+                fatLnkProps=fatLnkProps, fatSrvProps=fatLnkProps)
 
         self.__globalView = globalView
         self.__domainsViews = domainsViews

@@ -88,9 +88,43 @@ class NsGeneratorTester(object):
             print '  no failure on chain generation!'
 
 
+    def testNsBunchWriteRead(self):
+        """Tests the write and read of NS bunch
+        :returns: Nothing
+
+        """
+        print '##########################'
+        print '## testNsBunchWriteRead ##'
+        print '##########################'
+
+        numNs = 20
+        bwTh = { 'min': 100, 'max': 100 }
+        delayTh = { 'min': 100, 'max': 100 }
+        memoryTh = { 'min': 100, 'max': 100 }
+        diskTh = { 'min': 100, 'max': 100 }
+        cpuTh = { 'min': 100, 'max': 100 }
+        splits = 4
+        splitWidth = 2
+        branches = 3
+        vnfs = 10
+        nsBunch = NsG.NSgenerator.genNsBunch(numNs, bwTh, delayTh, memoryTh, diskTh,
+                cpuTh, splits, splitWidth, branches, vnfs)
+
+        NsG.NSgenerator.writeNsBunch(nsBunch, 'testNsBunchWriteRead')
+        readNsBunch = NsG.NSgenerator.readNsBunch('testNsBunchWriteRead')
+
+        allEqual = True
+        for i in range(len(readNsBunch)):
+            allEqual = allEqual and nsBunch[i].equal(readNsBunch[i])
+        if allEqual:
+            print '  read/write NsBunch: OK'
+        else:
+            print '  read/write NsBunch: ERR'
+
 
 if __name__ == '__main__':
     tester = NsGeneratorTester()
     tester.testYield()
+    tester.testNsBunchWriteRead()
 
 

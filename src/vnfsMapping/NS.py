@@ -1,4 +1,5 @@
 import networkx as nx
+import networkx.algorithms.isomorphism as iso
 import json
 import os
 
@@ -381,24 +382,33 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
             return resources
 
     
-    def write(self, storedName):
+    def write(self, storedName, absPath=None):
         """Writes the NS chain and saves it under the specified storedName
         directory
 
         :storedName: name of the directory under which the NS chain will be
             stored
+        :absPath: optional parameter to specify the absolute path under which
+            the NS will be stored
         :returns: Nothing
 
         """
-
-        basePath = nsAbsPath + '/' + storedName + '/'
+        basePath = None
+        if not absPath:
+            basePath = nsAbsPath + '/' + storedName + '/'
+        else:
+            basePath = absPath + '/' + storedName + '/'
         if not os.path.exists(basePath):
             os.makedirs(basePath)
         nx.write_gml(self.__chain, basePath + 'chain.gml')
 
         # Write the properties as well
-        props = { 'branches': self.__branches, 'splits': self.__splits,
-                'maxSplitW': self.__maxSplitW }
+        props = {
+            'branches': self.__branches,
+            'splits': self.__splits,
+            'maxSplitW': self.__maxSplitW ,
+            'branchHeads': self.__branchHeads
+        }
         with open(basePath + 'props.json', 'w') as f:
             json.dump(props, f)
     
@@ -488,16 +498,22 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
 
     
     @staticmethod
-    def read(storedName):
+    def read(storedName, absPath=None):
         """Reads a NS chain stored under the provided storedName directory
 
         :storedName: name of the directory under which the NS chain will be
             stored
+        :absPath: optional parameter to specify the absolute path under which
+            the NS will be stored
         :returns: a NS chain instance
 
         """
         
-        basePath = nsAbsPath + '/' + storedName + '/'
+        basePath = 0
+        if not absPath:
+            basePath = nsAbsPath + '/' + storedName + '/'
+        else:
+            basePath = absPath + '/' + storedName + '/'
         props = None
 
         # Read from files
@@ -511,6 +527,32 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
         ns.setBranchNum(props['branches'])
         ns.setSplitsNum(props['splits'])
         ns.setMaxSplitW(props['maxSplitW'])
+        branchHeads = dict()
+        # branchHeads keys (the vnfs) are stored as strings, convert to int
+        for vnf in props['branchHeads']:
+            branchHeads[int(vnf)] = props['branchHeads'][vnf]
+        ns.setBranchHeads(branchHeads)
         
         return ns
+
+
+    def equal(self, ns):
+        """Compares the NS with the one passed by argument
+
+        :ns: NS instance
+        :returns: True/False
+
+        """
+        same = True
+        same = same and iso.is_isomorphic(self.getChain(), ns.getChain(),
+                node_match=lambda n1Res, n2Res: n1Res == n2Res,
+                edge_match=lambda ed1Res, ed2Res: ed1Res == ed2Res)
+        same = same and self.__branches == ns._NS__branches
+        same = same and self.__splits == ns._NS__splits
+        same = same and self.__maxSplitW == ns._NS__maxSplitW
+        same = same and self.__prevNeighsCache == ns._NS__prevNeighsCache
+        same = same and self.__nextNeighsCache == ns._NS__nextNeighsCache
+        same = same and self.__branchHeads == ns._NS__branchHeads
+
+        return same
 

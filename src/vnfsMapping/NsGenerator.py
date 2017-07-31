@@ -2,6 +2,13 @@ import random
 import time
 import networkx as nx
 import NS
+import os
+
+# Global variable for the project absolute path
+absPath = os.path.abspath(os.path.dirname(__file__))
+nsAbsPath = '/'.join(absPath.split('/')[:-2]) + '/ns-chains'
+
+
 
 class NSgenerator(object):
 
@@ -234,4 +241,72 @@ class NSgenerator(object):
         ns.setBranchHeads(branchHeads)
 
         return ns
+
+
+    @staticmethod
+    def writeNsBunch(nsBunch, storedName):
+        """Stores a NS bunch
+
+        :nsBunch: list of NSs
+        :storedName: name of the directory under which the NS chain will be
+            stored
+        :returns: Nothing
+
+        """
+        basePath = nsAbsPath + '/' + storedName
+
+        nsCounter = 0
+        for ns in nsBunch:
+            ns.write('ns-' + str(nsCounter), absPath=basePath)
+            nsCounter += 1
+
+
+    @staticmethod
+    def readNsBunch(storedName):
+        """Reads a a bunch of generated NSs
+
+        :storedName: directory under which the Nss of the bunch are stored
+        :returns: list of NS instances, None in case there is an error
+        """
+        basePath = nsAbsPath + '/' + storedName
+        if not os.path.exists(basePath):
+            return None
+
+        nsBunch = []
+        numNSs = len(os.listdir(basePath))
+        for nsNum in range(numNSs):
+            nsBunch.append(NS.NS.read('ns-' + str(nsNum), absPath=basePath))
+
+        return nsBunch
+
+
+    @staticmethod
+    def genNsBunch(numNs, bwTh, delayTh, memoryTh, diskTh, cpuTh, splits,
+            splitWidth, branches, vnfs):
+        """Generate a bunch of NS instances based on the specified parameters.
+
+        :numNs: number of NS to be generated
+        :bwTh: links bw thresholds - dictionaty {'min':_, 'max': _}
+        :delayTh: links delay thresholds - dictionaty {'min':_, 'max': _}
+        :memoryTh: links memory thresholds - dictionaty {'min':_, 'max': _}
+        :diskTh: servers disks thresholds - dictionaty {'min':_, 'max': _}
+        :cpuTh: servers cpu thresholds - dictionaty {'min':_, 'max': _}
+        :splits: maximum number of splits within the generated NS chains
+        :splitWidth: maximum number of VNFs that can come up from a split in
+            the generated NS chains
+        :branches: maximum number of branches in the generated NS chains
+        :vnfs: maximum number of VNFs within the generated NS chains
+        :returns: a list of the generated NS chains
+
+        """
+        nsBunch = []
+        nsGen = NSgenerator(bwTh, delayTh, memoryTh, diskTh, cpuTh)
+
+        for _ in range(vnfs):
+            ns = nsGen.yieldChain(splits, splitWidth, branches, vnfs)
+            nsBunch.append(ns)
+
+        return nsBunch
+
+
 
