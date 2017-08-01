@@ -493,16 +493,16 @@
     },
     "servRes": {
         "memory": {
-            "min": 6,
-            "max": 6
+            "min": 228,
+            "max": 228
         },
         "cpu": {
-            "min": 6,
-            "max": 6
+            "min": 228,
+            "max": 228
         },
         "disk": {
-            "min": 29,
-            "max": 29
+            "min": 1140,
+            "max": 1140
         }
     }
 }

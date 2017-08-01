@@ -33,6 +33,21 @@ class NsBunchConfReader(object):
         self.__simName = simName
         
 
+    def __readConfig(self):
+        """Reads the configuration file for the NsBunch
+        :returns: dictionary, None in case of error
+
+        """
+        filePath = configPath + '/' + self.__simName + '/nsBunch.json'
+        if not os.path.exists(filePath):
+            return None
+
+        nsBunchProperties = None
+        with open(filePath) as f:
+            nsBunchProperties = json.load(f)
+
+        return nsBunchProperties
+
 
     def readDumped(self, multiDomain=None):
         """Reads an already dumped NS bunch based in the configuration file
@@ -47,14 +62,19 @@ class NsBunchConfReader(object):
                 '/nsBunch'):
             return None, None
 
-        return NSG.NSgenerator.readNsBunch('nsBunch', configPath + '/' +\
-                self.__simName), self.__genEntryPoints(multiDomain=multiDomain)
+        nsBunch = NSG.NSgenerator.readNsBunch('nsBunch',
+                baseAbsPath=configPath + '/' + self.__simName)
+        entryPoints = self.__genEntryPoints(len(nsBunch),
+                multiDomain=multiDomain)
+
+        return nsBunch, entryPoints
 
 
-    def __genEntryPoints(self, multiDomain=None):
+    def __genEntryPoints(self, requests, multiDomain=None):
         """Generates the entry points list. This implies writting the JSON file
         or reading it, if it has already been created.
 
+        :requests: number of requests to obtain entry points from
         :multiDomain: MultiDomain instance, if not provided, it will be
             read/created from the simulation files under the directory
         :returns: list of dictionaries { 'domain':_, 'server':_ }
@@ -84,7 +104,7 @@ class NsBunchConfReader(object):
         if not os.path.exists(entryPointsPath):
             # Generate NS request entry points 
             nsEntryPoints = []
-            for _ in range(mdProperties['domains']):
+            for _ in range(requests):
                 domain = random.randint(0, mdProperties['domains'] - 1)
                 serverDicts = md.getServers(domain)
                 servers = serverDicts.keys()
@@ -97,10 +117,11 @@ class NsBunchConfReader(object):
         # Read #
         ########
         else:
+            print 'LEO LOS ENTRY POINTS'
             with open(entryPointsPath) as f:
-                entryPoints = json.load(f)
+                nsEntryPoints = json.load(f)
 
-        return entryPoints
+        return nsEntryPoints
 
 
     def read(self, multiDomain=None):
@@ -112,13 +133,9 @@ class NsBunchConfReader(object):
             [None, None] in case of error
 
         """
-        filePath = configPath + '/' + self.__simName + '/nsBunch.json'
-        if not os.path.exists(filePath):
+        nsBunchProperties = self.__readConfig()
+        if not nsBunchProperties:
             return None, None
-
-        nsBunchProperties = None
-        with open(filePath) as f:
-            nsBunchProperties = json.load(f)
 
         nsBunch = NSG.NSgenerator.genNsBunch(
                 nsBunchProperties['numNs'],
@@ -132,8 +149,10 @@ class NsBunchConfReader(object):
                 nsBunchProperties['branches'],
                 nsBunchProperties['vnfs'])
 
-        NSG.NSgenerator.writeNsBunch(nsBunch, 'nsBunch')
-        entryPoints = self.__genEntryPoints(multiDomain=multiDomain)
+        NSG.NSgenerator.writeNsBunch(nsBunch, 'nsBunch',
+                baseAbsPath=configPath + '/' + self.__simName)
+        entryPoints = self.__genEntryPoints(nsBunchProperties['numNs'],
+                multiDomain=multiDomain)
 
         return nsBunch, entryPoints
 
