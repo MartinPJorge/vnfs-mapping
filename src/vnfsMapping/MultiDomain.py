@@ -186,14 +186,16 @@ class MultiDomain(object):
 
 
     @staticmethod
-    def yieldMultiDomain(domains, meshDegree, fatTreeDegrees, meshLnkRes,
-            fatLnkRes, servRes, meshProps=None, fatLnkProps=None,
+    def yieldMultiDomain(domains, meshDegree, fatTreeDegrees, foreignPods,
+            meshLnkRes, fatLnkRes, servRes, meshProps=None, fatLnkProps=None,
             fatSrvProps=None):
         """Generates a MultiDomain based on the specified arguments
 
         :param domains: number of domains composing the graph
         :param meshDegree: connectivity degree of the mesh (0, 1)
         :param fatTreeDegrees: list of fat-tree degrees for each domain
+        :param foreignPods: list of dictionaries with the foreign pods that
+            each domain uses
         :param meshLnkRes: dictionary with mesh links resources thresholds
         :param fatLnkRes: dictionary with fat-tree link resources thresholds
         :param serverRes: dictionary with server resources thresholds
@@ -206,8 +208,10 @@ class MultiDomain(object):
         """
 
         multiDomain = MultiDomain()
-        multiDomain.initialize(domains, meshDegree, fatTreeDegrees, meshLnkRes,
-            fatLnkRes, servRes)
+        multiDomain.initialize(domains, meshDegree, fatTreeDegrees,
+                foreignPods, meshLnkRes, fatLnkRes, servRes,
+                meshProps=meshProps, fatLnkProps=fatLnkProps,
+                fatSrvProps=fatSrvProps)
         
         return multiDomain
         
@@ -318,20 +322,22 @@ class MultiDomain(object):
                 foreignPods[domain]))
         generator.issueMeshBw(globalView, domainsViews, shareProps=meshProps)
         generator.issueFatRes(globalView, domainsViews,
-                fatLnkProps=fatLnkProps, fatSrvProps=fatLnkProps)
+                lnkProps=fatLnkProps, srvProps=fatSrvProps)
 
         self.__globalView = globalView
         self.__domainsViews = domainsViews
 
 
-    def write(self, storedName):
+    def write(self, storedName, absBasePath=None):
         """Stores the domains and global view graph
 
         :storedName: name of the directory that will contain the graph views
+        :absBasePath: path under which the MultiDomain will be stored
         :returns: Nothing
 
         """
-        basePath = graphsAbsPath + '/' + storedName + '/'
+        basePath = graphsAbsPath + '/' + storedName + '/' if not absBasePath\
+                else absBasePath + '/' + storedName + '/'
         if not os.path.exists(basePath):
             os.makedirs(basePath)
 
@@ -346,15 +352,17 @@ class MultiDomain(object):
 
 
     @staticmethod
-    def read(storedName):
+    def read(storedName, absBasePath=None):
         """Generates a multidomain instance based on the global and domain
         graph views located under the graphs directory with storedName
 
         :storedName: name of the directory that will contain the graph views
+        :absBasePath: path under which the MultiDomain will be stored
         :returns: MultiDomain instance
 
         """
-        basePath = graphsAbsPath + '/' + storedName + '/'
+        basePath = graphsAbsPath + '/' + storedName + '/' if not absBasePath\
+                else absBasePath + '/' + storedName + '/'
 
         with open(basePath + 'metadata.json', 'r') as f:
             properties = json.load(f)

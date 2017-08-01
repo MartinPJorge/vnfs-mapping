@@ -244,16 +244,19 @@ class NSgenerator(object):
 
 
     @staticmethod
-    def writeNsBunch(nsBunch, storedName):
+    def writeNsBunch(nsBunch, storedName, baseAbsPath=None):
         """Stores a NS bunch
 
         :nsBunch: list of NSs
         :storedName: name of the directory under which the NS chain will be
             stored
+        :baseAbsPath: base absolute path under which the ns bunch will be
+            stored
         :returns: Nothing
 
         """
-        basePath = nsAbsPath + '/' + storedName
+        basePath = nsAbsPath + '/' + storedName if not baseAbsPath\
+                else baseAbsPath + '/' + storedName
 
         nsCounter = 0
         for ns in nsBunch:
@@ -262,13 +265,16 @@ class NSgenerator(object):
 
 
     @staticmethod
-    def readNsBunch(storedName):
+    def readNsBunch(storedName, baseAbsPath=None):
         """Reads a a bunch of generated NSs
 
         :storedName: directory under which the Nss of the bunch are stored
+        :baseAbsPath: base absolute path under which the ns bunch will be
+            stored
         :returns: list of NS instances, None in case there is an error
         """
-        basePath = nsAbsPath + '/' + storedName
+        basePath = nsAbsPath + '/' + storedName if not baseAbsPath\
+                else baseAbsPath + '/' + storedName
         if not os.path.exists(basePath):
             return None
 
@@ -302,7 +308,7 @@ class NSgenerator(object):
         nsBunch = []
         nsGen = NSgenerator(bwTh, delayTh, memoryTh, diskTh, cpuTh)
 
-        for _ in range(vnfs):
+        for _ in range(numNs):
             ns = nsGen.yieldChain(splits, splitWidth, branches, vnfs)
             nsBunch.append(ns)
 

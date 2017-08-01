@@ -187,7 +187,8 @@ class DomainsGenerator(object):
         :param gw: gateway node where FatTree is created
         :param k: FatTree degree (must be even)
         """
-
+        print '## ATTACH FAT TREE ##'
+        print '  -> GW: ' + str(gw)
         baseId = self.__lastNodeId
         nx.set_node_attributes(gwMesh, 'firstCore', {gw: baseId + 1})
         nx.set_node_attributes(gwMesh, 'k', {gw: k})
@@ -310,8 +311,9 @@ class DomainsGenerator(object):
         :returns: networkX graph with the domain view
 
         """
+        print '## CREATE DOMAIN VIEW ##'
+        print '  -> domain: ' + str(domain)
         domainG = globalView.copy()
-
         for foreignDom in [dom for dom in range(self.__domains)
                 if dom != domain]:
             k = nx.get_node_attributes(domainG, 'k')[foreignDom]
@@ -438,6 +440,7 @@ class DomainsGenerator(object):
         :returns: Nothing
 
         """
+        print '## ISSUE MESH BANDWIDTH ##'
         maxNullLinks = 1 # Max number of links without bandwidth
         allowedProps = range(4) # Proportions of bw issuing
         nullsCounter = [maxNullLinks] * self.__domains 
@@ -449,6 +452,7 @@ class DomainsGenerator(object):
  match the number of domains')
 
         for (gwA, gwB) in nx.get_edge_attributes(globalView, 'meshLink'):
+            print '  -> link: (' + str(gwA) + ',' + str(gwB) + ')'
             if shareProps != None:
                 props = shareProps
             else:
@@ -478,6 +482,7 @@ class DomainsGenerator(object):
         :returns: Nothing
 
         """
+        print '## ISSUE FAT TREE RESOURCES ##'
 
         # Issue bandwidth
         maxNullLinks = 0 # Max number of links without bandwidth
@@ -505,9 +510,9 @@ class DomainsGenerator(object):
                 raise UnboundLocalError('Number of proportions inside each\
  lnkProps list do not match the number of domain Views')
 
-            for lnkProp, i in zip(lnkProps, range(len(sharingsProps))):
+            for lnkProp, i in zip(lnkProps, range(len(lnkProps))):
                 if lnkProp[i] != 0:
-                    raise UnboundLocalError('serverProps must be zero for the
+                    raise UnboundLocalError('serverProps must be zero for the\
  domain owner')
 
         # srvProps
@@ -523,15 +528,16 @@ class DomainsGenerator(object):
                 raise UnboundLocalError('Number of proportions inside each\
  srvProps list do not match the number of domain Views')
 
-            for srvProp, i in zip(srvProps, range(len(sharingsProps))):
+            for srvProp, i in zip(srvProps, range(len(srvProps))):
                 if srvProp[i] != 0:
-                    raise UnboundLocalError('serverProps must be zero for the
+                    raise UnboundLocalError('serverProps must be zero for the\
  domain owner')
 
         #####################
         ## Issue resources ##
         #####################
         for domain in range(self.__domains):
+            print '  -> issuing domain ' + str(domain)
             firstCore = nx.get_node_attributes(globalView, 'firstCore')[domain]
             k = nx.get_node_attributes(globalView, 'k')[domain]
 
@@ -539,10 +545,11 @@ class DomainsGenerator(object):
             domainBw = math.floor(fatLinkBw / 2)
 
             # Set proportions
+            print '  -> setting proportions'
             linkProps, servProps = None, None
             if lnkProps != None and srvProps != None:
-                linkProps = lnkProps
-                servProps = srvProps
+                linkProps = lnkProps[domain]
+                servProps = srvProps[domain]
             else:
                 props = self.__genProportions(self.__domains, allowedProps,
                         nullsCounter)
@@ -551,7 +558,9 @@ class DomainsGenerator(object):
             baseBw = domainBw / reduce(lambda x,y: x+y, linkProps)
 
             # Assign resources
+            print '  -> assigning resources for:'
             for localDom in range(self.__domains):
+                print '    - domain: ' + str(localDom)
                 localView = domainsViews[localDom]
 
                 for (A, B) in self.getFatTreeEdges(localView, domain):
@@ -562,7 +571,7 @@ class DomainsGenerator(object):
                     else:
                         localView[A][B]['res']['prop'] = linkProps[localDom]
                         localView[A][B]['res']['bw'] = math.floor(baseBw *
-                                props[localDom])
+                                linkProps[localDom])
 
                     # Server resources
                     server = None
