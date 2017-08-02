@@ -2,42 +2,42 @@ graph [
   node [
     id 0
     label 1
-    disk 5
+    disk 1
     cpu 1
     memory 1
   ]
   node [
     id 1
     label 2
-    disk 5
+    disk 1
     cpu 1
     memory 1
   ]
   node [
     id 2
     label 3
-    disk 5
+    disk 1
     cpu 1
     memory 1
   ]
   node [
     id 3
     label 4
-    disk 5
+    disk 1
     cpu 1
     memory 1
   ]
   node [
     id 4
     label 5
-    disk 5
+    disk 1
     cpu 1
     memory 1
   ]
   node [
     id 5
     label 6
-    disk 5
+    disk 1
     cpu 1
     memory 1
   ]
@@ -58,25 +58,31 @@ graph [
     bw 0
   ]
   edge [
-    source 1
+    source 0
     target 2
     delay 0
     bw 0
   ]
   edge [
-    source 2
+    source 0
     target 3
     delay 0
     bw 0
   ]
   edge [
-    source 2
+    source 1
     target 4
     delay 0
     bw 0
   ]
   edge [
-    source 2
+    source 3
+    target 4
+    delay 0
+    bw 0
+  ]
+  edge [
+    source 4
     target 5
     delay 0
     bw 0

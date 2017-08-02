@@ -475,10 +475,8 @@ class DomainsGenerator(object):
 
         :globalView: nextworkX graph with the global infrastructure
         :domainsViews: list of networkX graphs with each domain's view
-        :lnkProps: lists of proportions for shared lnk resources (prop
-            must be zero for the domain itself)
-        :srvProps: lists of proportions for shared server resources (prop
-            must be zero for the domain itself)
+        :lnkProps: lists of proportions for shared lnk resources 
+        :srvProps: lists of proportions for shared server resources 
         :returns: Nothing
 
         """
@@ -510,11 +508,6 @@ class DomainsGenerator(object):
                 raise UnboundLocalError('Number of proportions inside each\
  lnkProps list do not match the number of domain Views')
 
-            for lnkProp, i in zip(lnkProps, range(len(lnkProps))):
-                if lnkProp[i] != 0:
-                    raise UnboundLocalError('serverProps must be zero for the\
- domain owner')
-
         # srvProps
         if srvProps != None:
             if len(srvProps) != len(domainsViews):
@@ -528,10 +521,6 @@ class DomainsGenerator(object):
                 raise UnboundLocalError('Number of proportions inside each\
  srvProps list do not match the number of domain Views')
 
-            for srvProp, i in zip(srvProps, range(len(srvProps))):
-                if srvProp[i] != 0:
-                    raise UnboundLocalError('serverProps must be zero for the\
- domain owner')
 
         #####################
         ## Issue resources ##
@@ -542,7 +531,6 @@ class DomainsGenerator(object):
             k = nx.get_node_attributes(globalView, 'k')[domain]
 
             fatLinkBw = globalView[domain][firstCore]['res']['bw']
-            domainBw = math.floor(fatLinkBw / 2)
 
             # Set proportions
             print '  -> setting proportions'
@@ -554,8 +542,9 @@ class DomainsGenerator(object):
                 props = self.__genProportions(self.__domains, allowedProps,
                         nullsCounter)
                 props[domain] = 0 # Self domain no proportion on remaining bw
+                props[domain] = 2 * reduce(lambda x,y: x+y, props)
                 linkProps = servProps = props
-            baseBw = domainBw / reduce(lambda x,y: x+y, linkProps)
+            baseBw = fatLinkBw / reduce(lambda x,y: x+y, linkProps)
 
             # Assign resources
             print '  -> assigning resources for:'
@@ -565,13 +554,9 @@ class DomainsGenerator(object):
 
                 for (A, B) in self.getFatTreeEdges(localView, domain):
                     # Link resource
-                    if localDom == domain:
-                        localView[A][B]['res']['prop'] = linkProps[localDom]
-                        localView[A][B]['res']['bw'] = domainBw
-                    else:
-                        localView[A][B]['res']['prop'] = linkProps[localDom]
-                        localView[A][B]['res']['bw'] = math.floor(baseBw *
-                                linkProps[localDom])
+                    localView[A][B]['res']['prop'] = linkProps[localDom]
+                    localView[A][B]['res']['bw'] = math.floor(baseBw *
+                            linkProps[localDom])
 
                     # Server resources
                     server = None
@@ -588,15 +573,9 @@ class DomainsGenerator(object):
                         # Iterate through resources and assign
                         resDict = dict()
                         for resource in servRes.keys():
-                            halfRes = servRes[resource] / 2
-
-                            res = None
-                            if localDom == domain:
-                                res = math.floor(halfRes)
-                            else:
-                                baseRes = halfRes / reduce(lambda x,y: x+y,
-                                        servProps)
-                                res = math.floor(baseRes * servProps[localDom])
+                            baseRes = servRes[resource] /\
+                                    reduce(lambda x,y: x+y, servProps)
+                            res = math.floor(baseRes * servProps[localDom])
 
                             resDict[resource] = res
                         nx.set_node_attributes(localView, 'res',
