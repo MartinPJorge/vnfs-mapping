@@ -19,7 +19,49 @@ class NsMapper(object):
         """
         self.__multiDomain = multiDomain
         self.__watchDogs = []
+
+        # Node types integers
+        self.__gwType = 1
+        self.__coreType = 2
+        self.__aggType = 3
+        self.__edgeType = 4
+        self.__serverType = 5
         
+
+    def __nodeType(self, node):
+        """Obtains the type of node within the MultiDomain.
+
+        :node: node number/ID
+        :returns: the node type as the integers defined as properties
+
+        """
+        if 0 <= node <= self.__multiDomain.getProperties()['domains'] - 1:
+            return self.__gwType
+
+        # Check if it is a core
+        if not hasattr(self.__nodeType, 'cores'):
+            self.__nodeType.cores = self.__multiDomain.getCores()
+        elif node in self.__nodeType.cores:
+            return self.__coreType
+
+        # Check if it is an aggregate
+        if not hasattr(self.__nodeType, 'aggregates'):
+            self.__nodeType.aggregates = self.__multiDomain.getAggregates()
+        elif node in self.__nodeType.aggregates:
+            return self.__aggType
+
+        # Check if it is an edge
+        if not hasattr(self.__nodeType, 'edges'):
+            self.__nodeType.edges = self.__multiDomain.getEdges()
+        elif node in self.__nodeType.edges:
+            return self.__edgeType
+
+        return self.__serverType
+
+
+    # TODO - method to determine if the list of node types contain a forbidden
+    # one
+
 
     def getLastWatchDog(self):
         """Retrieves the last watch dog in the list
@@ -145,7 +187,8 @@ class NsMapper(object):
         return path, aggDelay
 
 
-    def smartRandomWalk(self, domain, serverS, serversE, delay, bw):
+    def smartRandomWalk(self, domain, serverS, serversE, delay, bw,
+            depth=None):
         """Performs a random walk to find a path from serverS to a serverE
         under delay and bw constraints. This random walk performs backtracking
         operations to avoid deadend roads
@@ -155,11 +198,12 @@ class NsMapper(object):
         :serversE: possible ending servers ids in a dictionary {idA: _, ...}
         :delay: required delay for the path (the final path will have less)
         :bw: required bw for the path (each link will have enough bw)
+        :depth: parameter that controls the recursion depth
         :returns: [None, None] if no mapping was founded,
             [ [(serverS, node1), ..., (serverN, serverE)], delay]
 
         """
-        def recursive(node, aggDelay, chain, st=''):
+        def recursive(node, aggDelay, chain, st='', depth=None):
             """Recursive function to perform the backtracking approach of the
             random walks.
 
@@ -167,6 +211,7 @@ class NsMapper(object):
             :aggDelay: aggregated delay in the current path search
             :chain: set with current chain composed
             :st: string to be concatenated in debug printing
+            :depth: parameter that controls the recursion depth
             :returns: [None, None] if no mapping was founded,
                 [ [], delay ] if node==serverE,
                 [(serverS, node1), ..., (serverN, serverE), delay]
@@ -174,6 +219,8 @@ class NsMapper(object):
             """
             if node in serversE:
                 return [], aggDelay
+            elif depth == 0:
+                return None, None
 
             # Get neighbors not inside current chain
             neighbors = self.__multiDomain.getNodeNeighs(domain, node)
@@ -187,15 +234,17 @@ class NsMapper(object):
                     # Link requirements ok, keep recursion!
                     nextChain = Set(chain)
                     nextChain.add(neighbor)
+                    newDepth = None if not depth else depth - 1
                     path, pathDelay = recursive(neighbor,
-                            aggDelay + linkRes['delay'], nextChain, st + '  ')
+                            aggDelay + linkRes['delay'], nextChain, st + '  ',
+                            depth=newDepth)
 
                     if path != None:
                         return [(node, neighbor)] + path, pathDelay
 
             return None, None
 
-        return recursive(serverS, 0, Set([serverS]))
+        return recursive(serverS, 0, Set([serverS]), depth=depth)
 
 
     def BFS(self, domain, serverS, serversE, delay, bw, depth=None):
@@ -297,10 +346,12 @@ class NsMapper(object):
                                 serverS, capable, link['delay'], link['bw'])
                     elif method == 'BFS':
                         path, pathDelay = self.BFS(domain, serverS,
-                                capable, link['delay'], link['bw'], depth)
+                                capable, link['delay'], link['bw'],
+                                depth=depth)
                     elif method == 'backtracking':
                         path, pathDelay = self.smartRandomWalk(domain, serverS,
-                                capable, link['delay'], link['bw'])
+                                capable, link['delay'], link['bw'],
+                                depth=depth)
                     else:
                         path, pathDelay = self.randomWalk(domain, serverS,
                                 capable, link['delay'], link['bw'])
@@ -440,10 +491,12 @@ class NsMapper(object):
                             linkRes['bw'])
                 elif method == 'BFS':
                     path, pathDelay = self.BFS(domain, prevServer,
-                            currCapables, linkRes['delay'], linkRes['bw'])
+                            currCapables, linkRes['delay'], linkRes['bw'],
+                            depth=depth)
                 elif method == 'backtracking':
                     path, pathDelay = self.smartRandomWalk(domain, prevServer,
-                             currCapables, linkRes['delay'], linkRes['bw'])
+                             currCapables, linkRes['delay'], linkRes['bw'],
+                             depth=depth)
                 elif method == 'random':
                     path, pathDelay = self.randomWalk(domain, prevServer,
                             currCapables, linkRes['delay'], linkRes['bw'])

@@ -119,6 +119,48 @@ class MultiDomain(object):
         return nx.get_node_attributes(view, 'res')[A]
 
 
+    def getCores(self):
+        """Retrieves the core switches present in the global view
+        :returns: dictionary indexed by the core nodes IDs
+
+        """
+        coreNodes = nx.get_node_attributes(self.__globalView, 'fatType')
+        nodes = coreNodes.keys()
+        for node in nodes:
+            if coreNodes[node] != 'core':
+                del coreNodes[node]
+
+        return coreNodes
+
+
+    def getAggregates(self):
+        """Retrieves the aggregation switches present in the global view
+        :returns: dictionary indexed by the agg nodes IDs
+
+        """
+        aggNodes = nx.get_node_attributes(self.__globalView, 'fatType')
+        nodes = aggNodes.keys()
+        for node in nodes:
+            if aggNodes[node] != 'aggregate':
+                del aggNodes[node]
+
+        return aggNodes
+
+
+    def getEdges(self):
+        """Retrieves the edge switches present in the global view
+        :returns: dictionary indexed by the edge nodes IDs
+
+        """
+        edgeNodes = nx.get_node_attributes(self.__globalView, 'fatType')
+        nodes = edgeNodes.keys()
+        for node in nodes:
+            if edgeNodes[node] != 'edges':
+                del edgeNodes[node]
+
+        return edgeNodes
+
+
     def getServers(self, domain):
         """Retrieves the servers available under a certain domain
 

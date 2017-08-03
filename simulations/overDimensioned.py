@@ -46,76 +46,79 @@ if __name__ == '__main__':
     if not nsBunch:
         nsBunch, entryPoints = nsBunchR.read(multiDomain=md)
 
-    # Test with greedy search
-    print '###################'
-    print '## Greedy search ##'
-    print '###################'
     mapper = NSM.NsMapper(md)
-    print 'aggregated resources: ' + str(aggResources(md))
-    fails = 0
-    success = 0
-    startTime = time.time()
-    i = 0
-    for ns, entryPoint in zip(nsBunch, entryPoints):
-        print '------------chain' + str(i) + '--------------'
-        print ns
-        print '-------------------------------'
-        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns)
-        if nsmapping != None:
-            success += 1
-            print '--------------------------------'
-            print nsmapping
-            print '--------------------------------'
-        else:
-            fails += 1
-            print '--------------------------------'
-            print '-- mapping failed'
-            print '--------------------------------'
-        i += 1
-    endTime = time.time()
-    
-    print str(len(nsBunch)) + ' NS requests'
-    print str(fails) + ' failed requests'
-    print str(success) + ' success requests'
-    print str(endTime - startTime)
-    print 'aggregated resources before free: ' + str(aggResources(md))
-    mapper.freeMappings() 
-    print 'aggregated resources after free: ' + str(aggResources(md))
+    # Test with greedy search
+    # print '###################'
+    # print '## Greedy search ##'
+    # print '###################'
+    # print 'aggregated resources: ' + str(aggResources(md))
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     chainStart = time.time()
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns)
+    #     chainEnd = time.time()
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     print '-- ' + str(chainEnd - chainStart) + ' seconds'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # print 'aggregated resources before free: ' + str(aggResources(md))
+    # mapper.freeMappings() 
+    # print 'aggregated resources after free: ' + str(aggResources(md))
 
 
-    # Test with greedy random walk
-    print '###############################'
-    print '## Greedy search random walk ##'
-    print '###############################'
-    fails = 0
-    success = 0
-    startTime = time.time()
-    i = 0
-    for ns, entryPoint in zip(nsBunch, entryPoints):
-        print '------------chain' + str(i) + '--------------'
-        print ns
-        print '-------------------------------'
-        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns, method='random')
-        if nsmapping != None:
-            success += 1
-            print '--------------------------------'
-            print nsmapping
-            print '--------------------------------'
-        else:
-            fails += 1
-            print '--------------------------------'
-            print '-- mapping failed'
-            print '--------------------------------'
-        i += 1
-    endTime = time.time()
-    
-    print str(len(nsBunch)) + ' NS requests'
-    print str(fails) + ' failed requests'
-    print str(success) + ' success requests'
-    print str(endTime - startTime)
-    mapper.freeMappings() 
+    # # Test with greedy random walk
+    # print '###############################'
+    # print '## Greedy search random walk ##'
+    # print '###############################'
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns, method='random')
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # mapper.freeMappings() 
 
 
     # Test with greedy random walk with backtracking
@@ -131,7 +134,7 @@ if __name__ == '__main__':
         print ns
         print '-------------------------------'
         nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns, method='backtracking')
+                ns, method='backtracking', depth=9)
         if nsmapping != None:
             success += 1
             print '--------------------------------'
