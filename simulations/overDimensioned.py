@@ -13,6 +13,23 @@ from vnfsMapping import NsMapper as NSM
 
 
 
+def aggResources(multidomain):
+    """Retrieves the aggragated resources within the network
+
+    :multidomain: MultiDomain instance
+    :returns: disk, cpu, memory
+
+    """
+    servers = multidomain.getServers(-1)
+    disk = cpu = mem = 0
+    for server in servers:
+        disk += servers[server]['disk']
+        cpu += servers[server]['cpu']
+        mem += servers[server]['memory']
+
+    return disk, cpu, mem
+
+
 if __name__ == '__main__':
     simName = 'overDimensioned'
 
@@ -34,6 +51,7 @@ if __name__ == '__main__':
     print '## Greedy search ##'
     print '###################'
     mapper = NSM.NsMapper(md)
+    print 'aggregated resources: ' + str(aggResources(md))
     fails = 0
     success = 0
     startTime = time.time()
@@ -61,14 +79,15 @@ if __name__ == '__main__':
     print str(fails) + ' failed requests'
     print str(success) + ' success requests'
     print str(endTime - startTime)
+    print 'aggregated resources before free: ' + str(aggResources(md))
     mapper.freeMappings() 
+    print 'aggregated resources after free: ' + str(aggResources(md))
 
 
     # Test with greedy random walk
     print '###############################'
     print '## Greedy search random walk ##'
     print '###############################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -103,7 +122,6 @@ if __name__ == '__main__':
     print '#####################################'
     print '## Greedy search smart random walk ##'
     print '#####################################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -138,7 +156,6 @@ if __name__ == '__main__':
     print '##########################'
     print '## Greedy search BFS 11 ##'
     print '##########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -173,7 +190,6 @@ if __name__ == '__main__':
     print '#########################'
     print '## Greedy search BFS 6 ##'
     print '#########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -209,7 +225,6 @@ if __name__ == '__main__':
     print '#########################'
     print '## Greedy search BFS 4 ##'
     print '#########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -246,7 +261,6 @@ if __name__ == '__main__':
     print '#########################'
     print '## Greedy search BFS 2 ##'
     print '#########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -289,7 +303,6 @@ if __name__ == '__main__':
     print '###################'
     print '## Tabu search ##'
     print '###################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -325,7 +338,6 @@ if __name__ == '__main__':
     print '###############################'
     print '## Tabu search random walk ##'
     print '###############################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -361,7 +373,6 @@ if __name__ == '__main__':
     print '#####################################'
     print '## Tabu search smart random walk ##'
     print '#####################################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -397,7 +408,6 @@ if __name__ == '__main__':
     print '##########################'
     print '## Tabu search BFS 11 ##'
     print '##########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -433,7 +443,6 @@ if __name__ == '__main__':
     print '#########################'
     print '## Tabu search BFS 6 ##'
     print '#########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -470,7 +479,6 @@ if __name__ == '__main__':
     print '#########################'
     print '## Tabu search BFS 4 ##'
     print '#########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()
@@ -508,7 +516,6 @@ if __name__ == '__main__':
     print '#########################'
     print '## Tabu search BFS 2 ##'
     print '#########################'
-    mapper = NSM.NsMapper(md)
     fails = 0
     success = 0
     startTime = time.time()

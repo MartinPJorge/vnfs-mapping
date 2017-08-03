@@ -122,13 +122,14 @@ class MultiDomain(object):
     def getServers(self, domain):
         """Retrieves the servers available under a certain domain
 
-        :domain: domain index
+        :domain: domain index, (-1 for global view)
         :returns: list of server nodes of the networkx graph of the domain
-            { 1: res:{'bw':_, 'cpu':_, 'mem':_}, ... }
+            { 1: res:{'disk':_, 'cpu':_, 'mem':_}, ... }
 
         """
         
-        domView = self.__domainsViews[domain]
+        domView = self.__domainsViews[domain] if domain != -1\
+                else self.__globalView
         domNodes = nx.get_node_attributes(domView, 'fatType')
         servers = [ node for node in domNodes.keys() if domNodes[node] ==
                 'server' ]
