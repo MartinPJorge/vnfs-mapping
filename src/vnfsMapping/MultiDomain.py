@@ -155,7 +155,7 @@ class MultiDomain(object):
         edgeNodes = nx.get_node_attributes(self.__globalView, 'fatType')
         nodes = edgeNodes.keys()
         for node in nodes:
-            if edgeNodes[node] != 'edges':
+            if edgeNodes[node] != 'edge':
                 del edgeNodes[node]
 
         return edgeNodes

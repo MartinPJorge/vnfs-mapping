@@ -1,4 +1,5 @@
 import heapq
+import networkx as nx
 import random
 from sets import Set
 from ResourcesWatchDog import ResourcesWatchDog as WD
@@ -26,6 +27,11 @@ class NsMapper(object):
         self.__aggType = 3
         self.__edgeType = 4
         self.__serverType = 5
+
+        # Cache variables
+        self.__cores = None
+        self.__aggregates = None
+        self.__edges = None
         
 
     def __nodeType(self, node):
@@ -39,28 +45,53 @@ class NsMapper(object):
             return self.__gwType
 
         # Check if it is a core
-        if not hasattr(self.__nodeType, 'cores'):
-            self.__nodeType.cores = self.__multiDomain.getCores()
-        elif node in self.__nodeType.cores:
+        if self.__cores == None: 
+            self.__cores = self.__multiDomain.getCores()
+        elif node in self.__cores:
             return self.__coreType
 
         # Check if it is an aggregate
-        if not hasattr(self.__nodeType, 'aggregates'):
-            self.__nodeType.aggregates = self.__multiDomain.getAggregates()
-        elif node in self.__nodeType.aggregates:
+        elif self.__aggregates == None:
+            self.__aggregates = self.__multiDomain.getAggregates()
+        elif node in self.__aggregates:
             return self.__aggType
 
         # Check if it is an edge
-        if not hasattr(self.__nodeType, 'edges'):
-            self.__nodeType.edges = self.__multiDomain.getEdges()
-        elif node in self.__nodeType.edges:
+        elif self.__edges == None:
+            self.__edges = self.__multiDomain.getEdges()
+        elif node in self.__edges:
             return self.__edgeType
 
         return self.__serverType
 
 
-    # TODO - method to determine if the list of node types contain a forbidden
-    # one
+    def __isForbidden(self, typesList):
+        """Checks if there is a forbidden move in the last visited nodes.
+
+        :typesList: list of node types 
+        :returns: True/False
+
+        """
+        isForbidden = False
+
+        if len(typesList) >= 3:
+            # Core, GW, core
+            if typesList[-3] == self.__coreType and\
+                    typesList[-2] == self.__gwType and\
+                    typesList[-1] == self.__coreType:
+                isForbidden = True
+            # Agg, edge, agg
+            elif typesList[-3] == self.__aggType and\
+                    typesList[-2] == self.__edgeType and\
+                    typesList[-1] == self.__aggType:
+                isForbidden = True
+            # Core, agg, core
+            elif typesList[-3] == self.__coreType and\
+                    typesList[-2] == self.__aggType and\
+                    typesList[-1] == self.__coreType:
+                isForbidden = True
+
+        return isForbidden
 
 
     def getLastWatchDog(self):
@@ -247,6 +278,108 @@ class NsMapper(object):
         return recursive(serverS, 0, Set([serverS]), depth=depth)
 
 
+    def cutoffSmartRandomWalk(self, domain, serverS, serversE, delay, bw,
+            depth=None):
+        """Performs a random walk to find a path from serverS to a serverE
+        under delay and bw constraints. This random walk performs backtracking
+        operations to avoid deadend roads. As well it avoids forbidden moves
+        to speed up the search.
+
+        :domain: domain number
+        :serverS: starting server id
+        :serversE: possible ending servers ids in a dictionary {idA: _, ...}
+        :delay: required delay for the path (the final path will have less)
+        :bw: required bw for the path (each link will have enough bw)
+        :depth: parameter that controls the recursion depth
+        :returns: [None, None] if no mapping was founded,
+            [ [(serverS, node1), ..., (serverN, serverE)], delay]
+
+        """
+        def recursive(node, aggDelay, chain, nodesList, typesList, st='',
+                depth=None):
+            """Recursive function to perform the backtracking approach of the
+            random walks.
+
+            :node: starting node
+            :aggDelay: aggregated delay in the current path search
+            :chain: set with current chain composed
+            :nodesList: list with the nodes visited in order
+            :typesList: a list with the node types of the chain
+            :st: string to be concatenated in debug printing
+            :depth: parameter that controls the recursion depth
+            :returns: [None, None] if no mapping was founded,
+                [ [], delay ] if node==serverE,
+                [(serverS, node1), ..., (serverN, serverE), delay]
+
+            """
+            if node in serversE:
+                return [], aggDelay
+            elif depth == 0:
+                return None, None
+
+            # Check walk on the GWs side to cut it
+            if len(typesList) > 2 and typesList[-1] == self.__gwType and\
+                    typesList[-2] == self.__gwType and\
+                    depth < 4: # Impossible to go down
+                return None, None
+
+            # Get neighbors not inside current chain, and give priority to ones
+            # that are not GWs
+            neighbors = self.__multiDomain.getNodeNeighs(domain, node)
+            gws, others, othersTypes = [], [], []
+            for neigh in neighbors:
+                if neigh not in chain:
+                    neighType = self.__nodeType(neigh)
+                    if neighType == self.__gwType:
+                        gws.append(neigh)
+                    else:
+                        others.append(neigh)
+                        othersTypes.append(neighType)
+            gwsTypes = [self.__gwType for _ in range(len(gws))]
+            # random.shuffle(others)
+            # random.shuffle(gws)
+            neighbors = others + gws
+            neighTypes = othersTypes + gwsTypes
+
+            print 'depth: ' + str(depth)
+            print nodesList
+            if node >= 20:
+                print nx.get_node_attributes(self.__multiDomain._MultiDomain__globalView,
+                        'fatType')[node]
+            print typesList
+            print ''
+
+            for neighbor, neighType in zip(neighbors, neighTypes):
+                isForbidden = self.__isForbidden(typesList + [neighType])
+
+                if not isForbidden:
+                    linkRes = self.__multiDomain.getLnkRes(domain, node,
+                            neighbor)
+                    if linkRes['bw'] >= bw and delay >= linkRes['delay'] +\
+                            aggDelay:
+                        # Link requirements ok, keep recursion!
+                        nextChain = Set(chain)
+                        nextChain.add(neighbor)
+                        newDepth = None if not depth else depth - 1
+                        path, pathDelay = recursive(neighbor,
+                                aggDelay + linkRes['delay'], nextChain,
+                                nodesList + [neighbor],
+                                typesList + [neighType], st + '  ',
+                                depth=newDepth)
+
+                        if path != None:
+                            return [(node, neighbor)] + path, pathDelay
+
+            return None, None
+
+        print '----serversE: ' + str(serversE.keys())
+        serverSType = self.__nodeType(serverS)
+        result = recursive(serverS, 0, Set([serverS]), [serverS],
+                [serverSType], depth=depth)
+        print '-------------------------------'
+        return result
+
+
     def BFS(self, domain, serverS, serversE, delay, bw, depth=None):
         """Performs a BFS to find possible paths from serverS to any serverE
         under the delay and bw requirements.
@@ -298,6 +431,66 @@ class NsMapper(object):
         return None, None
 
 
+    def BFScutoff(self, domain, serverS, serversE, delay, bw, depth=None):
+        """Performs a BFS to find possible paths from serverS to any serverE
+        under the delay and bw requirements. This implementetion prevents the
+        algorithm going through forbidden moves.
+
+        :domain: domain number
+        :serverS: starting server id
+        :serversE: possible ending servers ids in a dictionary {idA: _, ...}
+        :delay: required delay for the path (the final path will have less)
+        :bw: required bw for the path (each link will have enough bw)
+        :depth: specify limit depth for searching
+        :returns: [None, None] if no mapping was founded,
+            [ [(serverS, node1), ..., (serverN, serverE), delay]
+
+        """
+        serverSType = self.__nodeType(serverS)
+        toVisit = [(serverS, 0, [], [serverSType], Set([serverS]))]
+        keepVisiting = True
+        i = 0
+
+        while keepVisiting:
+            nextToVisit = []
+            keepVisiting = False if depth != None and i > depth else True
+
+            # Visit and add neighbors
+            while len(toVisit) > 0 and keepVisiting:
+                # Get curr node and neighbors
+                node, aggDelay, chain, types, chainSet = toVisit[0]
+                if node in serversE:
+                    return chain, aggDelay
+                del toVisit[0]
+                neighbors = self.__multiDomain.getNodeNeighs(domain, node)
+                neighbors = filter(lambda neigh: neigh not in chainSet,
+                        neighbors)
+
+                # Insert neighbors
+                for neighbor in [n for n in neighbors if n not in chainSet]:
+                    neighType = self.__nodeType(neighbor)
+                    isForbidden = self.__isForbidden(types + [neighType])
+
+                    if not isForbidden:
+                        linkRes = self.__multiDomain.getLnkRes(domain, node,
+                                neighbor)
+                        if linkRes['bw'] >= bw and\
+                                aggDelay + linkRes['delay'] <= delay and\
+                                not isForbidden:
+                            newChainSet = Set(chainSet)
+                            newChainSet.add(neighbor)
+                            nextToVisit += [(neighbor,
+                                aggDelay + linkRes['delay'],
+                                list(chain) + [(node, neighbor)],
+                                types + [neighType], newChainSet)]
+
+                toVisit = nextToVisit
+            keepVisiting = len(toVisit) > 0
+            i += 1
+    
+        return None, None
+
+
     def greedy(self, domain, entryServer, ns, method='Dijkstra', depth=None):
         """Performs a greedy mapping for the NS chain passed as argument
 
@@ -305,7 +498,7 @@ class NsMapper(object):
         :entryServer: server entry point for the NS
         :ns: NS chain instance
         :method: search method between VNFs - ['Dijkstra', 'BFS',
-            'backtracking', 'random']
+            'BFScutoff', 'backtracking', 'backtrackingCutoff', 'random']
         :depth: maximum search depth for 'BFS'
         :returns: NsMapping instance or None in case the mapping couldn't be
             performed
@@ -328,7 +521,7 @@ class NsMapper(object):
                 capable = None
                 mappedServer = nsMapping.getServerMapping(vnf)
                 if mappedServer != None:
-                    capable = [mappedServer]
+                    capable = { mappedServer: True }
                 else:
                     capable = self.__multiDomain.getCapableServers(domain,
                             res['cpu'], res['memory'], res['disk'])
@@ -348,9 +541,17 @@ class NsMapper(object):
                         path, pathDelay = self.BFS(domain, serverS,
                                 capable, link['delay'], link['bw'],
                                 depth=depth)
+                    elif method == 'BFScutoff':
+                        path, pathDelay = self.BFScutoff(domain, serverS,
+                                capable, link['delay'], link['bw'],
+                                depth=depth)
                     elif method == 'backtracking':
                         path, pathDelay = self.smartRandomWalk(domain, serverS,
                                 capable, link['delay'], link['bw'],
+                                depth=depth)
+                    elif method == 'backtrackingCutoff':
+                        path, pathDelay = self.cutoffSmartRandomWalk(domain,
+                                serverS, capable, link['delay'], link['bw'],
                                 depth=depth)
                     else:
                         path, pathDelay = self.randomWalk(domain, serverS,
@@ -403,7 +604,7 @@ class NsMapper(object):
         :iters: number of iterations over the whole the NS chain
         :initial: method used to obtain the initial solution
         :method: search method between VNFs - ['Dijkstra', 'BFS',
-            'backtracking', 'random']
+            'BFScutoff', 'backtracking', 'backtrackingCutoff', 'random']
         :depth: maximum search depth for 'BFS'
         :returns: [(node1, node2), ..., (nodeN, nodeN+1)] path or empty list
 
@@ -493,6 +694,10 @@ class NsMapper(object):
                     path, pathDelay = self.BFS(domain, prevServer,
                             currCapables, linkRes['delay'], linkRes['bw'],
                             depth=depth)
+                elif method == 'BFScutoff':
+                    path, pathDelay = self.BFScutoff(domain, prevServer,
+                            currCapables, linkRes['delay'], linkRes['bw'],
+                            depth=depth)
                 elif method == 'backtracking':
                     path, pathDelay = self.smartRandomWalk(domain, prevServer,
                              currCapables, linkRes['delay'], linkRes['bw'],
@@ -544,6 +749,10 @@ class NsMapper(object):
                     elif method == 'backtracking':
                         afterPath, afterDelay = self.smartRandomWalk(domain,
                                 mappedServer, [afterServers[i]],
+                                linkRes['delay'], linkRes['bw'])
+                    elif method == 'backtrackingCutoff':
+                        afterPath, afterDelay = self.cutoffSmartRandomWalk(
+                                domain, mappedServer, [afterServers[i]],
                                 linkRes['delay'], linkRes['bw'])
                     elif method == 'random':
                         afterPath, afterDelay = self.randomWalk(domain,

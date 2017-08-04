@@ -121,6 +121,40 @@ if __name__ == '__main__':
     # mapper.freeMappings() 
 
 
+    # Test with greedy random walk with backtracking and cutoff
+    print '####################################################'
+    print '## Greedy search smart random walk cutoff depth=9 ##'
+    print '####################################################'
+    fails = 0
+    success = 0
+    startTime = time.time()
+    i = 0
+    for ns, entryPoint in zip(nsBunch, entryPoints):
+        print '------------chain' + str(i) + '--------------'
+        print ns
+        print '-------------------------------'
+        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+                ns, method='backtrackingCutoff', depth=9)
+        if nsmapping != None:
+            success += 1
+            print '--------------------------------'
+            print nsmapping
+            print '--------------------------------'
+        else:
+            fails += 1
+            print '--------------------------------'
+            print '-- mapping failed'
+            print '--------------------------------'
+        i += 1
+    endTime = time.time()
+    
+    print str(len(nsBunch)) + ' NS requests'
+    print str(fails) + ' failed requests'
+    print str(success) + ' success requests'
+    print str(endTime - startTime)
+    mapper.freeMappings() 
+
+
     # Test with greedy random walk with backtracking
     print '#####################################'
     print '## Greedy search smart random walk ##'
@@ -155,143 +189,177 @@ if __name__ == '__main__':
     mapper.freeMappings() 
 
 
-    # Test with greedy BFS up to 11 depth (reach other domains)
-    print '##########################'
-    print '## Greedy search BFS 11 ##'
-    print '##########################'
-    fails = 0
-    success = 0
-    startTime = time.time()
-    i = 0
-    for ns, entryPoint in zip(nsBunch, entryPoints):
-        print '------------chain' + str(i) + '--------------'
-        print ns
-        print '-------------------------------'
-        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns, method='BFS', depth=11)
-        if nsmapping != None:
-            success += 1
-            print '--------------------------------'
-            print nsmapping
-            print '--------------------------------'
-        else:
-            fails += 1
-            print '--------------------------------'
-            print '-- mapping failed'
-            print '--------------------------------'
-        i += 1
-    endTime = time.time()
-    
-    print str(len(nsBunch)) + ' NS requests'
-    print str(fails) + ' failed requests'
-    print str(success) + ' success requests'
-    print str(endTime - startTime)
-    mapper.freeMappings() 
+    # # Test with greedy BFS up to 11 depth (reach other domains)
+    # print '################################'
+    # print '## Greedy search BFScutoff 11 ##'
+    # print '################################'
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns, method='BFScutoff', depth=11)
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # mapper.freeMappings() 
 
 
-    # Test with greedy BFS up to 6 depth (reach all within domain)
-    print '#########################'
-    print '## Greedy search BFS 6 ##'
-    print '#########################'
-    fails = 0
-    success = 0
-    startTime = time.time()
-    i = 0
-    for ns, entryPoint in zip(nsBunch, entryPoints):
-        print '------------chain' + str(i) + '--------------'
-        print ns
-        print '-------------------------------'
-        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns, method='BFS', depth=6)
-        if nsmapping != None:
-            success += 1
-            print '--------------------------------'
-            print nsmapping
-            print '--------------------------------'
-        else:
-            fails += 1
-            print '--------------------------------'
-            print '-- mapping failed'
-            print '--------------------------------'
-        i += 1
-    endTime = time.time()
-    
-    print str(len(nsBunch)) + ' NS requests'
-    print str(fails) + ' failed requests'
-    print str(success) + ' success requests'
-    print str(endTime - startTime)
-    mapper.freeMappings() 
+    # # Test with greedy BFS up to 11 depth (reach other domains)
+    # print '##########################'
+    # print '## Greedy search BFS 11 ##'
+    # print '##########################'
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns, method='BFS', depth=11)
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # mapper.freeMappings() 
 
 
-
-    # Test with greedy BFS up to 4 depth (reach all within domain)
-    print '#########################'
-    print '## Greedy search BFS 4 ##'
-    print '#########################'
-    fails = 0
-    success = 0
-    startTime = time.time()
-    i = 0
-    for ns, entryPoint in zip(nsBunch, entryPoints):
-        print '------------chain' + str(i) + '--------------'
-        print ns
-        print '-------------------------------'
-        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns, method='BFS', depth=4)
-        if nsmapping != None:
-            success += 1
-            print '--------------------------------'
-            print nsmapping
-            print '--------------------------------'
-        else:
-            fails += 1
-            print '--------------------------------'
-            print '-- mapping failed'
-            print '--------------------------------'
-        i += 1
-    endTime = time.time()
-    
-    print str(len(nsBunch)) + ' NS requests'
-    print str(fails) + ' failed requests'
-    print str(success) + ' success requests'
-    print str(endTime - startTime)
-    mapper.freeMappings() 
-
+    # # Test with greedy BFS up to 6 depth (reach all within domain)
+    # print '#########################'
+    # print '## Greedy search BFS 6 ##'
+    # print '#########################'
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns, method='BFS', depth=6)
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # mapper.freeMappings() 
 
 
 
-    # Test with greedy BFS up to 2 depth (reach all within domain)
-    print '#########################'
-    print '## Greedy search BFS 2 ##'
-    print '#########################'
-    fails = 0
-    success = 0
-    startTime = time.time()
-    i = 0
-    for ns, entryPoint in zip(nsBunch, entryPoints):
-        print '------------chain' + str(i) + '--------------'
-        print ns
-        print '-------------------------------'
-        nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
-                ns, method='BFS', depth=2)
-        if nsmapping != None:
-            success += 1
-            print '--------------------------------'
-            print nsmapping
-            print '--------------------------------'
-        else:
-            fails += 1
-            print '--------------------------------'
-            print '-- mapping failed'
-            print '--------------------------------'
-        i += 1
-    endTime = time.time()
-    
-    print str(len(nsBunch)) + ' NS requests'
-    print str(fails) + ' failed requests'
-    print str(success) + ' success requests'
-    print str(endTime - startTime)
-    mapper.freeMappings() 
+    # # Test with greedy BFS up to 4 depth (reach all within domain)
+    # print '#########################'
+    # print '## Greedy search BFS 4 ##'
+    # print '#########################'
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns, method='BFS', depth=4)
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # mapper.freeMappings() 
+
+
+
+
+    # # Test with greedy BFS up to 2 depth (reach all within domain)
+    # print '#########################'
+    # print '## Greedy search BFS 2 ##'
+    # print '#########################'
+    # fails = 0
+    # success = 0
+    # startTime = time.time()
+    # i = 0
+    # for ns, entryPoint in zip(nsBunch, entryPoints):
+    #     print '------------chain' + str(i) + '--------------'
+    #     print ns
+    #     print '-------------------------------'
+    #     nsmapping = mapper.greedy(entryPoint['domain'], entryPoint['server'],
+    #             ns, method='BFS', depth=2)
+    #     if nsmapping != None:
+    #         success += 1
+    #         print '--------------------------------'
+    #         print nsmapping
+    #         print '--------------------------------'
+    #     else:
+    #         fails += 1
+    #         print '--------------------------------'
+    #         print '-- mapping failed'
+    #         print '--------------------------------'
+    #     i += 1
+    # endTime = time.time()
+    # 
+    # print str(len(nsBunch)) + ' NS requests'
+    # print str(fails) + ' failed requests'
+    # print str(success) + ' success requests'
+    # print str(endTime - startTime)
+    # mapper.freeMappings() 
 
 
 ############################
