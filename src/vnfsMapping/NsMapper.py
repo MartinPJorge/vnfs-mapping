@@ -99,7 +99,7 @@ class NsMapper(object):
         :returns: ReourcesWatchDog instance, None if there are no watchdogs
 
         """
-        return None if len(self.__watchDogs) == 1 else self.__watchDogs[-1]
+        return None if len(self.__watchDogs) < 1 else self.__watchDogs[-1]
 
 
     def constrainedDijkstra(self, domain, serverS, serversE, delay, bw):
@@ -341,14 +341,6 @@ class NsMapper(object):
             neighbors = others + gws
             neighTypes = othersTypes + gwsTypes
 
-            print 'depth: ' + str(depth)
-            print nodesList
-            if node >= 20:
-                print nx.get_node_attributes(self.__multiDomain._MultiDomain__globalView,
-                        'fatType')[node]
-            print typesList
-            print ''
-
             for neighbor, neighType in zip(neighbors, neighTypes):
                 isForbidden = self.__isForbidden(typesList + [neighType])
 
@@ -372,12 +364,9 @@ class NsMapper(object):
 
             return None, None
 
-        print '----serversE: ' + str(serversE.keys())
         serverSType = self.__nodeType(serverS)
-        result = recursive(serverS, 0, Set([serverS]), [serverS],
+        return recursive(serverS, 0, Set([serverS]), [serverS],
                 [serverSType], depth=depth)
-        print '-------------------------------'
-        return result
 
 
     def BFS(self, domain, serverS, serversE, delay, bw, depth=None):
@@ -527,10 +516,13 @@ class NsMapper(object):
                             res['cpu'], res['memory'], res['disk'])
 
                 # If last VNF server can contain it, place it there
-                path, pathDelay = None, 0
+                path, pathDelay, placedSame = None, 0, False
                 if serverS in capable:
+                    placedSame = True
                     path = [(serverS, serverS)]
                     nsMapping.setPath(vnfS, vnf, path)
+                    print 'delay btw ' + str(vnfS) + ' and ' + str(vnf) + ': '\
+                        + str(0)
                     nsMapping.setLnkDelayAndRefresh(vnfS, vnf, 0)
                     watchDog.watch(vnfS, vnf, [(serverS, serverS)])
                 else:
@@ -558,9 +550,13 @@ class NsMapper(object):
                                 capable, link['delay'], link['bw'])
 
                 if not path:
+                    print 'no path between ' + str(serverS) +\
+                            ' and capables: '+ str(len(capable))
                     watchDog.unWatch() # free previously allocated resources
                     return None
-                else:
+                elif not placedSame:
+                    print 'delay btw ' + str(vnfS) + ' and ' + str(vnf) + ': '\
+                        + str(pathDelay)
                     nsMapping.setPath(vnfS, vnf, path)
                     nsMapping.setLnkDelayAndRefresh(vnfS, vnf, pathDelay)
                     watchDog.watch(vnfS, vnf, path)
@@ -606,7 +602,7 @@ class NsMapper(object):
         :method: search method between VNFs - ['Dijkstra', 'BFS',
             'BFScutoff', 'backtracking', 'backtrackingCutoff', 'random']
         :depth: maximum search depth for 'BFS'
-        :returns: [(node1, node2), ..., (nodeN, nodeN+1)] path or empty list
+        :returns: NsMapping instance or None in case of error
 
         """
         initialSol = None
@@ -621,6 +617,9 @@ class NsMapper(object):
         if initial == 'greedy':
             nsMapping = self.greedy(domain, entryServer, ns, method=method,
                     depth=depth)
+            if not nsMapping:
+                print 'meeeg'
+                return None
             bestNsMapping = nsMapping.copy()
         else:
             # TODO - other methods to retrieve an initial solution
@@ -631,6 +630,7 @@ class NsMapper(object):
 
         # Initialize blocking and iterators dictionaries
         ns.initIter()
+        ns.iterNext()
         vnf = ns.currIterId()
         while vnf != 'end':
             vnfRes = ns.getVnf(vnf)
@@ -653,8 +653,6 @@ class NsMapper(object):
             # Obtain current VNFs to force their new mapping
             ns.iterNext()
             currVnf = ns.currIterId()
-            currServer = nsMapping.getServerMapping(currVnf)\
-                    if currVnf != 'start' else entryServer
             if currVnf == 'end':
                 ns.initIter()
                 ns.iterNext()
@@ -670,10 +668,14 @@ class NsMapper(object):
             prevMappings = []
             prevDelays = []
             prevServers = []
+            print 'currVnf: ' + str(currVnf)
             prevVnfs = ns.prevVNFs(currVnf)
+            print 'previousVNFs: ' + str(prevVnfs)
             for vnf in prevVnfs:
                 prevServers += [nsMapping.getServerMapping(vnf)
                         if vnf != 'start' else entryServer]
+
+            print 'previous servers: ' + str(prevServers)
 
             ###################
             ## Previous VNFs ##
@@ -682,6 +684,8 @@ class NsMapper(object):
             while keepSearch and i < len(prevVnfs):
                 prevVnf = prevVnfs[i]
                 prevServer = prevServers[i]
+                print '  prevVnf:' + str(prevVnf)
+                print '  prevServer:' + str(prevServer)
                 linkRes = ns.getLink(prevVnf, currVnf)
 
                 # Perform the new mapping
@@ -716,6 +720,9 @@ class NsMapper(object):
 
             # currCapables=[endServer] if a path prev---curr has been found
             mappedServer = None
+            print currVnf
+            print prevMappings
+            print prevVnfs
             if len(currCapables) == 1:
                 mappedServer = currCapables[0]
                 blocks[currVnf][mappedServer] = iters * vnfsNum
@@ -738,6 +745,7 @@ class NsMapper(object):
                 while keepSearch and i < len(afterVnfs):
                     linkRes = ns.getLink(currVnf, afterVnfs[i])
 
+                    afterPath = None
                     if method == 'Dijkstra':
                         afterPath, afterDelay = self.constrainedDijkstra(
                                 domain, mappedServer, [afterServers[i]],

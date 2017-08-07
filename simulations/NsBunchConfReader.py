@@ -117,7 +117,6 @@ class NsBunchConfReader(object):
         # Read #
         ########
         else:
-            print 'LEO LOS ENTRY POINTS'
             with open(entryPointsPath) as f:
                 nsEntryPoints = json.load(f)
 

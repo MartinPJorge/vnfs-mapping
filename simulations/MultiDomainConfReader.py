@@ -53,7 +53,6 @@ class MultiDomainConfReader(object):
 
         """
         filePath = configPath + '/' + self.__simName + '/multiDomain.json'
-        print '  gonna read this conf file for multiDomain: ' + filePath
         if not os.path.exists(filePath):
             return None
 

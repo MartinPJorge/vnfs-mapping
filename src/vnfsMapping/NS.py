@@ -153,9 +153,9 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
         else:
             neighs = self.__chain.neighbors(vnfId)
             for neigh in neighs:
-                if type(neigh) is int and neigh < vnfId:
+                if type(neigh) == int and neigh < vnfId:
                     prevs += [neigh]
-                elif type(neigh) is str and neigh == 'start':
+                elif neigh == 'start':
                     prevs += [neigh]
 
             self.__prevNeighsCache[vnfId] = prevs

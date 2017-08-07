@@ -1,12 +1,13 @@
-import MultiDomainConfReader as MDR
-import NsBunchConfReader as NSBR
 import time
 import sys
 import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
-    '../src')))
-
+    '../')))
+import MultiDomainConfReader as MDR
+import NsBunchConfReader as NSBR
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
+    '../../src')))
 from vnfsMapping import MultiDomain
 from vnfsMapping import NS
 from vnfsMapping import NsMapper as NSM
