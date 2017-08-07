@@ -223,12 +223,7 @@ class NsMapping(object):
             # Retrieve max delay to reach vnf
             prevVnfs = self.__ns.prevVNFs(vnf)
             prevMaxDelay = -1
-            print 'these are the previous VNFs: ' + str(prevVnfs)
             for prevVnf in prevVnfs:
-                print 'prevVNF: ' + str(prevVnf)
-                print 'vnf; ' + str(vnf)
-                print 'prevVnfDelay: ' + str(self.getVnfDelay(prevVnf))
-                print 'lnkDelay: ' + str(self.getLnkDelay(prevVnf, vnf))
                 prevDelay = self.getVnfDelay(prevVnf) +\
                         self.getLnkDelay(prevVnf, vnf)
                 if prevDelay > prevMaxDelay:

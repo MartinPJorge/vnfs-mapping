@@ -121,6 +121,11 @@ class NsMapper(object):
         Q = []
         heapq.heappush(Q, (0, serverS))
 
+        # Check if serverS is within serversE
+        if serverS in serversE:
+            return [(serverS, serverS)], 0
+
+        # Main loop
         while Q:
             nodeDelay, node = heapq.heappop(Q)
 
@@ -185,6 +190,10 @@ class NsMapper(object):
         keepWalking = True
         node = serverS
         aggDelay = 0
+
+        # Check if serverS is within serversE
+        if serverS in serversE:
+            return [(serverS, serverS)], 0
 
         while keepWalking:
             neighbors = self.__multiDomain.getNodeNeighs(domain, node)
@@ -275,6 +284,10 @@ class NsMapper(object):
 
             return None, None
 
+        # Check if serverS is within serversE
+        if serverS in serversE:
+            return [(serverS, serverS)], 0
+
         return recursive(serverS, 0, Set([serverS]), depth=depth)
 
 
@@ -364,6 +377,10 @@ class NsMapper(object):
 
             return None, None
 
+        # Check if serverS is within serversE
+        if serverS in serversE:
+            return [(serverS, serverS)], 0
+
         serverSType = self.__nodeType(serverS)
         return recursive(serverS, 0, Set([serverS]), [serverS],
                 [serverSType], depth=depth)
@@ -386,6 +403,10 @@ class NsMapper(object):
         toVisit = [(serverS, 0, [], Set([serverS]))]
         keepVisiting = True
         i = 0
+
+        # Check if serverS is within serversE
+        if serverS in serversE:
+            return [(serverS, serverS)], 0
 
         while keepVisiting:
             nextToVisit = []
@@ -440,6 +461,10 @@ class NsMapper(object):
         keepVisiting = True
         i = 0
 
+        # Check if serverS is within serversE
+        if serverS in serversE:
+            return [(serverS, serverS)], 0
+
         while keepVisiting:
             nextToVisit = []
             keepVisiting = False if depth != None and i > depth else True
@@ -493,7 +518,6 @@ class NsMapper(object):
             performed
 
         """
-        
         ns.initIter()
         vnfS = ns.currIterId()
         serverS = entryServer
@@ -501,7 +525,7 @@ class NsMapper(object):
         watchDog = WD(self.__multiDomain, ns, domain)
         nsMapping = NSm(ns)
 
-        while nextVNFs:
+        while nextVNFs or vnfS != 'end':
             for vnf in nextVNFs:
                 res = ns.getVnf(vnf)
                 link = ns.getLink(vnfS, vnf)
@@ -516,47 +540,34 @@ class NsMapper(object):
                             res['cpu'], res['memory'], res['disk'])
 
                 # If last VNF server can contain it, place it there
-                path, pathDelay, placedSame = None, 0, False
-                if serverS in capable:
-                    placedSame = True
-                    path = [(serverS, serverS)]
-                    nsMapping.setPath(vnfS, vnf, path)
-                    print 'delay btw ' + str(vnfS) + ' and ' + str(vnf) + ': '\
-                        + str(0)
-                    nsMapping.setLnkDelayAndRefresh(vnfS, vnf, 0)
-                    watchDog.watch(vnfS, vnf, [(serverS, serverS)])
+                path, pathDelay = None, 0
+                if method == 'Dijkstra':
+                    path, pathDelay = self.constrainedDijkstra(domain,
+                            serverS, capable, link['delay'], link['bw'])
+                elif method == 'BFS':
+                    path, pathDelay = self.BFS(domain, serverS,
+                            capable, link['delay'], link['bw'],
+                            depth=depth)
+                elif method == 'BFScutoff':
+                    path, pathDelay = self.BFScutoff(domain, serverS,
+                            capable, link['delay'], link['bw'],
+                            depth=depth)
+                elif method == 'backtracking':
+                    path, pathDelay = self.smartRandomWalk(domain, serverS,
+                            capable, link['delay'], link['bw'],
+                            depth=depth)
+                elif method == 'backtrackingCutoff':
+                    path, pathDelay = self.cutoffSmartRandomWalk(domain,
+                            serverS, capable, link['delay'], link['bw'],
+                            depth=depth)
                 else:
-                    if method == 'Dijkstra':
-                        path, pathDelay = self.constrainedDijkstra(domain,
-                                serverS, capable, link['delay'], link['bw'])
-                    elif method == 'BFS':
-                        path, pathDelay = self.BFS(domain, serverS,
-                                capable, link['delay'], link['bw'],
-                                depth=depth)
-                    elif method == 'BFScutoff':
-                        path, pathDelay = self.BFScutoff(domain, serverS,
-                                capable, link['delay'], link['bw'],
-                                depth=depth)
-                    elif method == 'backtracking':
-                        path, pathDelay = self.smartRandomWalk(domain, serverS,
-                                capable, link['delay'], link['bw'],
-                                depth=depth)
-                    elif method == 'backtrackingCutoff':
-                        path, pathDelay = self.cutoffSmartRandomWalk(domain,
-                                serverS, capable, link['delay'], link['bw'],
-                                depth=depth)
-                    else:
-                        path, pathDelay = self.randomWalk(domain, serverS,
-                                capable, link['delay'], link['bw'])
+                    path, pathDelay = self.randomWalk(domain, serverS,
+                            capable, link['delay'], link['bw'])
 
                 if not path:
-                    print 'no path between ' + str(serverS) +\
-                            ' and capables: '+ str(len(capable))
                     watchDog.unWatch() # free previously allocated resources
                     return None
-                elif not placedSame:
-                    print 'delay btw ' + str(vnfS) + ' and ' + str(vnf) + ': '\
-                        + str(pathDelay)
+                else:
                     nsMapping.setPath(vnfS, vnf, path)
                     nsMapping.setLnkDelayAndRefresh(vnfS, vnf, pathDelay)
                     watchDog.watch(vnfS, vnf, path)
@@ -564,7 +575,8 @@ class NsMapper(object):
             # Next VNFs
             vnfS = ns.currIterId()
             serverS = nsMapping.getServerMapping(vnfS)
-            nextVNFs = ns.iterNext()
+            if vnfS != 'end':
+                nextVNFs = ns.iterNext()
 
         # Add the watch dog to the list of mapped NSs
         self.__watchDogs.append(watchDog)
@@ -618,7 +630,6 @@ class NsMapper(object):
             nsMapping = self.greedy(domain, entryServer, ns, method=method,
                     depth=depth)
             if not nsMapping:
-                print 'meeeg'
                 return None
             bestNsMapping = nsMapping.copy()
         else:
@@ -668,14 +679,11 @@ class NsMapper(object):
             prevMappings = []
             prevDelays = []
             prevServers = []
-            print 'currVnf: ' + str(currVnf)
             prevVnfs = ns.prevVNFs(currVnf)
-            print 'previousVNFs: ' + str(prevVnfs)
             for vnf in prevVnfs:
                 prevServers += [nsMapping.getServerMapping(vnf)
                         if vnf != 'start' else entryServer]
 
-            print 'previous servers: ' + str(prevServers)
 
             ###################
             ## Previous VNFs ##
@@ -684,8 +692,6 @@ class NsMapper(object):
             while keepSearch and i < len(prevVnfs):
                 prevVnf = prevVnfs[i]
                 prevServer = prevServers[i]
-                print '  prevVnf:' + str(prevVnf)
-                print '  prevServer:' + str(prevServer)
                 linkRes = ns.getLink(prevVnf, currVnf)
 
                 # Perform the new mapping
@@ -720,12 +726,9 @@ class NsMapper(object):
 
             # currCapables=[endServer] if a path prev---curr has been found
             mappedServer = None
-            print currVnf
-            print prevMappings
-            print prevVnfs
             if len(currCapables) == 1:
                 mappedServer = currCapables[0]
-                blocks[currVnf][mappedServer] = iters * vnfsNum
+                blocks[currVnf][mappedServer] = block
 
             # Search path from new vnf to next ones
             prevSuccess = len(prevMappings) == len(prevVnfs) and\

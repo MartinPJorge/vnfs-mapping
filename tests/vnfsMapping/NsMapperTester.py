@@ -868,8 +868,8 @@ if __name__ == '__main__':
     # tester.testRandomWalk()
     # tester.testSmartRandomWalk()
     # tester.testBFS()
-    tester.greedyNsBunch(100)
+    # tester.greedyNsBunch(100)
     # tester.testModifyMappedPath()
-    # tester.testTabu()
+    tester.testTabu()
 
 

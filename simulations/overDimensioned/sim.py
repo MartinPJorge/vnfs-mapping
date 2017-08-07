@@ -20,7 +20,7 @@ Script usage:
 
     algorithm={greedy, tabu}
     initial={greedy}
-    method={Dijkstra, random, BFS, backtrackingCutoff}
+    method={Dijkstra, random, BFScutoff, backtrackingCutoff}
     d stands for depth
     i stands for iterations (tabu)
     b stands for blocks (tabu)
@@ -29,7 +29,7 @@ Script usage:
 """
 
 supportedAlgs = ['greedy', 'tabu']
-supportedMethods = ['Dijkstra', 'random', 'BFS', 'backtrackingCutoff']
+supportedMethods = ['Dijkstra', 'random', 'BFScutoff', 'backtrackingCutoff']
 
 
 def parseArgs(args):
@@ -103,7 +103,6 @@ if __name__ == '__main__':
     if type(argums) == str:
         print argums
         sys.exit()
-    print argums
 
     # Create the readers
     multiDomainR = MDR.MultiDomainConfReader(simName)
@@ -144,7 +143,6 @@ if __name__ == '__main__':
                     depth=argums['depth'])
             chainEnd = time.time()
         elif argums['algorithm'] == 'tabu':
-            print 'entryServer: ' + str(entryPoint['server'])
             chainStart = time.time()
             nsmapping = mapper.tabu(entryPoint['domain'], entryPoint['server'],
                     ns, argums['blocks'], argums['iters'],
