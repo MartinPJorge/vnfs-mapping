@@ -1,6 +1,7 @@
 import heapq
 import networkx as nx
 import random
+import sys
 from sets import Set
 from ResourcesWatchDog import ResourcesWatchDog as WD
 from NS import NS
@@ -308,6 +309,8 @@ class NsMapper(object):
             [ [(serverS, node1), ..., (serverN, serverE)], delay]
 
         """
+        reached = dict()
+
         def recursive(node, aggDelay, chain, nodesList, typesList, st='',
                 depth=None):
             """Recursive function to perform the backtracking approach of the
@@ -325,57 +328,77 @@ class NsMapper(object):
                 [(serverS, node1), ..., (serverN, serverE), delay]
 
             """
+            print nodesList
+            sys.stdout.flush()
+
             if node in serversE:
+                print 'FOUND!!!!'
                 return [], aggDelay
             elif depth == 0:
                 return None, None
 
             # Check walk on the GWs side to cut it
-            if len(typesList) > 2 and typesList[-1] == self.__gwType and\
-                    typesList[-2] == self.__gwType and\
-                    depth < 4: # Impossible to go down
-                return None, None
+            # if len(typesList) > 2 and typesList[-1] == self.__gwType and\
+            #         typesList[-2] == self.__gwType and\
+            #         depth < 4: # Impossible to go down
+            #     print 'cut it!'
+            #     sys.stdout.flush()
+            #     return None, None
 
             # Get neighbors not inside current chain, and give priority to ones
             # that are not GWs
             neighbors = self.__multiDomain.getNodeNeighs(domain, node)
-            gws, others, othersTypes = [], [], []
+            gws, others, othersTypes, gwsTypes = [], [], [], []
             for neigh in neighbors:
                 if neigh not in chain:
                     neighType = self.__nodeType(neigh)
                     if neighType == self.__gwType:
                         gws.append(neigh)
+                        gwsTypes.append(neighType)
                     else:
                         others.append(neigh)
                         othersTypes.append(neighType)
-            gwsTypes = [self.__gwType for _ in range(len(gws))]
             # random.shuffle(others)
             # random.shuffle(gws)
             neighbors = others + gws
             neighTypes = othersTypes + gwsTypes
+            targetNeighs, targetTypes = [], []
 
+            # Refreshed reached and fill target nodes
             for neighbor, neighType in zip(neighbors, neighTypes):
                 isForbidden = self.__isForbidden(typesList + [neighType])
 
                 if not isForbidden:
                     linkRes = self.__multiDomain.getLnkRes(domain, node,
                             neighbor)
-                    if linkRes['bw'] >= bw and delay >= linkRes['delay'] +\
-                            aggDelay:
-                        # Link requirements ok, keep recursion!
-                        nextChain = Set(chain)
-                        nextChain.add(neighbor)
-                        newDepth = None if not depth else depth - 1
-                        path, pathDelay = recursive(neighbor,
-                                aggDelay + linkRes['delay'], nextChain,
-                                nodesList + [neighbor],
-                                typesList + [neighType], st + '  ',
-                                depth=newDepth)
+                    beVisited = neighbor not in reached or\
+                        (neighbor in reached and\
+                        reached[neighbor] > aggDelay + linkRes['delay'])
+                    beVisited = True
 
-                        if path != None:
-                            return [(node, neighbor)] + path, pathDelay
+                    if linkRes['bw'] >= bw and delay >= linkRes['delay'] +\
+                            aggDelay and beVisited:
+                        # Link requirements ok, keep recursion!
+                        reached[neighbor] = aggDelay + linkRes['delay']
+                        targetNeighs += [neighbor]
+                        targetTypes += [neighType]
+
+            # Run recursively through target nodes
+            for neighbor, neighType in zip(targetNeighs, targetTypes):
+                nextChain = Set(chain)
+                nextChain.add(neighbor)
+                newDepth = None if not depth else depth - 1
+                path, pathDelay = recursive(neighbor,
+                        aggDelay + linkRes['delay'], nextChain,
+                        nodesList + [neighbor],
+                        typesList + [neighType], st + '  ',
+                        depth=newDepth)
+
+                if path != None:
+                    return [(node, neighbor)] + path, pathDelay
 
             return None, None
+
 
         # Check if serverS is within serversE
         if serverS in serversE:
@@ -460,6 +483,7 @@ class NsMapper(object):
         toVisit = [(serverS, 0, [], [serverSType], Set([serverS]))]
         keepVisiting = True
         i = 0
+        reached = { serverS: 0 }
 
         # Check if serverS is within serversE
         if serverS in serversE:
@@ -488,9 +512,14 @@ class NsMapper(object):
                     if not isForbidden:
                         linkRes = self.__multiDomain.getLnkRes(domain, node,
                                 neighbor)
+                        beVisited = neighbor not in reached or\
+                            (neighbor in reached and\
+                            reached[neighbor] > aggDelay + linkRes['delay'])
+
                         if linkRes['bw'] >= bw and\
                                 aggDelay + linkRes['delay'] <= delay and\
-                                not isForbidden:
+                                beVisited:
+                            reached[neighbor] = aggDelay + linkRes['delay']
                             newChainSet = Set(chainSet)
                             newChainSet.add(neighbor)
                             nextToVisit += [(neighbor,
@@ -498,7 +527,7 @@ class NsMapper(object):
                                 list(chain) + [(node, neighbor)],
                                 types + [neighType], newChainSet)]
 
-                toVisit = nextToVisit
+            toVisit = nextToVisit
             keepVisiting = len(toVisit) > 0
             i += 1
     
