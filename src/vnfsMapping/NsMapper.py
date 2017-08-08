@@ -328,22 +328,10 @@ class NsMapper(object):
                 [(serverS, node1), ..., (serverN, serverE), delay]
 
             """
-            print nodesList
-            sys.stdout.flush()
-
             if node in serversE:
-                print 'FOUND!!!!'
                 return [], aggDelay
             elif depth == 0:
                 return None, None
-
-            # Check walk on the GWs side to cut it
-            # if len(typesList) > 2 and typesList[-1] == self.__gwType and\
-            #         typesList[-2] == self.__gwType and\
-            #         depth < 4: # Impossible to go down
-            #     print 'cut it!'
-            #     sys.stdout.flush()
-            #     return None, None
 
             # Get neighbors not inside current chain, and give priority to ones
             # that are not GWs
@@ -358,8 +346,7 @@ class NsMapper(object):
                     else:
                         others.append(neigh)
                         othersTypes.append(neighType)
-            # random.shuffle(others)
-            # random.shuffle(gws)
+
             neighbors = others + gws
             neighTypes = othersTypes + gwsTypes
             targetNeighs, targetTypes = [], []
@@ -374,7 +361,6 @@ class NsMapper(object):
                     beVisited = neighbor not in reached or\
                         (neighbor in reached and\
                         reached[neighbor] > aggDelay + linkRes['delay'])
-                    beVisited = True
 
                     if linkRes['bw'] >= bw and delay >= linkRes['delay'] +\
                             aggDelay and beVisited:

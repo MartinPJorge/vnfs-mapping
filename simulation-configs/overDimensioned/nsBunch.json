@@ -7,8 +7,8 @@
         "max": 0
     },
     "delayTh": {
-        "min": 0,
-        "max": 0
+        "min": 15,
+        "max": 15
     },
 
     "memoryTh": {

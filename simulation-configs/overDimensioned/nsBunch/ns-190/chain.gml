@@ -48,43 +48,37 @@ graph [
   edge [
     source 0
     target 6
-    delay 0
+    delay 15
     bw 0
   ]
   edge [
     source 0
     target 1
-    delay 0
-    bw 0
-  ]
-  edge [
-    source 0
-    target 2
-    delay 0
+    delay 15
     bw 0
   ]
   edge [
     source 1
-    target 4
-    delay 0
+    target 2
+    delay 15
     bw 0
   ]
   edge [
     source 2
     target 3
-    delay 0
+    delay 15
     bw 0
   ]
   edge [
-    source 3
+    source 2
     target 4
-    delay 0
+    delay 15
     bw 0
   ]
   edge [
-    source 4
+    source 2
     target 5
-    delay 0
+    delay 15
     bw 0
   ]
 ]
