@@ -210,6 +210,24 @@ class MultiDomain(object):
         return capable
 
 
+    def isServerCapable(self, domain, server, cpu, memory, disk):
+        """Determines if a server is capable to allocate resources for a
+        certain domain.
+
+        :domain: domain number
+        :server: server node ID
+        :cpu: cpu requirements
+        :memory: memory requirements
+        :disk: disk requirements
+        :returns: True/False
+
+        """
+        serverRes = self.getServerRes(domain, server)
+        return serverRes['cpu'] >= cpu and\
+                serverRes['disk'] >= disk and\
+                serverRes['memory'] >= memory
+
+
     def getPathDelay(self, domain, path):
         """Retrieves the path delay
 

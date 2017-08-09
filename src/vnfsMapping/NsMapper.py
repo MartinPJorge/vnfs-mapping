@@ -616,6 +616,48 @@ class NsMapper(object):
         pass
 
 
+
+
+
+    def __reviseBlocks(self, domain, ns, vnf, prevServer, newServer, blocks):
+        """TABU SEARCH AUXILIARY METHOD
+        It revises the blocked movements after the remapping of the vnf from a
+        prevServer to a newServer. It refreshes whether other vnfs will be able
+        to use the freed server and the new server where the vnf is mapped.
+
+        :domain: entry domain for the NS chain
+        :ns: NS chain instance
+        :vnf: VNF id
+        :prevServer: previously used server ID
+        :newServer: newly used server ID
+        :blocks: dictionary with blocking movements
+        :returns: Nothing
+
+        """
+        # Refresh capabilities
+        origIterId = ns.currIterId()
+        ns.initIter()
+        ns.iterNext()
+        currVnf = ns.currIterId()
+        while currVnf != 'end':
+            vnfRes = ns.getVnf(currVnf)
+            if currVnf != vnf:
+                if prevServer not in blocks[currVnf] and\
+                    self.__multiDomain.isServerCapable(domain,
+                            prevServer, vnfRes['cpu'],
+                            vnfRes['memory'], vnfRes['disk']):
+                    blocks[currVnf][prevServer] = False
+                if newServer in blocks[currVnf] and not\
+                    self.__multiDomain.isServerCapable(domain,
+                            newServer, vnfRes['cpu'],
+                            vnfRes['memory'], vnfRes['disk']):
+                    del blocks[currVnf][newServer]
+
+            ns.iterNext()
+            currVnf = ns.currIterId()
+        ns.setIterIdx(origIterId)
+
+
     def tabu(self, domain, entryServer, ns, block, iters, initial='greedy',
             method='Dijkstra', depth=None):
         """Performs a tabu search to map the NS in the underneath domain view.
@@ -639,6 +681,7 @@ class NsMapper(object):
         currSol, bestDelay = None, None
         vnfsNum = ns.getVNFsNumber()
         currVnf = None
+        currServer = None
         nsMapping, bestNsMapping = None, None
 
         if initial == 'greedy':
@@ -683,6 +726,7 @@ class NsMapper(object):
                 ns.initIter()
                 ns.iterNext()
                 currVnf = ns.currIterId()
+            currServer = nsMapping.getServerMapping(currVnf)
 
             # Obtain info. to perform new mapping
             currCapables = dict()
@@ -795,6 +839,7 @@ class NsMapper(object):
             # All remappings successfully performed
             if prevSuccess and len(afterMappings) == len(afterVnfs):
                 
+                # Update resources usage
                 lastWatchDog = self.getLastWatchDog()
                 for prevVnf, prevMap in zip(prevVnfs, prevMappings):
                     lastWatchDog.changeConnection(prevVnf, currVnf, prevMap)
@@ -803,10 +848,20 @@ class NsMapper(object):
                     lastWatchDog.changeConnection(currVnf, afterVnf, afterMap)
                     nsMapping.setPath(currVnf, afterVnf, afterMap)
 
+                # Update mapping object
                 nsMapping.changeVnfMapping(currVnf, prevVnfs, afterVnfs,
                         prevDelays, afterDelays)
+                # print 'old: ' + str(bestNsMapping)
+                # print '\n\n'
+                # print 'new: ' + str(nsMapping)
+                # print '\n\n\n\n\n\n\n\n\n'
+                sys.stdout.flush()
                 if nsMapping.getDelay() < bestNsMapping.getDelay():
                     bestNsMapping = nsMapping.copy()
+
+                # New server may not be used by other vnfs, previous may yes
+                self.__reviseBlocks(domain, ns, currVnf, currServer,
+                        mappedServer, blocks)
 
                 blocks[currVnf][mappedServer] = block + 1
 
