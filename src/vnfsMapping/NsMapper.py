@@ -851,12 +851,11 @@ class NsMapper(object):
                 # Update mapping object
                 nsMapping.changeVnfMapping(currVnf, prevVnfs, afterVnfs,
                         prevDelays, afterDelays)
-                # print 'old: ' + str(bestNsMapping)
-                # print '\n\n'
-                # print 'new: ' + str(nsMapping)
-                # print '\n\n\n\n\n\n\n\n\n'
-                sys.stdout.flush()
                 if nsMapping.getDelay() < bestNsMapping.getDelay():
+                    # print 'MEJORA: ' + str(bestNsMapping.getDelay()) +\
+                    #         ' better than: ' + str(nsMapping.getDelay())
+                    # sys.stdout.flush()
+                    nsMapping.notifyImprovement()
                     bestNsMapping = nsMapping.copy()
 
                 # New server may not be used by other vnfs, previous may yes

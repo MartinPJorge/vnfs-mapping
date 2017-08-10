@@ -14,6 +14,7 @@ class NsMapping(object):
         self.__mappings = dict()
         self.__serverMappings = dict()
         self.__branchHeadDelays = dict()
+        self.__improved = False
 
         for branchHead in self.__ns.getBranchHeads():
             self.__branchHeadDelays[branchHead] = 0
@@ -47,6 +48,22 @@ class NsMapping(object):
                 str(self.__mappings[(vnf1, vnf2)])
 
         return st
+
+
+    def notifyImprovement(self):
+        """Used to let the NsMapping know that it has improved its mapping
+        :returns: Nothing
+
+        """
+        self.__improved = True
+
+
+    def hasImproved(self):
+        """Tells wether the NsMapping has improved or not
+        :returns: True/False
+
+        """
+        return self.__improved
 
 
     def copy(self):
