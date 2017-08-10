@@ -827,11 +827,11 @@ class NsMapper(object):
                     elif method == 'backtracking':
                         afterPath, afterDelay = self.smartRandomWalk(domain,
                                 mappedServer, [afterServers[i]],
-                                linkRes['delay'], linkRes['bw'])
+                                linkRes['delay'], linkRes['bw'], depth=depth)
                     elif method == 'backtrackingCutoff':
                         afterPath, afterDelay = self.cutoffSmartRandomWalk(
                                 domain, mappedServer, [afterServers[i]],
-                                linkRes['delay'], linkRes['bw'])
+                                linkRes['delay'], linkRes['bw'], depth=depth)
                     elif method == 'random':
                         afterPath, afterDelay = self.randomWalk(domain,
                                 mappedServer, [afterServers[i]],
