@@ -771,6 +771,10 @@ class NsMapper(object):
                     path, pathDelay = self.smartRandomWalk(domain, prevServer,
                              currCapables, linkRes['delay'], linkRes['bw'],
                              depth=depth)
+                elif method == 'backtrackingCutoff':
+                    path, pathDelay = self.cutoffSmartRandomWalk(
+                            domain, prevServer, currCapables,
+                            linkRes['delay'], linkRes['bw'], depth=depth)
                 elif method == 'random':
                     path, pathDelay = self.randomWalk(domain, prevServer,
                             currCapables, linkRes['delay'], linkRes['bw'])
@@ -815,7 +819,11 @@ class NsMapper(object):
                     elif method == 'BFS':
                         afterPath, afterDelay = self.BFS(domain, mappedServer,
                                 [afterServers[i]], linkRes['delay'],
-                                linkRes['bw'])
+                                linkRes['bw'], depth=depth)
+                    elif method == 'BFScutoff':
+                        afterPath, afterDelay = self.BFScutoff(domain,
+                                mappedServer, [afterServers[i]], linkRes['delay'],
+                                linkRes['bw'], depth=depth)
                     elif method == 'backtracking':
                         afterPath, afterDelay = self.smartRandomWalk(domain,
                                 mappedServer, [afterServers[i]],
@@ -852,9 +860,9 @@ class NsMapper(object):
                 nsMapping.changeVnfMapping(currVnf, prevVnfs, afterVnfs,
                         prevDelays, afterDelays)
                 if nsMapping.getDelay() < bestNsMapping.getDelay():
-                    # print 'MEJORA: ' + str(bestNsMapping.getDelay()) +\
-                    #         ' better than: ' + str(nsMapping.getDelay())
-                    # sys.stdout.flush()
+                    print 'MEJORA: ' + str(bestNsMapping.getDelay()) +\
+                            ' better than: ' + str(nsMapping.getDelay())
+                    sys.stdout.flush()
                     nsMapping.notifyImprovement()
                     bestNsMapping = nsMapping.copy()
 

@@ -80,6 +80,7 @@ class NsMapping(object):
         nsMappingCopy._NsMapping__serverMappings = dict(self.__serverMappings)
         nsMappingCopy._NsMapping__branchHeadDelays =\
             dict(self.__branchHeadDelays)
+        nsMappingCopy._NsMapping__improved = self.__improved
 
         return nsMappingCopy
 

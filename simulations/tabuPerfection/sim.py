@@ -315,6 +315,7 @@ if __name__ == '__main__':
 
         print '%d\t%.3f\t%.3f\t%s' % (i, chainEnd - chainStart, currAvg,
                 'OK' if nsmapping != None else 'ERR')
+        sys.stdout.flush()
         aggTime += chainEnd - chainStart
         i += 1
     endTime = time.time()
