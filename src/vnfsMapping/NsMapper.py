@@ -791,7 +791,7 @@ class NsMapper(object):
             mappedServer = None
             if len(currCapables) == 1:
                 mappedServer = currCapables[0]
-                blocks[currVnf][mappedServer] = block
+                blocks[currVnf][mappedServer] = block + 1
 
             # Search path from new vnf to next ones
             prevSuccess = len(prevMappings) == len(prevVnfs) and\
