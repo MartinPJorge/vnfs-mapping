@@ -27,6 +27,7 @@ CPUS=8
 minIters=1
 minBlocks=$(( $VNFS * ($minIters + 1) - 1 ))
 blockStep=$VNFS
+tasks="simTasks.log"
 
 i=1
 
@@ -35,13 +36,13 @@ for (( iters = $bottomIters; iters < $topIters + 1; iters++ )); do
     maxBlocks=$(( $VNFS * ($iters-1 + 1) - 1 ))
 
     for blocks in $( seq $minBlocks $blockStep $(( $maxBlocks + 1 )) ); do
-        echo "sim.py tabu greedy Dijkstra d=9 i=$iters b=$blocks &> /tmp/tabuPerfection/tabu-dijkstra-d9-i$iters-b$blocks.log" >> simTasks.log
-        echo "sim.py tabu greedy backtrackingCutoff d=9 i=$iters b=$blocks &> /tmp/tabuPerfection/tabu-dfs-d9-i$iters-b$blocks.log" >> simTasks.log
-        echo "sim.py tabu greedy BFScutoff d=9 i=$iters b=$blocks &> /tmp/tabuPerfection/tabu-bfs-d9-i$iters-b$blocks.log" >> simTasks.log
+        echo "sim.py tabu greedy Dijkstra d=9 i=$iters b=$blocks &> /tmp/tabuPerfection/tabu-dijkstra-d9-i$iters-b$blocks.log" >> $tasks
+        echo "sim.py tabu greedy backtrackingCutoff d=9 i=$iters b=$blocks &> /tmp/tabuPerfection/tabu-dfs-d9-i$iters-b$blocks.log" >> $tasks
+        echo "sim.py tabu greedy BFScutoff d=9 i=$iters b=$blocks &> /tmp/tabuPerfection/tabu-bfs-d9-i$iters-b$blocks.log" >> $tasks
     done
 done
 
 # Execute them in parallel
-cat simTasks.log | parallel -k -j$CPUS
-
+cat $tasks | parallel -k -j$CPUS
+rm $tasks
 
