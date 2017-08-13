@@ -133,8 +133,8 @@ if __name__ == '__main__':
         }
         fatLnkRes =  {
             "bw": {
-                "min": 9000,
-                "max": 9000
+                "min": 5000,
+                "max": 5000
             },
             "delay": {
                 "min": 1,

@@ -6044,8 +6044,8 @@ graph [
     source 0
     target 1
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6053,8 +6053,8 @@ graph [
     source 0
     target 2
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6062,8 +6062,8 @@ graph [
     source 0
     target 3
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6071,8 +6071,8 @@ graph [
     source 0
     target 4
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6081,7 +6081,7 @@ graph [
     target 5
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6089,8 +6089,8 @@ graph [
     source 0
     target 6
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6098,8 +6098,8 @@ graph [
     source 0
     target 7
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6108,7 +6108,7 @@ graph [
     target 8
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6116,8 +6116,8 @@ graph [
     source 0
     target 9
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6126,7 +6126,7 @@ graph [
     target 10
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6134,8 +6134,8 @@ graph [
     source 0
     target 11
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6143,8 +6143,8 @@ graph [
     source 0
     target 12
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6152,8 +6152,8 @@ graph [
     source 0
     target 13
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6161,8 +6161,8 @@ graph [
     source 0
     target 14
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6170,8 +6170,8 @@ graph [
     source 0
     target 15
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6180,7 +6180,7 @@ graph [
     target 16
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6188,8 +6188,8 @@ graph [
     source 0
     target 17
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6197,8 +6197,8 @@ graph [
     source 0
     target 18
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6206,8 +6206,8 @@ graph [
     source 0
     target 19
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6215,8 +6215,8 @@ graph [
     source 0
     target 20
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6224,8 +6224,8 @@ graph [
     source 0
     target 21
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6233,8 +6233,8 @@ graph [
     source 0
     target 22
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6242,8 +6242,8 @@ graph [
     source 0
     target 23
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6251,8 +6251,8 @@ graph [
     source 1
     target 2
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6260,8 +6260,8 @@ graph [
     source 1
     target 3
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6269,8 +6269,8 @@ graph [
     source 1
     target 4
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6278,8 +6278,8 @@ graph [
     source 1
     target 5
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6288,7 +6288,7 @@ graph [
     target 6
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6296,8 +6296,8 @@ graph [
     source 1
     target 7
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6305,8 +6305,8 @@ graph [
     source 1
     target 8
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6314,8 +6314,8 @@ graph [
     source 1
     target 9
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6324,7 +6324,7 @@ graph [
     target 10
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6333,7 +6333,7 @@ graph [
     target 11
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6341,8 +6341,8 @@ graph [
     source 1
     target 12
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6350,8 +6350,8 @@ graph [
     source 1
     target 13
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6359,8 +6359,8 @@ graph [
     source 1
     target 14
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6368,8 +6368,8 @@ graph [
     source 1
     target 15
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6377,8 +6377,8 @@ graph [
     source 1
     target 16
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6386,8 +6386,8 @@ graph [
     source 1
     target 17
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6395,8 +6395,8 @@ graph [
     source 1
     target 18
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6404,8 +6404,8 @@ graph [
     source 1
     target 19
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6413,8 +6413,8 @@ graph [
     source 1
     target 56
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6422,8 +6422,8 @@ graph [
     source 1
     target 57
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6431,8 +6431,8 @@ graph [
     source 1
     target 58
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6440,8 +6440,8 @@ graph [
     source 1
     target 59
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6449,8 +6449,8 @@ graph [
     source 2
     target 3
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6459,7 +6459,7 @@ graph [
     target 4
     res [
       delay 1
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6467,8 +6467,8 @@ graph [
     source 2
     target 5
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6476,8 +6476,8 @@ graph [
     source 2
     target 6
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6486,7 +6486,7 @@ graph [
     target 7
     res [
       delay 2
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6495,7 +6495,7 @@ graph [
     target 8
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6503,8 +6503,8 @@ graph [
     source 2
     target 9
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6512,8 +6512,8 @@ graph [
     source 2
     target 10
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6521,8 +6521,8 @@ graph [
     source 2
     target 11
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6530,8 +6530,8 @@ graph [
     source 2
     target 12
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6539,8 +6539,8 @@ graph [
     source 2
     target 13
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6549,7 +6549,7 @@ graph [
     target 14
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6557,8 +6557,8 @@ graph [
     source 2
     target 15
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6566,8 +6566,8 @@ graph [
     source 2
     target 16
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6575,8 +6575,8 @@ graph [
     source 2
     target 17
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6585,7 +6585,7 @@ graph [
     target 18
     res [
       delay 1
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6593,8 +6593,8 @@ graph [
     source 2
     target 19
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6602,8 +6602,8 @@ graph [
     source 2
     target 92
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6611,8 +6611,8 @@ graph [
     source 2
     target 93
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6620,8 +6620,8 @@ graph [
     source 2
     target 94
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6629,8 +6629,8 @@ graph [
     source 2
     target 95
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6638,8 +6638,8 @@ graph [
     source 3
     target 131
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6647,8 +6647,8 @@ graph [
     source 3
     target 4
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6656,8 +6656,8 @@ graph [
     source 3
     target 5
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6665,8 +6665,8 @@ graph [
     source 3
     target 6
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6674,8 +6674,8 @@ graph [
     source 3
     target 7
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6684,7 +6684,7 @@ graph [
     target 8
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6692,8 +6692,8 @@ graph [
     source 3
     target 9
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6701,8 +6701,8 @@ graph [
     source 3
     target 10
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6710,8 +6710,8 @@ graph [
     source 3
     target 11
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6719,8 +6719,8 @@ graph [
     source 3
     target 12
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6729,7 +6729,7 @@ graph [
     target 13
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6737,8 +6737,8 @@ graph [
     source 3
     target 14
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6746,8 +6746,8 @@ graph [
     source 3
     target 15
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6755,8 +6755,8 @@ graph [
     source 3
     target 16
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6764,8 +6764,8 @@ graph [
     source 3
     target 17
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6774,7 +6774,7 @@ graph [
     target 18
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6782,8 +6782,8 @@ graph [
     source 3
     target 19
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6791,8 +6791,8 @@ graph [
     source 3
     target 129
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6800,8 +6800,8 @@ graph [
     source 3
     target 128
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6809,8 +6809,8 @@ graph [
     source 3
     target 130
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6819,7 +6819,7 @@ graph [
     target 5
     res [
       delay 2
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6827,8 +6827,8 @@ graph [
     source 4
     target 6
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6836,8 +6836,8 @@ graph [
     source 4
     target 7
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6846,7 +6846,7 @@ graph [
     target 8
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6854,8 +6854,8 @@ graph [
     source 4
     target 9
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6863,8 +6863,8 @@ graph [
     source 4
     target 10
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6872,8 +6872,8 @@ graph [
     source 4
     target 11
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6881,8 +6881,8 @@ graph [
     source 4
     target 12
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6890,8 +6890,8 @@ graph [
     source 4
     target 13
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6899,8 +6899,8 @@ graph [
     source 4
     target 14
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6908,8 +6908,8 @@ graph [
     source 4
     target 15
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6917,8 +6917,8 @@ graph [
     source 4
     target 16
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6926,8 +6926,8 @@ graph [
     source 4
     target 17
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6935,8 +6935,8 @@ graph [
     source 4
     target 18
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6944,8 +6944,8 @@ graph [
     source 4
     target 19
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6953,8 +6953,8 @@ graph [
     source 4
     target 164
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6962,8 +6962,8 @@ graph [
     source 4
     target 165
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6971,8 +6971,8 @@ graph [
     source 4
     target 166
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6980,8 +6980,8 @@ graph [
     source 4
     target 167
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -6989,8 +6989,8 @@ graph [
     source 5
     target 6
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -6998,8 +6998,8 @@ graph [
     source 5
     target 7
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7007,8 +7007,8 @@ graph [
     source 5
     target 8
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7017,7 +7017,7 @@ graph [
     target 9
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7025,8 +7025,8 @@ graph [
     source 5
     target 10
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7034,8 +7034,8 @@ graph [
     source 5
     target 11
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7044,7 +7044,7 @@ graph [
     target 12
     res [
       delay 1
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7052,8 +7052,8 @@ graph [
     source 5
     target 13
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7061,8 +7061,8 @@ graph [
     source 5
     target 14
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7070,8 +7070,8 @@ graph [
     source 5
     target 15
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7079,8 +7079,8 @@ graph [
     source 5
     target 16
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7088,8 +7088,8 @@ graph [
     source 5
     target 17
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7097,8 +7097,8 @@ graph [
     source 5
     target 18
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7106,8 +7106,8 @@ graph [
     source 5
     target 19
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7115,8 +7115,8 @@ graph [
     source 5
     target 200
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7124,8 +7124,8 @@ graph [
     source 5
     target 201
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7133,8 +7133,8 @@ graph [
     source 5
     target 202
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7142,8 +7142,8 @@ graph [
     source 5
     target 203
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7151,8 +7151,8 @@ graph [
     source 6
     target 7
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7160,8 +7160,8 @@ graph [
     source 6
     target 8
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7169,8 +7169,8 @@ graph [
     source 6
     target 9
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7178,8 +7178,8 @@ graph [
     source 6
     target 10
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7187,8 +7187,8 @@ graph [
     source 6
     target 11
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7196,8 +7196,8 @@ graph [
     source 6
     target 12
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7205,8 +7205,8 @@ graph [
     source 6
     target 13
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7215,7 +7215,7 @@ graph [
     target 14
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7224,7 +7224,7 @@ graph [
     target 15
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7232,8 +7232,8 @@ graph [
     source 6
     target 16
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7241,8 +7241,8 @@ graph [
     source 6
     target 17
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7250,8 +7250,8 @@ graph [
     source 6
     target 18
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7259,8 +7259,8 @@ graph [
     source 6
     target 19
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7268,8 +7268,8 @@ graph [
     source 6
     target 236
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7277,8 +7277,8 @@ graph [
     source 6
     target 237
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7286,8 +7286,8 @@ graph [
     source 6
     target 238
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7295,8 +7295,8 @@ graph [
     source 6
     target 239
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7305,7 +7305,7 @@ graph [
     target 8
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7314,7 +7314,7 @@ graph [
     target 9
     res [
       delay 1
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7323,7 +7323,7 @@ graph [
     target 10
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7331,8 +7331,8 @@ graph [
     source 7
     target 11
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7340,8 +7340,8 @@ graph [
     source 7
     target 12
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7350,7 +7350,7 @@ graph [
     target 13
     res [
       delay 2
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7358,8 +7358,8 @@ graph [
     source 7
     target 14
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7367,8 +7367,8 @@ graph [
     source 7
     target 15
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7376,8 +7376,8 @@ graph [
     source 7
     target 272
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7385,8 +7385,8 @@ graph [
     source 7
     target 17
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7395,7 +7395,7 @@ graph [
     target 18
     res [
       delay 1
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7403,8 +7403,8 @@ graph [
     source 7
     target 19
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7412,8 +7412,8 @@ graph [
     source 7
     target 16
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7421,8 +7421,8 @@ graph [
     source 7
     target 273
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7430,8 +7430,8 @@ graph [
     source 7
     target 274
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7439,8 +7439,8 @@ graph [
     source 7
     target 275
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7449,7 +7449,7 @@ graph [
     target 9
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7458,7 +7458,7 @@ graph [
     target 10
     res [
       delay 2
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7466,8 +7466,8 @@ graph [
     source 8
     target 11
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7475,8 +7475,8 @@ graph [
     source 8
     target 12
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7484,8 +7484,8 @@ graph [
     source 8
     target 13
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7493,8 +7493,8 @@ graph [
     source 8
     target 14
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7502,8 +7502,8 @@ graph [
     source 8
     target 15
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7511,8 +7511,8 @@ graph [
     source 8
     target 16
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7520,8 +7520,8 @@ graph [
     source 8
     target 17
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7529,8 +7529,8 @@ graph [
     source 8
     target 18
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7538,8 +7538,8 @@ graph [
     source 8
     target 19
     res [
-      delay 1
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7548,7 +7548,7 @@ graph [
     target 308
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7557,7 +7557,7 @@ graph [
     target 309
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7566,7 +7566,7 @@ graph [
     target 310
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7575,7 +7575,7 @@ graph [
     target 311
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7583,8 +7583,8 @@ graph [
     source 9
     target 10
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7592,8 +7592,8 @@ graph [
     source 9
     target 11
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7601,8 +7601,8 @@ graph [
     source 9
     target 12
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7610,8 +7610,8 @@ graph [
     source 9
     target 13
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7619,8 +7619,8 @@ graph [
     source 9
     target 14
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7629,7 +7629,7 @@ graph [
     target 15
     res [
       delay 1
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7637,8 +7637,8 @@ graph [
     source 9
     target 16
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7647,7 +7647,7 @@ graph [
     target 17
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7656,7 +7656,7 @@ graph [
     target 18
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7664,8 +7664,8 @@ graph [
     source 9
     target 19
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7673,8 +7673,8 @@ graph [
     source 9
     target 344
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7682,8 +7682,8 @@ graph [
     source 9
     target 345
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7691,8 +7691,8 @@ graph [
     source 9
     target 346
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7700,8 +7700,8 @@ graph [
     source 9
     target 347
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7709,8 +7709,8 @@ graph [
     source 10
     target 11
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7718,8 +7718,8 @@ graph [
     source 10
     target 12
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7727,8 +7727,8 @@ graph [
     source 10
     target 13
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7736,8 +7736,8 @@ graph [
     source 10
     target 14
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7745,8 +7745,8 @@ graph [
     source 10
     target 15
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7754,8 +7754,8 @@ graph [
     source 10
     target 16
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7764,7 +7764,7 @@ graph [
     target 17
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7772,8 +7772,8 @@ graph [
     source 10
     target 18
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7781,8 +7781,8 @@ graph [
     source 10
     target 19
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7791,7 +7791,7 @@ graph [
     target 380
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7800,7 +7800,7 @@ graph [
     target 381
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7809,7 +7809,7 @@ graph [
     target 382
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7818,7 +7818,7 @@ graph [
     target 383
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7826,8 +7826,8 @@ graph [
     source 11
     target 12
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7835,8 +7835,8 @@ graph [
     source 11
     target 13
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7845,7 +7845,7 @@ graph [
     target 14
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7853,8 +7853,8 @@ graph [
     source 11
     target 15
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7862,8 +7862,8 @@ graph [
     source 11
     target 16
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7872,7 +7872,7 @@ graph [
     target 17
     res [
       delay 2
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7880,8 +7880,8 @@ graph [
     source 11
     target 18
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7889,8 +7889,8 @@ graph [
     source 11
     target 19
     res [
-      delay 1
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7898,8 +7898,8 @@ graph [
     source 11
     target 416
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7907,8 +7907,8 @@ graph [
     source 11
     target 417
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7916,8 +7916,8 @@ graph [
     source 11
     target 418
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7925,8 +7925,8 @@ graph [
     source 11
     target 419
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -7934,8 +7934,8 @@ graph [
     source 12
     target 13
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7944,7 +7944,7 @@ graph [
     target 14
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7952,8 +7952,8 @@ graph [
     source 12
     target 15
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7961,8 +7961,8 @@ graph [
     source 12
     target 16
     res [
-      delay 4
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7970,8 +7970,8 @@ graph [
     source 12
     target 17
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7979,8 +7979,8 @@ graph [
     source 12
     target 18
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7988,8 +7988,8 @@ graph [
     source 12
     target 19
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -7997,8 +7997,8 @@ graph [
     source 12
     target 452
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8006,8 +8006,8 @@ graph [
     source 12
     target 453
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8015,8 +8015,8 @@ graph [
     source 12
     target 454
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8024,8 +8024,8 @@ graph [
     source 12
     target 455
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8033,8 +8033,8 @@ graph [
     source 13
     target 14
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8042,8 +8042,8 @@ graph [
     source 13
     target 15
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8051,8 +8051,8 @@ graph [
     source 13
     target 16
     res [
-      delay 5
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8060,8 +8060,8 @@ graph [
     source 13
     target 17
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8069,8 +8069,8 @@ graph [
     source 13
     target 18
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8078,8 +8078,8 @@ graph [
     source 13
     target 19
     res [
-      delay 1
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8087,8 +8087,8 @@ graph [
     source 13
     target 488
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8096,8 +8096,8 @@ graph [
     source 13
     target 489
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8105,8 +8105,8 @@ graph [
     source 13
     target 490
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8114,8 +8114,8 @@ graph [
     source 13
     target 491
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8123,8 +8123,8 @@ graph [
     source 14
     target 526
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8132,8 +8132,8 @@ graph [
     source 14
     target 15
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8141,8 +8141,8 @@ graph [
     source 14
     target 16
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8150,8 +8150,8 @@ graph [
     source 14
     target 17
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8159,8 +8159,8 @@ graph [
     source 14
     target 18
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8168,8 +8168,8 @@ graph [
     source 14
     target 19
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8177,8 +8177,8 @@ graph [
     source 14
     target 524
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8186,8 +8186,8 @@ graph [
     source 14
     target 525
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8195,8 +8195,8 @@ graph [
     source 14
     target 527
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8204,8 +8204,8 @@ graph [
     source 15
     target 16
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8214,7 +8214,7 @@ graph [
     target 17
     res [
       delay 2
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8222,8 +8222,8 @@ graph [
     source 15
     target 18
     res [
-      delay 5
-      bw 9000
+      delay 3
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8232,7 +8232,7 @@ graph [
     target 19
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8240,8 +8240,8 @@ graph [
     source 15
     target 560
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8249,8 +8249,8 @@ graph [
     source 15
     target 561
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8258,8 +8258,8 @@ graph [
     source 15
     target 562
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8267,8 +8267,8 @@ graph [
     source 15
     target 563
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8276,8 +8276,8 @@ graph [
     source 16
     target 17
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8285,8 +8285,8 @@ graph [
     source 16
     target 18
     res [
-      delay 5
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8295,7 +8295,7 @@ graph [
     target 19
     res [
       delay 5
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8303,8 +8303,8 @@ graph [
     source 16
     target 596
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8312,8 +8312,8 @@ graph [
     source 16
     target 597
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8321,8 +8321,8 @@ graph [
     source 16
     target 598
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8330,8 +8330,8 @@ graph [
     source 16
     target 599
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8339,8 +8339,8 @@ graph [
     source 17
     target 18
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8349,7 +8349,7 @@ graph [
     target 19
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8358,7 +8358,7 @@ graph [
     target 632
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8367,7 +8367,7 @@ graph [
     target 633
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8376,7 +8376,7 @@ graph [
     target 634
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8385,7 +8385,7 @@ graph [
     target 635
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8393,8 +8393,8 @@ graph [
     source 18
     target 19
     res [
-      delay 3
-      bw 9000
+      delay 1
+      bw 5000
     ]
     meshLink "True"
   ]
@@ -8402,8 +8402,8 @@ graph [
     source 18
     target 668
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8411,8 +8411,8 @@ graph [
     source 18
     target 669
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8420,8 +8420,8 @@ graph [
     source 18
     target 670
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8429,8 +8429,8 @@ graph [
     source 18
     target 671
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8438,8 +8438,8 @@ graph [
     source 19
     target 704
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8447,8 +8447,8 @@ graph [
     source 19
     target 705
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8456,8 +8456,8 @@ graph [
     source 19
     target 706
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8465,8 +8465,8 @@ graph [
     source 19
     target 707
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8474,8 +8474,8 @@ graph [
     source 20
     target 24
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8483,8 +8483,8 @@ graph [
     source 20
     target 26
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8492,8 +8492,8 @@ graph [
     source 20
     target 28
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8501,8 +8501,8 @@ graph [
     source 20
     target 30
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8510,8 +8510,8 @@ graph [
     source 21
     target 24
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8519,8 +8519,8 @@ graph [
     source 21
     target 26
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8528,8 +8528,8 @@ graph [
     source 21
     target 28
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8537,8 +8537,8 @@ graph [
     source 21
     target 30
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8546,8 +8546,8 @@ graph [
     source 22
     target 25
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8555,8 +8555,8 @@ graph [
     source 22
     target 27
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8564,8 +8564,8 @@ graph [
     source 22
     target 29
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8573,8 +8573,8 @@ graph [
     source 22
     target 31
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8582,8 +8582,8 @@ graph [
     source 23
     target 25
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8591,8 +8591,8 @@ graph [
     source 23
     target 27
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8600,8 +8600,8 @@ graph [
     source 23
     target 29
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8609,8 +8609,8 @@ graph [
     source 23
     target 31
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8618,8 +8618,8 @@ graph [
     source 24
     target 32
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8627,8 +8627,8 @@ graph [
     source 24
     target 33
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8636,8 +8636,8 @@ graph [
     source 25
     target 32
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8645,8 +8645,8 @@ graph [
     source 25
     target 33
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8654,8 +8654,8 @@ graph [
     source 26
     target 34
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8663,8 +8663,8 @@ graph [
     source 26
     target 35
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8672,8 +8672,8 @@ graph [
     source 27
     target 34
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8681,8 +8681,8 @@ graph [
     source 27
     target 35
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8690,8 +8690,8 @@ graph [
     source 28
     target 36
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8699,8 +8699,8 @@ graph [
     source 28
     target 37
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8708,8 +8708,8 @@ graph [
     source 29
     target 36
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8717,8 +8717,8 @@ graph [
     source 29
     target 37
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8726,8 +8726,8 @@ graph [
     source 30
     target 38
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8735,8 +8735,8 @@ graph [
     source 30
     target 39
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8744,8 +8744,8 @@ graph [
     source 31
     target 38
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8753,8 +8753,8 @@ graph [
     source 31
     target 39
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8762,8 +8762,8 @@ graph [
     source 32
     target 41
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8771,8 +8771,8 @@ graph [
     source 32
     target 40
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8780,8 +8780,8 @@ graph [
     source 33
     target 42
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8789,8 +8789,8 @@ graph [
     source 33
     target 43
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8798,8 +8798,8 @@ graph [
     source 34
     target 44
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8807,8 +8807,8 @@ graph [
     source 34
     target 45
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8816,8 +8816,8 @@ graph [
     source 35
     target 46
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8825,8 +8825,8 @@ graph [
     source 35
     target 47
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8834,8 +8834,8 @@ graph [
     source 36
     target 48
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8843,8 +8843,8 @@ graph [
     source 36
     target 49
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8852,8 +8852,8 @@ graph [
     source 37
     target 50
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8861,8 +8861,8 @@ graph [
     source 37
     target 51
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8870,8 +8870,8 @@ graph [
     source 38
     target 52
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8879,8 +8879,8 @@ graph [
     source 38
     target 53
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8888,8 +8888,8 @@ graph [
     source 39
     target 55
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8897,8 +8897,8 @@ graph [
     source 39
     target 54
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8906,8 +8906,8 @@ graph [
     source 56
     target 64
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8915,8 +8915,8 @@ graph [
     source 56
     target 66
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8924,8 +8924,8 @@ graph [
     source 56
     target 60
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8933,8 +8933,8 @@ graph [
     source 56
     target 62
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8942,8 +8942,8 @@ graph [
     source 57
     target 64
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8951,8 +8951,8 @@ graph [
     source 57
     target 66
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8960,8 +8960,8 @@ graph [
     source 57
     target 60
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8969,8 +8969,8 @@ graph [
     source 57
     target 62
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8978,8 +8978,8 @@ graph [
     source 58
     target 67
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8987,8 +8987,8 @@ graph [
     source 58
     target 61
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -8996,8 +8996,8 @@ graph [
     source 58
     target 65
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9005,8 +9005,8 @@ graph [
     source 58
     target 63
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9014,8 +9014,8 @@ graph [
     source 59
     target 67
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9023,8 +9023,8 @@ graph [
     source 59
     target 61
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9032,8 +9032,8 @@ graph [
     source 59
     target 65
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9041,8 +9041,8 @@ graph [
     source 59
     target 63
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9050,8 +9050,8 @@ graph [
     source 60
     target 68
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9059,8 +9059,8 @@ graph [
     source 60
     target 69
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9068,8 +9068,8 @@ graph [
     source 61
     target 68
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9077,8 +9077,8 @@ graph [
     source 61
     target 69
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9086,8 +9086,8 @@ graph [
     source 62
     target 70
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9095,8 +9095,8 @@ graph [
     source 62
     target 71
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9104,8 +9104,8 @@ graph [
     source 63
     target 70
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9113,8 +9113,8 @@ graph [
     source 63
     target 71
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9122,8 +9122,8 @@ graph [
     source 64
     target 72
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9131,8 +9131,8 @@ graph [
     source 64
     target 73
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9140,8 +9140,8 @@ graph [
     source 65
     target 72
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9149,8 +9149,8 @@ graph [
     source 65
     target 73
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9158,8 +9158,8 @@ graph [
     source 66
     target 74
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9167,8 +9167,8 @@ graph [
     source 66
     target 75
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9176,8 +9176,8 @@ graph [
     source 67
     target 74
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9185,8 +9185,8 @@ graph [
     source 67
     target 75
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9194,8 +9194,8 @@ graph [
     source 68
     target 76
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9203,8 +9203,8 @@ graph [
     source 68
     target 77
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9212,8 +9212,8 @@ graph [
     source 69
     target 78
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9221,8 +9221,8 @@ graph [
     source 69
     target 79
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9230,8 +9230,8 @@ graph [
     source 70
     target 80
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9239,8 +9239,8 @@ graph [
     source 70
     target 81
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9248,8 +9248,8 @@ graph [
     source 71
     target 82
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9257,8 +9257,8 @@ graph [
     source 71
     target 83
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9266,8 +9266,8 @@ graph [
     source 72
     target 84
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9275,8 +9275,8 @@ graph [
     source 72
     target 85
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9284,8 +9284,8 @@ graph [
     source 73
     target 86
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9293,8 +9293,8 @@ graph [
     source 73
     target 87
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9302,8 +9302,8 @@ graph [
     source 74
     target 88
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9311,8 +9311,8 @@ graph [
     source 74
     target 89
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9320,8 +9320,8 @@ graph [
     source 75
     target 91
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9329,8 +9329,8 @@ graph [
     source 75
     target 90
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9338,8 +9338,8 @@ graph [
     source 92
     target 96
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9347,8 +9347,8 @@ graph [
     source 92
     target 100
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9356,8 +9356,8 @@ graph [
     source 92
     target 98
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9365,8 +9365,8 @@ graph [
     source 92
     target 102
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9374,8 +9374,8 @@ graph [
     source 93
     target 96
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9383,8 +9383,8 @@ graph [
     source 93
     target 100
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9392,8 +9392,8 @@ graph [
     source 93
     target 98
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9401,8 +9401,8 @@ graph [
     source 93
     target 102
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9410,8 +9410,8 @@ graph [
     source 94
     target 97
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9419,8 +9419,8 @@ graph [
     source 94
     target 99
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9428,8 +9428,8 @@ graph [
     source 94
     target 101
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9437,8 +9437,8 @@ graph [
     source 94
     target 103
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9446,8 +9446,8 @@ graph [
     source 95
     target 97
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9455,8 +9455,8 @@ graph [
     source 95
     target 99
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9464,8 +9464,8 @@ graph [
     source 95
     target 101
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9473,8 +9473,8 @@ graph [
     source 95
     target 103
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9482,8 +9482,8 @@ graph [
     source 96
     target 104
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9491,8 +9491,8 @@ graph [
     source 96
     target 105
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9500,8 +9500,8 @@ graph [
     source 97
     target 104
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9509,8 +9509,8 @@ graph [
     source 97
     target 105
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9518,8 +9518,8 @@ graph [
     source 98
     target 106
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9527,8 +9527,8 @@ graph [
     source 98
     target 107
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9536,8 +9536,8 @@ graph [
     source 99
     target 106
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9545,8 +9545,8 @@ graph [
     source 99
     target 107
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9554,8 +9554,8 @@ graph [
     source 100
     target 108
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9563,8 +9563,8 @@ graph [
     source 100
     target 109
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9572,8 +9572,8 @@ graph [
     source 101
     target 108
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9581,8 +9581,8 @@ graph [
     source 101
     target 109
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9590,8 +9590,8 @@ graph [
     source 102
     target 110
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9599,8 +9599,8 @@ graph [
     source 102
     target 111
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9608,8 +9608,8 @@ graph [
     source 103
     target 110
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9617,8 +9617,8 @@ graph [
     source 103
     target 111
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9626,8 +9626,8 @@ graph [
     source 104
     target 112
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9635,8 +9635,8 @@ graph [
     source 104
     target 113
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9644,8 +9644,8 @@ graph [
     source 105
     target 114
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9653,8 +9653,8 @@ graph [
     source 105
     target 115
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9662,8 +9662,8 @@ graph [
     source 106
     target 116
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9671,8 +9671,8 @@ graph [
     source 106
     target 117
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9680,8 +9680,8 @@ graph [
     source 107
     target 118
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9689,8 +9689,8 @@ graph [
     source 107
     target 119
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9698,8 +9698,8 @@ graph [
     source 108
     target 120
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9707,8 +9707,8 @@ graph [
     source 108
     target 121
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9716,8 +9716,8 @@ graph [
     source 109
     target 122
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9725,8 +9725,8 @@ graph [
     source 109
     target 123
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9734,8 +9734,8 @@ graph [
     source 110
     target 124
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9743,8 +9743,8 @@ graph [
     source 110
     target 125
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9752,8 +9752,8 @@ graph [
     source 111
     target 127
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9761,8 +9761,8 @@ graph [
     source 111
     target 126
     res [
-      delay 4
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9770,8 +9770,8 @@ graph [
     source 128
     target 136
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9779,8 +9779,8 @@ graph [
     source 128
     target 138
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9788,8 +9788,8 @@ graph [
     source 128
     target 132
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9797,8 +9797,8 @@ graph [
     source 128
     target 134
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9806,8 +9806,8 @@ graph [
     source 129
     target 136
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9815,8 +9815,8 @@ graph [
     source 129
     target 138
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9824,8 +9824,8 @@ graph [
     source 129
     target 132
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9833,8 +9833,8 @@ graph [
     source 129
     target 134
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9842,8 +9842,8 @@ graph [
     source 130
     target 137
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9851,8 +9851,8 @@ graph [
     source 130
     target 139
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9860,8 +9860,8 @@ graph [
     source 130
     target 133
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9869,8 +9869,8 @@ graph [
     source 130
     target 135
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9878,8 +9878,8 @@ graph [
     source 131
     target 137
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9887,8 +9887,8 @@ graph [
     source 131
     target 139
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9896,8 +9896,8 @@ graph [
     source 131
     target 133
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9905,8 +9905,8 @@ graph [
     source 131
     target 135
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9914,8 +9914,8 @@ graph [
     source 132
     target 140
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9923,8 +9923,8 @@ graph [
     source 132
     target 141
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9932,8 +9932,8 @@ graph [
     source 133
     target 140
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9941,8 +9941,8 @@ graph [
     source 133
     target 141
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9950,8 +9950,8 @@ graph [
     source 134
     target 142
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9959,8 +9959,8 @@ graph [
     source 134
     target 143
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9968,8 +9968,8 @@ graph [
     source 135
     target 142
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9977,8 +9977,8 @@ graph [
     source 135
     target 143
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9986,8 +9986,8 @@ graph [
     source 136
     target 144
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -9995,8 +9995,8 @@ graph [
     source 136
     target 145
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10004,8 +10004,8 @@ graph [
     source 137
     target 144
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10013,8 +10013,8 @@ graph [
     source 137
     target 145
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10022,8 +10022,8 @@ graph [
     source 138
     target 146
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10031,8 +10031,8 @@ graph [
     source 138
     target 147
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10040,8 +10040,8 @@ graph [
     source 139
     target 146
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10049,8 +10049,8 @@ graph [
     source 139
     target 147
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10058,8 +10058,8 @@ graph [
     source 140
     target 148
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10067,8 +10067,8 @@ graph [
     source 140
     target 149
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10076,8 +10076,8 @@ graph [
     source 141
     target 150
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10085,8 +10085,8 @@ graph [
     source 141
     target 151
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10094,8 +10094,8 @@ graph [
     source 142
     target 152
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10103,8 +10103,8 @@ graph [
     source 142
     target 153
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10112,8 +10112,8 @@ graph [
     source 143
     target 154
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10121,8 +10121,8 @@ graph [
     source 143
     target 155
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10130,8 +10130,8 @@ graph [
     source 144
     target 156
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10139,8 +10139,8 @@ graph [
     source 144
     target 157
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10148,8 +10148,8 @@ graph [
     source 145
     target 158
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10157,8 +10157,8 @@ graph [
     source 145
     target 159
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10166,8 +10166,8 @@ graph [
     source 146
     target 160
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10175,8 +10175,8 @@ graph [
     source 146
     target 161
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10184,8 +10184,8 @@ graph [
     source 147
     target 163
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10193,8 +10193,8 @@ graph [
     source 147
     target 162
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10202,8 +10202,8 @@ graph [
     source 164
     target 168
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10211,8 +10211,8 @@ graph [
     source 164
     target 172
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10220,8 +10220,8 @@ graph [
     source 164
     target 170
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10229,8 +10229,8 @@ graph [
     source 164
     target 174
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10238,8 +10238,8 @@ graph [
     source 165
     target 168
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10247,8 +10247,8 @@ graph [
     source 165
     target 172
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10256,8 +10256,8 @@ graph [
     source 165
     target 170
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10265,8 +10265,8 @@ graph [
     source 165
     target 174
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10274,8 +10274,8 @@ graph [
     source 166
     target 169
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10283,8 +10283,8 @@ graph [
     source 166
     target 171
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10292,8 +10292,8 @@ graph [
     source 166
     target 173
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10301,8 +10301,8 @@ graph [
     source 166
     target 175
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10310,8 +10310,8 @@ graph [
     source 167
     target 169
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10319,8 +10319,8 @@ graph [
     source 167
     target 171
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10328,8 +10328,8 @@ graph [
     source 167
     target 173
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10337,8 +10337,8 @@ graph [
     source 167
     target 175
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10346,8 +10346,8 @@ graph [
     source 168
     target 176
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10355,8 +10355,8 @@ graph [
     source 168
     target 177
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10364,8 +10364,8 @@ graph [
     source 169
     target 176
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10373,8 +10373,8 @@ graph [
     source 169
     target 177
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10382,8 +10382,8 @@ graph [
     source 170
     target 178
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10391,8 +10391,8 @@ graph [
     source 170
     target 179
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10400,8 +10400,8 @@ graph [
     source 171
     target 178
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10409,8 +10409,8 @@ graph [
     source 171
     target 179
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10418,8 +10418,8 @@ graph [
     source 172
     target 180
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10427,8 +10427,8 @@ graph [
     source 172
     target 181
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10436,8 +10436,8 @@ graph [
     source 173
     target 180
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10445,8 +10445,8 @@ graph [
     source 173
     target 181
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10454,8 +10454,8 @@ graph [
     source 174
     target 182
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10463,8 +10463,8 @@ graph [
     source 174
     target 183
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10472,8 +10472,8 @@ graph [
     source 175
     target 182
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10481,8 +10481,8 @@ graph [
     source 175
     target 183
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10490,8 +10490,8 @@ graph [
     source 176
     target 184
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10499,8 +10499,8 @@ graph [
     source 176
     target 185
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10508,8 +10508,8 @@ graph [
     source 177
     target 186
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10517,8 +10517,8 @@ graph [
     source 177
     target 187
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10526,8 +10526,8 @@ graph [
     source 178
     target 188
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10535,8 +10535,8 @@ graph [
     source 178
     target 189
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10544,8 +10544,8 @@ graph [
     source 179
     target 190
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10553,8 +10553,8 @@ graph [
     source 179
     target 191
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10562,8 +10562,8 @@ graph [
     source 180
     target 192
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10571,8 +10571,8 @@ graph [
     source 180
     target 193
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10580,8 +10580,8 @@ graph [
     source 181
     target 194
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10589,8 +10589,8 @@ graph [
     source 181
     target 195
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10598,8 +10598,8 @@ graph [
     source 182
     target 196
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10607,8 +10607,8 @@ graph [
     source 182
     target 197
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10616,8 +10616,8 @@ graph [
     source 183
     target 199
     res [
-      delay 2
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10625,17 +10625,17 @@ graph [
     source 183
     target 198
     res [
+      delay 4
+      bw 5000
+    ]
+    fatLink "True"
+  ]
+  edge [
+    source 200
+    target 208
+    res [
       delay 2
-      bw 9000
-    ]
-    fatLink "True"
-  ]
-  edge [
-    source 200
-    target 208
-    res [
-      delay 1
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10643,8 +10643,8 @@ graph [
     source 200
     target 210
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10652,8 +10652,8 @@ graph [
     source 200
     target 204
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10661,8 +10661,8 @@ graph [
     source 200
     target 206
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10670,8 +10670,8 @@ graph [
     source 201
     target 208
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10679,8 +10679,8 @@ graph [
     source 201
     target 210
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10688,8 +10688,8 @@ graph [
     source 201
     target 204
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10697,8 +10697,8 @@ graph [
     source 201
     target 206
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10706,8 +10706,8 @@ graph [
     source 202
     target 209
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10715,8 +10715,8 @@ graph [
     source 202
     target 207
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10724,8 +10724,8 @@ graph [
     source 202
     target 211
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10733,8 +10733,8 @@ graph [
     source 202
     target 205
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10742,8 +10742,8 @@ graph [
     source 203
     target 209
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10751,8 +10751,8 @@ graph [
     source 203
     target 207
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10760,8 +10760,8 @@ graph [
     source 203
     target 211
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10769,8 +10769,8 @@ graph [
     source 203
     target 205
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10778,8 +10778,8 @@ graph [
     source 204
     target 212
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10787,8 +10787,8 @@ graph [
     source 204
     target 213
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10796,8 +10796,8 @@ graph [
     source 205
     target 212
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10805,8 +10805,8 @@ graph [
     source 205
     target 213
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10814,8 +10814,8 @@ graph [
     source 206
     target 214
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10823,8 +10823,8 @@ graph [
     source 206
     target 215
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10832,8 +10832,8 @@ graph [
     source 207
     target 214
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10841,8 +10841,8 @@ graph [
     source 207
     target 215
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10850,8 +10850,8 @@ graph [
     source 208
     target 216
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10859,8 +10859,8 @@ graph [
     source 208
     target 217
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10868,8 +10868,8 @@ graph [
     source 209
     target 216
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10877,8 +10877,8 @@ graph [
     source 209
     target 217
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10886,8 +10886,8 @@ graph [
     source 210
     target 218
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10895,8 +10895,8 @@ graph [
     source 210
     target 219
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10904,8 +10904,8 @@ graph [
     source 211
     target 218
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10913,8 +10913,8 @@ graph [
     source 211
     target 219
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10922,8 +10922,8 @@ graph [
     source 212
     target 220
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10931,8 +10931,8 @@ graph [
     source 212
     target 221
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10940,8 +10940,8 @@ graph [
     source 213
     target 222
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10949,8 +10949,8 @@ graph [
     source 213
     target 223
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10958,8 +10958,8 @@ graph [
     source 214
     target 224
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10967,8 +10967,8 @@ graph [
     source 214
     target 225
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10976,8 +10976,8 @@ graph [
     source 215
     target 226
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10985,8 +10985,8 @@ graph [
     source 215
     target 227
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -10994,8 +10994,8 @@ graph [
     source 216
     target 228
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11003,8 +11003,8 @@ graph [
     source 216
     target 229
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11012,8 +11012,8 @@ graph [
     source 217
     target 230
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11021,8 +11021,8 @@ graph [
     source 217
     target 231
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11030,8 +11030,8 @@ graph [
     source 218
     target 232
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11039,8 +11039,8 @@ graph [
     source 218
     target 233
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11048,8 +11048,8 @@ graph [
     source 219
     target 234
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11057,8 +11057,8 @@ graph [
     source 219
     target 235
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11066,8 +11066,8 @@ graph [
     source 236
     target 240
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11075,8 +11075,8 @@ graph [
     source 236
     target 242
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11084,8 +11084,8 @@ graph [
     source 236
     target 244
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11093,8 +11093,8 @@ graph [
     source 236
     target 246
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11102,8 +11102,8 @@ graph [
     source 237
     target 240
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11111,8 +11111,8 @@ graph [
     source 237
     target 242
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11120,8 +11120,8 @@ graph [
     source 237
     target 244
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11129,8 +11129,8 @@ graph [
     source 237
     target 246
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11138,8 +11138,8 @@ graph [
     source 238
     target 241
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11147,8 +11147,8 @@ graph [
     source 238
     target 243
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11156,8 +11156,8 @@ graph [
     source 238
     target 245
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11165,8 +11165,8 @@ graph [
     source 238
     target 247
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11174,8 +11174,8 @@ graph [
     source 239
     target 241
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11183,8 +11183,8 @@ graph [
     source 239
     target 243
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11192,8 +11192,8 @@ graph [
     source 239
     target 245
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11201,8 +11201,8 @@ graph [
     source 239
     target 247
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11210,8 +11210,8 @@ graph [
     source 240
     target 248
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11219,8 +11219,8 @@ graph [
     source 240
     target 249
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11228,8 +11228,8 @@ graph [
     source 241
     target 248
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11237,8 +11237,8 @@ graph [
     source 241
     target 249
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11246,8 +11246,8 @@ graph [
     source 242
     target 250
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11255,8 +11255,8 @@ graph [
     source 242
     target 251
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11264,8 +11264,8 @@ graph [
     source 243
     target 250
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11273,8 +11273,8 @@ graph [
     source 243
     target 251
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11282,8 +11282,8 @@ graph [
     source 244
     target 252
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11291,8 +11291,8 @@ graph [
     source 244
     target 253
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11300,8 +11300,8 @@ graph [
     source 245
     target 252
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11309,8 +11309,8 @@ graph [
     source 245
     target 253
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11318,8 +11318,8 @@ graph [
     source 246
     target 254
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11327,8 +11327,8 @@ graph [
     source 246
     target 255
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11336,8 +11336,8 @@ graph [
     source 247
     target 254
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11345,8 +11345,8 @@ graph [
     source 247
     target 255
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11354,8 +11354,8 @@ graph [
     source 248
     target 256
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11363,8 +11363,8 @@ graph [
     source 248
     target 257
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11372,8 +11372,8 @@ graph [
     source 249
     target 258
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11381,8 +11381,8 @@ graph [
     source 249
     target 259
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11390,8 +11390,8 @@ graph [
     source 250
     target 260
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11399,8 +11399,8 @@ graph [
     source 250
     target 261
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11408,8 +11408,8 @@ graph [
     source 251
     target 262
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11417,8 +11417,8 @@ graph [
     source 251
     target 263
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11426,8 +11426,8 @@ graph [
     source 252
     target 264
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11435,8 +11435,8 @@ graph [
     source 252
     target 265
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11444,8 +11444,8 @@ graph [
     source 253
     target 266
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11453,8 +11453,8 @@ graph [
     source 253
     target 267
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11462,8 +11462,8 @@ graph [
     source 254
     target 268
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11471,8 +11471,8 @@ graph [
     source 254
     target 269
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11480,8 +11480,8 @@ graph [
     source 255
     target 271
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11489,8 +11489,8 @@ graph [
     source 255
     target 270
     res [
-      delay 2
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11498,8 +11498,8 @@ graph [
     source 272
     target 280
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11507,8 +11507,8 @@ graph [
     source 272
     target 282
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11516,8 +11516,8 @@ graph [
     source 272
     target 276
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11525,8 +11525,8 @@ graph [
     source 272
     target 278
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11534,8 +11534,8 @@ graph [
     source 273
     target 280
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11543,8 +11543,8 @@ graph [
     source 273
     target 282
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11552,8 +11552,8 @@ graph [
     source 273
     target 276
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11561,8 +11561,8 @@ graph [
     source 273
     target 278
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11570,8 +11570,8 @@ graph [
     source 274
     target 283
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11579,8 +11579,8 @@ graph [
     source 274
     target 281
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11588,8 +11588,8 @@ graph [
     source 274
     target 279
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11597,8 +11597,8 @@ graph [
     source 274
     target 277
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11606,8 +11606,8 @@ graph [
     source 275
     target 283
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11615,8 +11615,8 @@ graph [
     source 275
     target 281
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11624,8 +11624,8 @@ graph [
     source 275
     target 279
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11633,8 +11633,8 @@ graph [
     source 275
     target 277
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11642,8 +11642,8 @@ graph [
     source 276
     target 284
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11651,8 +11651,8 @@ graph [
     source 276
     target 285
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11660,8 +11660,8 @@ graph [
     source 277
     target 284
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11669,8 +11669,8 @@ graph [
     source 277
     target 285
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11678,8 +11678,8 @@ graph [
     source 278
     target 286
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11687,8 +11687,8 @@ graph [
     source 278
     target 287
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11696,8 +11696,8 @@ graph [
     source 279
     target 286
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11705,8 +11705,8 @@ graph [
     source 279
     target 287
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11714,8 +11714,8 @@ graph [
     source 280
     target 288
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11723,8 +11723,8 @@ graph [
     source 280
     target 289
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11732,8 +11732,8 @@ graph [
     source 281
     target 288
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11741,8 +11741,8 @@ graph [
     source 281
     target 289
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11750,8 +11750,8 @@ graph [
     source 282
     target 290
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11759,8 +11759,8 @@ graph [
     source 282
     target 291
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11768,8 +11768,8 @@ graph [
     source 283
     target 290
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11777,8 +11777,8 @@ graph [
     source 283
     target 291
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11786,8 +11786,8 @@ graph [
     source 284
     target 292
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11795,8 +11795,8 @@ graph [
     source 284
     target 293
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11804,8 +11804,8 @@ graph [
     source 285
     target 294
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11813,8 +11813,8 @@ graph [
     source 285
     target 295
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11822,8 +11822,8 @@ graph [
     source 286
     target 296
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11831,8 +11831,8 @@ graph [
     source 286
     target 297
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11840,8 +11840,8 @@ graph [
     source 287
     target 298
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11849,8 +11849,8 @@ graph [
     source 287
     target 299
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11858,8 +11858,8 @@ graph [
     source 288
     target 300
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11867,8 +11867,8 @@ graph [
     source 288
     target 301
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11876,8 +11876,8 @@ graph [
     source 289
     target 302
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11885,8 +11885,8 @@ graph [
     source 289
     target 303
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11894,8 +11894,8 @@ graph [
     source 290
     target 304
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11903,8 +11903,8 @@ graph [
     source 290
     target 305
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11912,8 +11912,8 @@ graph [
     source 291
     target 307
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11921,8 +11921,8 @@ graph [
     source 291
     target 306
     res [
-      delay 5
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11931,7 +11931,7 @@ graph [
     target 312
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11940,7 +11940,7 @@ graph [
     target 314
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11949,7 +11949,7 @@ graph [
     target 316
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11958,7 +11958,7 @@ graph [
     target 318
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11967,7 +11967,7 @@ graph [
     target 312
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11976,7 +11976,7 @@ graph [
     target 314
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11985,7 +11985,7 @@ graph [
     target 316
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -11994,7 +11994,7 @@ graph [
     target 318
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12003,7 +12003,7 @@ graph [
     target 313
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12012,7 +12012,7 @@ graph [
     target 315
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12021,7 +12021,7 @@ graph [
     target 317
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12030,7 +12030,7 @@ graph [
     target 319
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12039,7 +12039,7 @@ graph [
     target 313
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12048,7 +12048,7 @@ graph [
     target 315
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12057,7 +12057,7 @@ graph [
     target 317
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12066,7 +12066,7 @@ graph [
     target 319
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12075,7 +12075,7 @@ graph [
     target 320
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12084,7 +12084,7 @@ graph [
     target 321
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12093,7 +12093,7 @@ graph [
     target 320
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12102,7 +12102,7 @@ graph [
     target 321
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12111,7 +12111,7 @@ graph [
     target 322
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12120,7 +12120,7 @@ graph [
     target 323
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12129,7 +12129,7 @@ graph [
     target 322
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12138,7 +12138,7 @@ graph [
     target 323
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12147,7 +12147,7 @@ graph [
     target 324
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12156,7 +12156,7 @@ graph [
     target 325
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12165,7 +12165,7 @@ graph [
     target 324
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12174,7 +12174,7 @@ graph [
     target 325
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12183,7 +12183,7 @@ graph [
     target 326
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12192,7 +12192,7 @@ graph [
     target 327
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12201,7 +12201,7 @@ graph [
     target 326
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12210,7 +12210,7 @@ graph [
     target 327
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12219,7 +12219,7 @@ graph [
     target 328
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12228,7 +12228,7 @@ graph [
     target 329
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12237,7 +12237,7 @@ graph [
     target 330
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12246,7 +12246,7 @@ graph [
     target 331
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12255,7 +12255,7 @@ graph [
     target 332
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12264,7 +12264,7 @@ graph [
     target 333
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12273,7 +12273,7 @@ graph [
     target 334
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12282,7 +12282,7 @@ graph [
     target 335
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12291,7 +12291,7 @@ graph [
     target 336
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12300,7 +12300,7 @@ graph [
     target 337
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12309,7 +12309,7 @@ graph [
     target 338
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12318,7 +12318,7 @@ graph [
     target 339
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12327,7 +12327,7 @@ graph [
     target 340
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12336,7 +12336,7 @@ graph [
     target 341
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12345,7 +12345,7 @@ graph [
     target 343
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12354,7 +12354,7 @@ graph [
     target 342
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12362,8 +12362,8 @@ graph [
     source 344
     target 352
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12371,8 +12371,8 @@ graph [
     source 344
     target 354
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12380,8 +12380,8 @@ graph [
     source 344
     target 348
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12389,8 +12389,8 @@ graph [
     source 344
     target 350
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12398,8 +12398,8 @@ graph [
     source 345
     target 352
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12407,8 +12407,8 @@ graph [
     source 345
     target 354
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12416,8 +12416,8 @@ graph [
     source 345
     target 348
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12425,8 +12425,8 @@ graph [
     source 345
     target 350
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12434,8 +12434,8 @@ graph [
     source 346
     target 355
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12443,8 +12443,8 @@ graph [
     source 346
     target 353
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12452,8 +12452,8 @@ graph [
     source 346
     target 349
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12461,8 +12461,8 @@ graph [
     source 346
     target 351
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12470,8 +12470,8 @@ graph [
     source 347
     target 355
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12479,8 +12479,8 @@ graph [
     source 347
     target 353
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12488,8 +12488,8 @@ graph [
     source 347
     target 349
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12497,8 +12497,8 @@ graph [
     source 347
     target 351
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12506,8 +12506,8 @@ graph [
     source 348
     target 356
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12515,8 +12515,8 @@ graph [
     source 348
     target 357
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12524,8 +12524,8 @@ graph [
     source 349
     target 356
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12533,8 +12533,8 @@ graph [
     source 349
     target 357
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12542,8 +12542,8 @@ graph [
     source 350
     target 358
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12551,8 +12551,8 @@ graph [
     source 350
     target 359
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12560,8 +12560,8 @@ graph [
     source 351
     target 358
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12569,8 +12569,8 @@ graph [
     source 351
     target 359
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12578,8 +12578,8 @@ graph [
     source 352
     target 360
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12587,8 +12587,8 @@ graph [
     source 352
     target 361
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12596,8 +12596,8 @@ graph [
     source 353
     target 360
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12605,8 +12605,8 @@ graph [
     source 353
     target 361
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12614,8 +12614,8 @@ graph [
     source 354
     target 362
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12623,8 +12623,8 @@ graph [
     source 354
     target 363
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12632,8 +12632,8 @@ graph [
     source 355
     target 362
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12641,8 +12641,8 @@ graph [
     source 355
     target 363
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12650,8 +12650,8 @@ graph [
     source 356
     target 364
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12659,8 +12659,8 @@ graph [
     source 356
     target 365
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12668,8 +12668,8 @@ graph [
     source 357
     target 366
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12677,8 +12677,8 @@ graph [
     source 357
     target 367
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12686,8 +12686,8 @@ graph [
     source 358
     target 368
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12695,8 +12695,8 @@ graph [
     source 358
     target 369
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12704,8 +12704,8 @@ graph [
     source 359
     target 370
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12713,8 +12713,8 @@ graph [
     source 359
     target 371
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12722,8 +12722,8 @@ graph [
     source 360
     target 372
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12731,8 +12731,8 @@ graph [
     source 360
     target 373
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12740,8 +12740,8 @@ graph [
     source 361
     target 374
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12749,8 +12749,8 @@ graph [
     source 361
     target 375
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12758,8 +12758,8 @@ graph [
     source 362
     target 376
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12767,8 +12767,8 @@ graph [
     source 362
     target 377
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12776,8 +12776,8 @@ graph [
     source 363
     target 379
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12785,8 +12785,8 @@ graph [
     source 363
     target 378
     res [
-      delay 2
-      bw 9000
+      delay 3
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12795,7 +12795,7 @@ graph [
     target 384
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12804,7 +12804,7 @@ graph [
     target 388
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12813,7 +12813,7 @@ graph [
     target 386
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12822,7 +12822,7 @@ graph [
     target 390
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12831,7 +12831,7 @@ graph [
     target 384
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12840,7 +12840,7 @@ graph [
     target 388
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12849,7 +12849,7 @@ graph [
     target 386
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12858,7 +12858,7 @@ graph [
     target 390
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12867,7 +12867,7 @@ graph [
     target 385
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12876,7 +12876,7 @@ graph [
     target 387
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12885,7 +12885,7 @@ graph [
     target 389
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12894,7 +12894,7 @@ graph [
     target 391
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12903,7 +12903,7 @@ graph [
     target 385
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12912,7 +12912,7 @@ graph [
     target 387
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12921,7 +12921,7 @@ graph [
     target 389
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12930,7 +12930,7 @@ graph [
     target 391
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12939,7 +12939,7 @@ graph [
     target 392
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12948,7 +12948,7 @@ graph [
     target 393
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12957,7 +12957,7 @@ graph [
     target 392
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12966,7 +12966,7 @@ graph [
     target 393
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12975,7 +12975,7 @@ graph [
     target 394
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12984,7 +12984,7 @@ graph [
     target 395
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -12993,7 +12993,7 @@ graph [
     target 394
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13002,7 +13002,7 @@ graph [
     target 395
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13011,7 +13011,7 @@ graph [
     target 396
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13020,7 +13020,7 @@ graph [
     target 397
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13029,7 +13029,7 @@ graph [
     target 396
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13038,7 +13038,7 @@ graph [
     target 397
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13047,7 +13047,7 @@ graph [
     target 398
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13056,7 +13056,7 @@ graph [
     target 399
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13065,7 +13065,7 @@ graph [
     target 398
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13074,7 +13074,7 @@ graph [
     target 399
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13083,7 +13083,7 @@ graph [
     target 400
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13092,7 +13092,7 @@ graph [
     target 401
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13101,7 +13101,7 @@ graph [
     target 402
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13110,7 +13110,7 @@ graph [
     target 403
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13119,7 +13119,7 @@ graph [
     target 404
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13128,7 +13128,7 @@ graph [
     target 405
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13137,7 +13137,7 @@ graph [
     target 406
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13146,7 +13146,7 @@ graph [
     target 407
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13155,7 +13155,7 @@ graph [
     target 408
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13164,7 +13164,7 @@ graph [
     target 409
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13173,7 +13173,7 @@ graph [
     target 410
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13182,7 +13182,7 @@ graph [
     target 411
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13191,7 +13191,7 @@ graph [
     target 412
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13200,7 +13200,7 @@ graph [
     target 413
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13209,7 +13209,7 @@ graph [
     target 415
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13218,7 +13218,7 @@ graph [
     target 414
     res [
       delay 4
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13226,8 +13226,8 @@ graph [
     source 416
     target 424
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13235,8 +13235,8 @@ graph [
     source 416
     target 426
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13244,8 +13244,8 @@ graph [
     source 416
     target 420
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13253,8 +13253,8 @@ graph [
     source 416
     target 422
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13262,8 +13262,8 @@ graph [
     source 417
     target 424
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13271,8 +13271,8 @@ graph [
     source 417
     target 426
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13280,8 +13280,8 @@ graph [
     source 417
     target 420
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13289,8 +13289,8 @@ graph [
     source 417
     target 422
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13298,8 +13298,8 @@ graph [
     source 418
     target 425
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13307,8 +13307,8 @@ graph [
     source 418
     target 427
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13316,8 +13316,8 @@ graph [
     source 418
     target 421
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13325,8 +13325,8 @@ graph [
     source 418
     target 423
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13334,8 +13334,8 @@ graph [
     source 419
     target 425
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13343,8 +13343,8 @@ graph [
     source 419
     target 427
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13352,8 +13352,8 @@ graph [
     source 419
     target 421
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13361,8 +13361,8 @@ graph [
     source 419
     target 423
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13370,8 +13370,8 @@ graph [
     source 420
     target 428
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13379,8 +13379,8 @@ graph [
     source 420
     target 429
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13388,8 +13388,8 @@ graph [
     source 421
     target 428
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13397,8 +13397,8 @@ graph [
     source 421
     target 429
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13406,8 +13406,8 @@ graph [
     source 422
     target 430
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13415,8 +13415,8 @@ graph [
     source 422
     target 431
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13424,8 +13424,8 @@ graph [
     source 423
     target 430
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13433,8 +13433,8 @@ graph [
     source 423
     target 431
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13442,8 +13442,8 @@ graph [
     source 424
     target 432
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13451,8 +13451,8 @@ graph [
     source 424
     target 433
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13460,8 +13460,8 @@ graph [
     source 425
     target 432
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13469,8 +13469,8 @@ graph [
     source 425
     target 433
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13478,8 +13478,8 @@ graph [
     source 426
     target 434
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13487,8 +13487,8 @@ graph [
     source 426
     target 435
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13496,8 +13496,8 @@ graph [
     source 427
     target 434
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13505,8 +13505,8 @@ graph [
     source 427
     target 435
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13514,8 +13514,8 @@ graph [
     source 428
     target 436
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13523,8 +13523,8 @@ graph [
     source 428
     target 437
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13532,8 +13532,8 @@ graph [
     source 429
     target 438
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13541,8 +13541,8 @@ graph [
     source 429
     target 439
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13550,8 +13550,8 @@ graph [
     source 430
     target 440
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13559,8 +13559,8 @@ graph [
     source 430
     target 441
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13568,8 +13568,8 @@ graph [
     source 431
     target 442
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13577,8 +13577,8 @@ graph [
     source 431
     target 443
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13586,8 +13586,8 @@ graph [
     source 432
     target 444
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13595,8 +13595,8 @@ graph [
     source 432
     target 445
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13604,8 +13604,8 @@ graph [
     source 433
     target 446
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13613,8 +13613,8 @@ graph [
     source 433
     target 447
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13622,8 +13622,8 @@ graph [
     source 434
     target 448
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13631,8 +13631,8 @@ graph [
     source 434
     target 449
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13640,8 +13640,8 @@ graph [
     source 435
     target 450
     res [
-      delay 4
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13649,17 +13649,17 @@ graph [
     source 435
     target 451
     res [
+      delay 2
+      bw 5000
+    ]
+    fatLink "True"
+  ]
+  edge [
+    source 452
+    target 456
+    res [
       delay 4
-      bw 9000
-    ]
-    fatLink "True"
-  ]
-  edge [
-    source 452
-    target 456
-    res [
-      delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13667,8 +13667,8 @@ graph [
     source 452
     target 460
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13676,8 +13676,8 @@ graph [
     source 452
     target 458
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13685,8 +13685,8 @@ graph [
     source 452
     target 462
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13694,8 +13694,8 @@ graph [
     source 453
     target 456
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13703,8 +13703,8 @@ graph [
     source 453
     target 460
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13712,8 +13712,8 @@ graph [
     source 453
     target 458
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13721,8 +13721,8 @@ graph [
     source 453
     target 462
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13730,8 +13730,8 @@ graph [
     source 454
     target 457
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13739,8 +13739,8 @@ graph [
     source 454
     target 459
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13748,8 +13748,8 @@ graph [
     source 454
     target 461
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13757,8 +13757,8 @@ graph [
     source 454
     target 463
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13766,8 +13766,8 @@ graph [
     source 455
     target 457
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13775,8 +13775,8 @@ graph [
     source 455
     target 459
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13784,8 +13784,8 @@ graph [
     source 455
     target 461
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13793,8 +13793,8 @@ graph [
     source 455
     target 463
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13802,8 +13802,8 @@ graph [
     source 456
     target 464
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13811,8 +13811,8 @@ graph [
     source 456
     target 465
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13820,8 +13820,8 @@ graph [
     source 457
     target 464
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13829,8 +13829,8 @@ graph [
     source 457
     target 465
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13838,8 +13838,8 @@ graph [
     source 458
     target 466
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13847,8 +13847,8 @@ graph [
     source 458
     target 467
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13856,8 +13856,8 @@ graph [
     source 459
     target 466
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13865,8 +13865,8 @@ graph [
     source 459
     target 467
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13874,8 +13874,8 @@ graph [
     source 460
     target 468
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13883,8 +13883,8 @@ graph [
     source 460
     target 469
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13892,8 +13892,8 @@ graph [
     source 461
     target 468
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13901,8 +13901,8 @@ graph [
     source 461
     target 469
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13910,8 +13910,8 @@ graph [
     source 462
     target 470
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13919,8 +13919,8 @@ graph [
     source 462
     target 471
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13928,8 +13928,8 @@ graph [
     source 463
     target 470
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13937,8 +13937,8 @@ graph [
     source 463
     target 471
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13946,8 +13946,8 @@ graph [
     source 464
     target 472
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13955,8 +13955,8 @@ graph [
     source 464
     target 473
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13964,8 +13964,8 @@ graph [
     source 465
     target 474
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13973,8 +13973,8 @@ graph [
     source 465
     target 475
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13982,8 +13982,8 @@ graph [
     source 466
     target 476
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -13991,8 +13991,8 @@ graph [
     source 466
     target 477
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14000,8 +14000,8 @@ graph [
     source 467
     target 478
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14009,8 +14009,8 @@ graph [
     source 467
     target 479
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14018,8 +14018,8 @@ graph [
     source 468
     target 480
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14027,8 +14027,8 @@ graph [
     source 468
     target 481
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14036,8 +14036,8 @@ graph [
     source 469
     target 482
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14045,8 +14045,8 @@ graph [
     source 469
     target 483
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14054,8 +14054,8 @@ graph [
     source 470
     target 484
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14063,8 +14063,8 @@ graph [
     source 470
     target 485
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14072,8 +14072,8 @@ graph [
     source 471
     target 487
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14081,8 +14081,8 @@ graph [
     source 471
     target 486
     res [
-      delay 3
-      bw 9000
+      delay 4
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14090,8 +14090,8 @@ graph [
     source 488
     target 496
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14099,8 +14099,8 @@ graph [
     source 488
     target 498
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14108,8 +14108,8 @@ graph [
     source 488
     target 492
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14117,8 +14117,8 @@ graph [
     source 488
     target 494
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14126,8 +14126,8 @@ graph [
     source 489
     target 496
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14135,8 +14135,8 @@ graph [
     source 489
     target 498
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14144,8 +14144,8 @@ graph [
     source 489
     target 492
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14153,8 +14153,8 @@ graph [
     source 489
     target 494
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14162,8 +14162,8 @@ graph [
     source 490
     target 497
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14171,8 +14171,8 @@ graph [
     source 490
     target 495
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14180,8 +14180,8 @@ graph [
     source 490
     target 499
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14189,8 +14189,8 @@ graph [
     source 490
     target 493
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14198,8 +14198,8 @@ graph [
     source 491
     target 497
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14207,8 +14207,8 @@ graph [
     source 491
     target 495
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14216,8 +14216,8 @@ graph [
     source 491
     target 499
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14225,8 +14225,8 @@ graph [
     source 491
     target 493
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14234,8 +14234,8 @@ graph [
     source 492
     target 500
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14243,8 +14243,8 @@ graph [
     source 492
     target 501
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14252,8 +14252,8 @@ graph [
     source 493
     target 500
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14261,8 +14261,8 @@ graph [
     source 493
     target 501
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14270,8 +14270,8 @@ graph [
     source 494
     target 502
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14279,8 +14279,8 @@ graph [
     source 494
     target 503
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14288,8 +14288,8 @@ graph [
     source 495
     target 502
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14297,8 +14297,8 @@ graph [
     source 495
     target 503
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14306,8 +14306,8 @@ graph [
     source 496
     target 504
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14315,8 +14315,8 @@ graph [
     source 496
     target 505
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14324,8 +14324,8 @@ graph [
     source 497
     target 504
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14333,8 +14333,8 @@ graph [
     source 497
     target 505
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14342,8 +14342,8 @@ graph [
     source 498
     target 506
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14351,8 +14351,8 @@ graph [
     source 498
     target 507
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14360,8 +14360,8 @@ graph [
     source 499
     target 506
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14369,8 +14369,8 @@ graph [
     source 499
     target 507
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14378,8 +14378,8 @@ graph [
     source 500
     target 508
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14387,8 +14387,8 @@ graph [
     source 500
     target 509
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14396,8 +14396,8 @@ graph [
     source 501
     target 510
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14405,8 +14405,8 @@ graph [
     source 501
     target 511
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14414,8 +14414,8 @@ graph [
     source 502
     target 512
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14423,8 +14423,8 @@ graph [
     source 502
     target 513
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14432,8 +14432,8 @@ graph [
     source 503
     target 514
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14441,8 +14441,8 @@ graph [
     source 503
     target 515
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14450,8 +14450,8 @@ graph [
     source 504
     target 516
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14459,8 +14459,8 @@ graph [
     source 504
     target 517
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14468,8 +14468,8 @@ graph [
     source 505
     target 518
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14477,8 +14477,8 @@ graph [
     source 505
     target 519
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14486,8 +14486,8 @@ graph [
     source 506
     target 520
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14495,8 +14495,8 @@ graph [
     source 506
     target 521
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14504,8 +14504,8 @@ graph [
     source 507
     target 523
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14513,8 +14513,8 @@ graph [
     source 507
     target 522
     res [
-      delay 3
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14522,8 +14522,8 @@ graph [
     source 524
     target 528
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14531,8 +14531,8 @@ graph [
     source 524
     target 530
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14540,8 +14540,8 @@ graph [
     source 524
     target 532
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14549,8 +14549,8 @@ graph [
     source 524
     target 534
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14558,8 +14558,8 @@ graph [
     source 525
     target 528
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14567,8 +14567,8 @@ graph [
     source 525
     target 530
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14576,8 +14576,8 @@ graph [
     source 525
     target 532
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14585,8 +14585,8 @@ graph [
     source 525
     target 534
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14594,8 +14594,8 @@ graph [
     source 526
     target 529
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14603,8 +14603,8 @@ graph [
     source 526
     target 531
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14612,8 +14612,8 @@ graph [
     source 526
     target 533
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14621,8 +14621,8 @@ graph [
     source 526
     target 535
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14630,8 +14630,8 @@ graph [
     source 527
     target 529
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14639,8 +14639,8 @@ graph [
     source 527
     target 531
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14648,8 +14648,8 @@ graph [
     source 527
     target 533
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14657,8 +14657,8 @@ graph [
     source 527
     target 535
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14666,8 +14666,8 @@ graph [
     source 528
     target 536
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14675,8 +14675,8 @@ graph [
     source 528
     target 537
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14684,8 +14684,8 @@ graph [
     source 529
     target 536
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14693,8 +14693,8 @@ graph [
     source 529
     target 537
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14702,8 +14702,8 @@ graph [
     source 530
     target 538
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14711,8 +14711,8 @@ graph [
     source 530
     target 539
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14720,8 +14720,8 @@ graph [
     source 531
     target 538
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14729,8 +14729,8 @@ graph [
     source 531
     target 539
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14738,8 +14738,8 @@ graph [
     source 532
     target 540
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14747,8 +14747,8 @@ graph [
     source 532
     target 541
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14756,8 +14756,8 @@ graph [
     source 533
     target 540
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14765,8 +14765,8 @@ graph [
     source 533
     target 541
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14774,8 +14774,8 @@ graph [
     source 534
     target 542
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14783,8 +14783,8 @@ graph [
     source 534
     target 543
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14792,8 +14792,8 @@ graph [
     source 535
     target 542
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14801,8 +14801,8 @@ graph [
     source 535
     target 543
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14810,8 +14810,8 @@ graph [
     source 536
     target 545
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14819,8 +14819,8 @@ graph [
     source 536
     target 544
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14828,8 +14828,8 @@ graph [
     source 537
     target 546
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14837,8 +14837,8 @@ graph [
     source 537
     target 547
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14846,8 +14846,8 @@ graph [
     source 538
     target 548
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14855,8 +14855,8 @@ graph [
     source 538
     target 549
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14864,8 +14864,8 @@ graph [
     source 539
     target 550
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14873,8 +14873,8 @@ graph [
     source 539
     target 551
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14882,8 +14882,8 @@ graph [
     source 540
     target 552
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14891,8 +14891,8 @@ graph [
     source 540
     target 553
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14900,8 +14900,8 @@ graph [
     source 541
     target 554
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14909,8 +14909,8 @@ graph [
     source 541
     target 555
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14918,8 +14918,8 @@ graph [
     source 542
     target 556
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14927,8 +14927,8 @@ graph [
     source 542
     target 557
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14936,8 +14936,8 @@ graph [
     source 543
     target 559
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14945,8 +14945,8 @@ graph [
     source 543
     target 558
     res [
-      delay 4
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14954,8 +14954,8 @@ graph [
     source 560
     target 568
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14963,8 +14963,8 @@ graph [
     source 560
     target 570
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14972,8 +14972,8 @@ graph [
     source 560
     target 564
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14981,8 +14981,8 @@ graph [
     source 560
     target 566
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14990,8 +14990,8 @@ graph [
     source 561
     target 568
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -14999,8 +14999,8 @@ graph [
     source 561
     target 570
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15008,8 +15008,8 @@ graph [
     source 561
     target 564
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15017,8 +15017,8 @@ graph [
     source 561
     target 566
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15026,8 +15026,8 @@ graph [
     source 562
     target 569
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15035,8 +15035,8 @@ graph [
     source 562
     target 567
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15044,8 +15044,8 @@ graph [
     source 562
     target 565
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15053,8 +15053,8 @@ graph [
     source 562
     target 571
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15062,8 +15062,8 @@ graph [
     source 563
     target 569
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15071,8 +15071,8 @@ graph [
     source 563
     target 567
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15080,8 +15080,8 @@ graph [
     source 563
     target 565
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15089,8 +15089,8 @@ graph [
     source 563
     target 571
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15098,8 +15098,8 @@ graph [
     source 564
     target 572
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15107,8 +15107,8 @@ graph [
     source 564
     target 573
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15116,8 +15116,8 @@ graph [
     source 565
     target 572
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15125,8 +15125,8 @@ graph [
     source 565
     target 573
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15134,8 +15134,8 @@ graph [
     source 566
     target 574
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15143,8 +15143,8 @@ graph [
     source 566
     target 575
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15152,8 +15152,8 @@ graph [
     source 567
     target 574
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15161,8 +15161,8 @@ graph [
     source 567
     target 575
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15170,8 +15170,8 @@ graph [
     source 568
     target 576
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15179,8 +15179,8 @@ graph [
     source 568
     target 577
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15188,8 +15188,8 @@ graph [
     source 569
     target 576
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15197,8 +15197,8 @@ graph [
     source 569
     target 577
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15206,8 +15206,8 @@ graph [
     source 570
     target 578
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15215,8 +15215,8 @@ graph [
     source 570
     target 579
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15224,8 +15224,8 @@ graph [
     source 571
     target 578
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15233,8 +15233,8 @@ graph [
     source 571
     target 579
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15242,8 +15242,8 @@ graph [
     source 572
     target 580
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15251,8 +15251,8 @@ graph [
     source 572
     target 581
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15260,8 +15260,8 @@ graph [
     source 573
     target 582
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15269,8 +15269,8 @@ graph [
     source 573
     target 583
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15278,8 +15278,8 @@ graph [
     source 574
     target 584
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15287,8 +15287,8 @@ graph [
     source 574
     target 585
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15296,8 +15296,8 @@ graph [
     source 575
     target 586
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15305,8 +15305,8 @@ graph [
     source 575
     target 587
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15314,8 +15314,8 @@ graph [
     source 576
     target 588
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15323,8 +15323,8 @@ graph [
     source 576
     target 589
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15332,8 +15332,8 @@ graph [
     source 577
     target 590
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15341,8 +15341,8 @@ graph [
     source 577
     target 591
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15350,8 +15350,8 @@ graph [
     source 578
     target 592
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15359,8 +15359,8 @@ graph [
     source 578
     target 593
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15368,8 +15368,8 @@ graph [
     source 579
     target 595
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15377,17 +15377,17 @@ graph [
     source 579
     target 594
     res [
+      delay 2
+      bw 5000
+    ]
+    fatLink "True"
+  ]
+  edge [
+    source 596
+    target 600
+    res [
       delay 1
-      bw 9000
-    ]
-    fatLink "True"
-  ]
-  edge [
-    source 596
-    target 600
-    res [
-      delay 2
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15395,8 +15395,8 @@ graph [
     source 596
     target 602
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15404,8 +15404,8 @@ graph [
     source 596
     target 604
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15413,8 +15413,8 @@ graph [
     source 596
     target 606
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15422,8 +15422,8 @@ graph [
     source 597
     target 600
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15431,8 +15431,8 @@ graph [
     source 597
     target 602
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15440,8 +15440,8 @@ graph [
     source 597
     target 604
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15449,8 +15449,8 @@ graph [
     source 597
     target 606
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15458,8 +15458,8 @@ graph [
     source 598
     target 601
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15467,8 +15467,8 @@ graph [
     source 598
     target 603
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15476,8 +15476,8 @@ graph [
     source 598
     target 605
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15485,8 +15485,8 @@ graph [
     source 598
     target 607
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15494,8 +15494,8 @@ graph [
     source 599
     target 601
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15503,8 +15503,8 @@ graph [
     source 599
     target 603
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15512,8 +15512,8 @@ graph [
     source 599
     target 605
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15521,8 +15521,8 @@ graph [
     source 599
     target 607
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15530,8 +15530,8 @@ graph [
     source 600
     target 608
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15539,8 +15539,8 @@ graph [
     source 600
     target 609
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15548,8 +15548,8 @@ graph [
     source 601
     target 608
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15557,8 +15557,8 @@ graph [
     source 601
     target 609
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15566,8 +15566,8 @@ graph [
     source 602
     target 610
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15575,8 +15575,8 @@ graph [
     source 602
     target 611
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15584,8 +15584,8 @@ graph [
     source 603
     target 610
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15593,8 +15593,8 @@ graph [
     source 603
     target 611
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15602,8 +15602,8 @@ graph [
     source 604
     target 612
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15611,8 +15611,8 @@ graph [
     source 604
     target 613
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15620,8 +15620,8 @@ graph [
     source 605
     target 612
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15629,8 +15629,8 @@ graph [
     source 605
     target 613
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15638,8 +15638,8 @@ graph [
     source 606
     target 614
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15647,8 +15647,8 @@ graph [
     source 606
     target 615
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15656,8 +15656,8 @@ graph [
     source 607
     target 614
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15665,8 +15665,8 @@ graph [
     source 607
     target 615
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15674,8 +15674,8 @@ graph [
     source 608
     target 616
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15683,8 +15683,8 @@ graph [
     source 608
     target 617
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15692,8 +15692,8 @@ graph [
     source 609
     target 618
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15701,8 +15701,8 @@ graph [
     source 609
     target 619
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15710,8 +15710,8 @@ graph [
     source 610
     target 620
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15719,8 +15719,8 @@ graph [
     source 610
     target 621
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15728,8 +15728,8 @@ graph [
     source 611
     target 622
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15737,8 +15737,8 @@ graph [
     source 611
     target 623
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15746,8 +15746,8 @@ graph [
     source 612
     target 624
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15755,8 +15755,8 @@ graph [
     source 612
     target 625
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15764,8 +15764,8 @@ graph [
     source 613
     target 626
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15773,8 +15773,8 @@ graph [
     source 613
     target 627
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15782,8 +15782,8 @@ graph [
     source 614
     target 628
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15791,8 +15791,8 @@ graph [
     source 614
     target 629
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15800,8 +15800,8 @@ graph [
     source 615
     target 631
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15809,8 +15809,8 @@ graph [
     source 615
     target 630
     res [
-      delay 2
-      bw 9000
+      delay 1
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15819,7 +15819,7 @@ graph [
     target 640
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15828,7 +15828,7 @@ graph [
     target 642
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15837,7 +15837,7 @@ graph [
     target 636
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15846,7 +15846,7 @@ graph [
     target 638
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15855,7 +15855,7 @@ graph [
     target 640
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15864,7 +15864,7 @@ graph [
     target 642
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15873,7 +15873,7 @@ graph [
     target 636
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15882,7 +15882,7 @@ graph [
     target 638
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15891,7 +15891,7 @@ graph [
     target 641
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15900,7 +15900,7 @@ graph [
     target 643
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15909,7 +15909,7 @@ graph [
     target 637
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15918,7 +15918,7 @@ graph [
     target 639
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15927,7 +15927,7 @@ graph [
     target 641
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15936,7 +15936,7 @@ graph [
     target 643
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15945,7 +15945,7 @@ graph [
     target 637
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15954,7 +15954,7 @@ graph [
     target 639
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15963,7 +15963,7 @@ graph [
     target 644
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15972,7 +15972,7 @@ graph [
     target 645
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15981,7 +15981,7 @@ graph [
     target 644
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15990,7 +15990,7 @@ graph [
     target 645
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -15999,7 +15999,7 @@ graph [
     target 646
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16008,7 +16008,7 @@ graph [
     target 647
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16017,7 +16017,7 @@ graph [
     target 646
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16026,7 +16026,7 @@ graph [
     target 647
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16035,7 +16035,7 @@ graph [
     target 648
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16044,7 +16044,7 @@ graph [
     target 649
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16053,7 +16053,7 @@ graph [
     target 648
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16062,7 +16062,7 @@ graph [
     target 649
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16071,7 +16071,7 @@ graph [
     target 650
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16080,7 +16080,7 @@ graph [
     target 651
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16089,7 +16089,7 @@ graph [
     target 650
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16098,7 +16098,7 @@ graph [
     target 651
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16107,7 +16107,7 @@ graph [
     target 652
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16116,7 +16116,7 @@ graph [
     target 653
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16125,7 +16125,7 @@ graph [
     target 654
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16134,7 +16134,7 @@ graph [
     target 655
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16143,7 +16143,7 @@ graph [
     target 656
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16152,7 +16152,7 @@ graph [
     target 657
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16161,7 +16161,7 @@ graph [
     target 658
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16170,7 +16170,7 @@ graph [
     target 659
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16179,7 +16179,7 @@ graph [
     target 660
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16188,7 +16188,7 @@ graph [
     target 661
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16197,7 +16197,7 @@ graph [
     target 662
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16206,7 +16206,7 @@ graph [
     target 663
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16215,7 +16215,7 @@ graph [
     target 664
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16224,7 +16224,7 @@ graph [
     target 665
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16233,7 +16233,7 @@ graph [
     target 667
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16242,7 +16242,7 @@ graph [
     target 666
     res [
       delay 3
-      bw 9000
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16250,8 +16250,8 @@ graph [
     source 668
     target 672
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16259,8 +16259,8 @@ graph [
     source 668
     target 676
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16268,8 +16268,8 @@ graph [
     source 668
     target 674
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16277,8 +16277,8 @@ graph [
     source 668
     target 678
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16286,8 +16286,8 @@ graph [
     source 669
     target 672
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16295,8 +16295,8 @@ graph [
     source 669
     target 676
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16304,8 +16304,8 @@ graph [
     source 669
     target 674
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16313,8 +16313,8 @@ graph [
     source 669
     target 678
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16322,8 +16322,8 @@ graph [
     source 670
     target 673
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16331,8 +16331,8 @@ graph [
     source 670
     target 675
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16340,8 +16340,8 @@ graph [
     source 670
     target 677
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16349,8 +16349,8 @@ graph [
     source 670
     target 679
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16358,8 +16358,8 @@ graph [
     source 671
     target 673
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16367,8 +16367,8 @@ graph [
     source 671
     target 675
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16376,8 +16376,8 @@ graph [
     source 671
     target 677
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16385,8 +16385,8 @@ graph [
     source 671
     target 679
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16394,8 +16394,8 @@ graph [
     source 672
     target 680
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16403,8 +16403,8 @@ graph [
     source 672
     target 681
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16412,8 +16412,8 @@ graph [
     source 673
     target 680
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16421,8 +16421,8 @@ graph [
     source 673
     target 681
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16430,8 +16430,8 @@ graph [
     source 674
     target 682
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16439,8 +16439,8 @@ graph [
     source 674
     target 683
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16448,8 +16448,8 @@ graph [
     source 675
     target 682
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16457,8 +16457,8 @@ graph [
     source 675
     target 683
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16466,8 +16466,8 @@ graph [
     source 676
     target 684
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16475,8 +16475,8 @@ graph [
     source 676
     target 685
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16484,8 +16484,8 @@ graph [
     source 677
     target 684
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16493,8 +16493,8 @@ graph [
     source 677
     target 685
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16502,8 +16502,8 @@ graph [
     source 678
     target 686
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16511,8 +16511,8 @@ graph [
     source 678
     target 687
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16520,8 +16520,8 @@ graph [
     source 679
     target 686
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16529,8 +16529,8 @@ graph [
     source 679
     target 687
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16538,8 +16538,8 @@ graph [
     source 680
     target 688
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16547,8 +16547,8 @@ graph [
     source 680
     target 689
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16556,8 +16556,8 @@ graph [
     source 681
     target 690
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16565,8 +16565,8 @@ graph [
     source 681
     target 691
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16574,8 +16574,8 @@ graph [
     source 682
     target 692
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16583,8 +16583,8 @@ graph [
     source 682
     target 693
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16592,8 +16592,8 @@ graph [
     source 683
     target 694
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16601,8 +16601,8 @@ graph [
     source 683
     target 695
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16610,8 +16610,8 @@ graph [
     source 684
     target 696
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16619,8 +16619,8 @@ graph [
     source 684
     target 697
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16628,8 +16628,8 @@ graph [
     source 685
     target 698
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16637,8 +16637,8 @@ graph [
     source 685
     target 699
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16646,8 +16646,8 @@ graph [
     source 686
     target 700
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16655,8 +16655,8 @@ graph [
     source 686
     target 701
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16664,8 +16664,8 @@ graph [
     source 687
     target 703
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16673,8 +16673,8 @@ graph [
     source 687
     target 702
     res [
-      delay 1
-      bw 9000
+      delay 2
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16682,8 +16682,8 @@ graph [
     source 704
     target 712
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16691,8 +16691,8 @@ graph [
     source 704
     target 714
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16700,8 +16700,8 @@ graph [
     source 704
     target 708
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16709,8 +16709,8 @@ graph [
     source 704
     target 710
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16718,8 +16718,8 @@ graph [
     source 705
     target 712
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16727,8 +16727,8 @@ graph [
     source 705
     target 714
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16736,8 +16736,8 @@ graph [
     source 705
     target 708
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16745,8 +16745,8 @@ graph [
     source 705
     target 710
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16754,8 +16754,8 @@ graph [
     source 706
     target 713
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16763,8 +16763,8 @@ graph [
     source 706
     target 709
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16772,8 +16772,8 @@ graph [
     source 706
     target 715
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16781,8 +16781,8 @@ graph [
     source 706
     target 711
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16790,8 +16790,8 @@ graph [
     source 707
     target 713
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16799,8 +16799,8 @@ graph [
     source 707
     target 709
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16808,8 +16808,8 @@ graph [
     source 707
     target 715
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16817,8 +16817,8 @@ graph [
     source 707
     target 711
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16826,8 +16826,8 @@ graph [
     source 708
     target 716
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16835,8 +16835,8 @@ graph [
     source 708
     target 717
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16844,8 +16844,8 @@ graph [
     source 709
     target 716
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16853,8 +16853,8 @@ graph [
     source 709
     target 717
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16862,8 +16862,8 @@ graph [
     source 710
     target 718
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16871,8 +16871,8 @@ graph [
     source 710
     target 719
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16880,8 +16880,8 @@ graph [
     source 711
     target 718
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16889,8 +16889,8 @@ graph [
     source 711
     target 719
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16898,8 +16898,8 @@ graph [
     source 712
     target 720
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16907,8 +16907,8 @@ graph [
     source 712
     target 721
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16916,8 +16916,8 @@ graph [
     source 713
     target 720
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16925,8 +16925,8 @@ graph [
     source 713
     target 721
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16934,8 +16934,8 @@ graph [
     source 714
     target 722
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16943,8 +16943,8 @@ graph [
     source 714
     target 723
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16952,8 +16952,8 @@ graph [
     source 715
     target 722
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16961,8 +16961,8 @@ graph [
     source 715
     target 723
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16970,8 +16970,8 @@ graph [
     source 716
     target 724
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16979,8 +16979,8 @@ graph [
     source 716
     target 725
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16988,8 +16988,8 @@ graph [
     source 717
     target 726
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -16997,8 +16997,8 @@ graph [
     source 717
     target 727
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17006,8 +17006,8 @@ graph [
     source 718
     target 728
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17015,8 +17015,8 @@ graph [
     source 718
     target 729
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17024,8 +17024,8 @@ graph [
     source 719
     target 730
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17033,8 +17033,8 @@ graph [
     source 719
     target 731
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17042,8 +17042,8 @@ graph [
     source 720
     target 732
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17051,8 +17051,8 @@ graph [
     source 720
     target 733
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17060,8 +17060,8 @@ graph [
     source 721
     target 734
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17069,8 +17069,8 @@ graph [
     source 721
     target 735
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17078,8 +17078,8 @@ graph [
     source 722
     target 736
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17087,8 +17087,8 @@ graph [
     source 722
     target 737
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17096,8 +17096,8 @@ graph [
     source 723
     target 738
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
@@ -17105,8 +17105,8 @@ graph [
     source 723
     target 739
     res [
-      delay 3
-      bw 9000
+      delay 5
+      bw 5000
     ]
     fatLink "True"
   ]
