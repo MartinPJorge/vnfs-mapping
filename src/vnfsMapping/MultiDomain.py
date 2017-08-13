@@ -408,6 +408,7 @@ class MultiDomain(object):
             nx.write_gml(self.__domainsViews[domain], basePath + 'domain' +
                     str(domain) + '.gml')
 
+        print 'Gonna dump in ' + basePath + 'metadata.json::' + str(self.getProperties()['foreignPods'][16])
         with open(basePath + 'metadata.json', 'w') as f:
              json.dump(self.getProperties(), f)
 

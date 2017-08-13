@@ -328,6 +328,7 @@ class NsMapper(object):
                 [(serverS, node1), ..., (serverN, serverE), delay]
 
             """
+            # print '  nodesList: ' + str(nodesList)
             if node in serversE:
                 return [], aggDelay
             elif depth == 0:
@@ -335,6 +336,7 @@ class NsMapper(object):
 
             # Get neighbors not inside current chain, and give priority to ones
             # that are not GWs
+            # print 'domain: ' + str(domain)
             neighbors = self.__multiDomain.getNodeNeighs(domain, node)
             gws, others, othersTypes, gwsTypes = [], [], [], []
             for neigh in neighbors:
@@ -351,6 +353,8 @@ class NsMapper(object):
             neighTypes = othersTypes + gwsTypes
             targetNeighs, targetTypes = [], []
 
+            # print ' neighbors: ' + str(neighbors)
+
             # Refreshed reached and fill target nodes
             for neighbor, neighType in zip(neighbors, neighTypes):
                 isForbidden = self.__isForbidden(typesList + [neighType])
@@ -361,6 +365,12 @@ class NsMapper(object):
                     beVisited = neighbor not in reached or\
                         (neighbor in reached and\
                         reached[neighbor] > aggDelay + linkRes['delay'])
+                    
+                    # print 'linkRes[bw]=' + str(linkRes['bw'])
+                    # print 'bw=' + str(bw)
+                    # print 'linkRes[delay]=' + str(linkRes['delay'])
+                    # print 'delay=' + str(delay)
+                    # print '--------------------------------------------'
 
                     if linkRes['bw'] >= bw and delay >= linkRes['delay'] +\
                             aggDelay and beVisited:
@@ -553,6 +563,8 @@ class NsMapper(object):
                 else:
                     capable = self.__multiDomain.getCapableServers(domain,
                             res['cpu'], res['memory'], res['disk'])
+                    # print '  serverS in capable?: ' + str(serverS in capable)
+                    # print '  capable servers: ' + str(len(capable))
 
                 # If last VNF server can contain it, place it there
                 path, pathDelay = None, 0
@@ -583,6 +595,7 @@ class NsMapper(object):
                     watchDog.unWatch() # free previously allocated resources
                     return None
                 else:
+                    # print '  mapped vnf: ' + str(vnf)
                     nsMapping.setPath(vnfS, vnf, path)
                     nsMapping.setLnkDelayAndRefresh(vnfS, vnf, pathDelay)
                     watchDog.watch(vnfS, vnf, path)
@@ -860,9 +873,9 @@ class NsMapper(object):
                 nsMapping.changeVnfMapping(currVnf, prevVnfs, afterVnfs,
                         prevDelays, afterDelays)
                 if nsMapping.getDelay() < bestNsMapping.getDelay():
-                    print 'MEJORA: ' + str(bestNsMapping.getDelay()) +\
-                            ' better than: ' + str(nsMapping.getDelay())
-                    sys.stdout.flush()
+                    # print 'MEJORA: ' + str(bestNsMapping.getDelay()) +\
+                    #         ' better than: ' + str(nsMapping.getDelay())
+                    # sys.stdout.flush()
                     nsMapping.notifyImprovement()
                     bestNsMapping = nsMapping.copy()
 
