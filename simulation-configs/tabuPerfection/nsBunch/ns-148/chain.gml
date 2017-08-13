@@ -3,43 +3,43 @@ graph [
     id 0
     label 1
     disk 7
-    cpu 2
-    memory 10
+    cpu 1
+    memory 12
   ]
   node [
     id 1
     label 2
-    disk 2
-    cpu 2
-    memory 7
+    disk 8
+    cpu 1
+    memory 12
   ]
   node [
     id 2
     label 3
-    disk 2
+    disk 10
     cpu 3
-    memory 11
+    memory 6
   ]
   node [
     id 3
     label 4
-    disk 8
-    cpu 1
-    memory 14
+    disk 4
+    cpu 2
+    memory 8
   ]
   node [
     id 4
     label 5
     disk 8
     cpu 3
-    memory 6
+    memory 4
   ]
   node [
     id 5
     label 6
-    disk 4
-    cpu 2
-    memory 8
+    disk 1
+    cpu 3
+    memory 5
   ]
   node [
     id 6
@@ -48,49 +48,43 @@ graph [
   edge [
     source 0
     target 6
-    delay 30
-    bw 51
+    delay 33
+    bw 98
   ]
   edge [
     source 0
     target 1
-    delay 31
-    bw 88
+    delay 27
+    bw 62
   ]
   edge [
     source 0
     target 2
-    delay 26
-    bw 33
-  ]
-  edge [
-    source 0
-    target 3
-    delay 32
-    bw 67
+    delay 31
+    bw 81
   ]
   edge [
     source 1
-    target 5
-    delay 30
-    bw 74
+    target 3
+    delay 35
+    bw 20
   ]
   edge [
     source 2
-    target 5
-    delay 27
-    bw 39
+    target 3
+    delay 26
+    bw 35
   ]
   edge [
     source 3
     target 4
-    delay 29
-    bw 49
+    delay 32
+    bw 85
   ]
   edge [
     source 4
     target 5
-    delay 29
-    bw 91
+    delay 33
+    bw 100
   ]
 ]
