@@ -43,7 +43,6 @@ class MultiDomainConfReader(object):
                 '/multiDomain'):
             return None
 
-        print 'reading dumped one at: ' + str(configPath + '/' + self.__simName)
         return MD.MultiDomain.read('multiDomain', absBasePath=configPath +\
                 '/' + self.__simName)
 
@@ -54,15 +53,12 @@ class MultiDomainConfReader(object):
 
         """
         filePath = configPath + '/' + self.__simName + '/multiDomain.json'
-        print 'reading config file:' + filePath
         if not os.path.exists(filePath):
-            print 'does not exist'
             return None
 
         mdProperties = None
         with open(filePath) as f:
             mdProperties = json.load(f)
-        print 'readProperties foreignPods[16]: ' + str(mdProperties['foreignPods'][16])
 
         return mdProperties
 

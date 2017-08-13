@@ -3,8 +3,8 @@
     "description": "Creates a NS bunch scenario so all NS requests can be mapped (100% acceptance rate).",
     "numNs": 400,
     "bwTh": {
-        "min": 50,
-        "max": 200
+        "min": 20,
+        "max": 100
     },
     "delayTh": {
         "min": 25,
