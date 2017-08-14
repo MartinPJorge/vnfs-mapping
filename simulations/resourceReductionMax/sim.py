@@ -164,8 +164,10 @@ if __name__ == '__main__':
 
         createRandMultiDomain(domains, [4], meshLnkRes["bw"],
                 meshLnkRes["delay"], fatLnkRes["bw"], fatLnkRes["delay"],
-                servRes['memory'], servRes['cpu'], servRes['disk'], 10, pods,
+                servRes['memory'], servRes['cpu'], servRes['disk'], 9, pods,
                 meshProps, configPath + '/' + simName + '/multiDomain.json')
+    else:
+        print 'ya esta creado!'
 
 
     # Create the readers
