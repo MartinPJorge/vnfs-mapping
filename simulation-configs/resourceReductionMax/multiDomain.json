@@ -238,16 +238,16 @@
     "name": "tabuPerfection",
     "servRes": {
         "disk": {
-            "max": 360,
-            "min": 360
+            "max": 190,
+            "min": 190
         },
         "cpu": {
-            "max": 144,
-            "min": 144
+            "max": 65,
+            "min": 65
         },
         "memory": {
-            "max": 576,
-            "min": 576
+            "max": 195,
+            "min": 195
         }
     },
     "fatSrvProps": [
