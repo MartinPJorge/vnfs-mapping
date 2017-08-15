@@ -66,10 +66,10 @@ do
     python $SETRESPY $currDisk $currCpu $currMem
 
     # Launch simulations
-    python $SIMPY greedy Dijkstra d=9 > "results/dijkstra-dpth9--$suffixName" &
-    python $SIMPY greedy backtrackingCutoff d=9 > "results/dfs-dpth9--$suffixName" &
-    python $SIMPY greedy BFScutoff d=9 > "results/bfs-dpth9--$suffixName" &
-    python $SIMPY tabu greedy Dijkstra d=9 i=5 b=3 > "results/tabu-dijkstra-dpth=9i=5b=3--$suffixName" &
+    python $SIMPY greedy Dijkstra d=9 > "$RELPATH/results/dijkstra-dpth9--$suffixName" &
+    python $SIMPY greedy backtrackingCutoff d=9 > "$RELPATH/results/dfs-dpth9--$suffixName" &
+    python $SIMPY greedy BFScutoff d=9 > "$RELPATH/results/bfs-dpth9--$suffixName" &
+    python $SIMPY tabu greedy Dijkstra d=9 i=5 b=3 > "$RELPATH/results/tabu-dijkstra-dpth=9i=5b=3--$suffixName" &
     wait
 
     currDisk=`echo "$currDisk - $diskStep" | bc`

@@ -246,8 +246,8 @@
             "min": 65
         },
         "memory": {
-            "max": 195,
-            "min": 195
+            "max": 200,
+            "min": 200
         }
     },
     "fatSrvProps": [
