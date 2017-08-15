@@ -30,6 +30,7 @@ RELPATH=`dirname ${BASH_SOURCE[0]}`
 SIMPY="$RELPATH/sim.py"
 SETRESPY="$RELPATH/setSimResources.py"
 PRINTRESPY="$RELPATH/printSimResources.py"
+MULTIDOM_DIR="$RELPATH/../../simulation-configs/resourceReductionMax/multiDomain"
 
 
 # RESOURCES RETRIEVAL
@@ -57,12 +58,13 @@ while [ $(echo "$currDisk >= $baseDisk" | bc) -gt 0 ]\
     && [ $(echo "$currCpu >= $baseCpu" | bc) -gt 0 ]\
     && [ $(echo "$currMem >= $baseMem" | bc) -gt 0 ];
 do
+    rm -r $MULTIDOM_DIR
     suffixName="-d=$currDisk-cpu=$currCpu-mem=$currMem.log"
     echo currDisk: $currDisk
     echo currCpu: $currCpu
     echo -e "currMem: $currMem\n"
     
-    # Set resources to current ones
+    Set resources to current ones
     python $SETRESPY $currDisk $currCpu $currMem
 
     # Launch simulations
