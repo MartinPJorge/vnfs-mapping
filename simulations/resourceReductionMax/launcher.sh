@@ -64,12 +64,12 @@ do
     echo currCpu: $currCpu
     echo -e "currMem: $currMem\n"
     
-    Set resources to current ones
+    # Set resources to current ones
     python $SETRESPY $currDisk $currCpu $currMem
 
-    # Launch simulations
+    # Launch simulations (first one without & to be the one to write new domain)
+    python $SIMPY greedy backtrackingCutoff d=9 > "$RELPATH/results/dfs-dpth9--$suffixName"
     python $SIMPY greedy Dijkstra d=9 > "$RELPATH/results/dijkstra-dpth9--$suffixName" &
-    python $SIMPY greedy backtrackingCutoff d=9 > "$RELPATH/results/dfs-dpth9--$suffixName" &
     python $SIMPY greedy BFScutoff d=9 > "$RELPATH/results/bfs-dpth9--$suffixName" &
     python $SIMPY tabu greedy Dijkstra d=9 i=5 b=3 > "$RELPATH/results/tabu-dijkstra-dpth=9i=5b=3--$suffixName" &
     wait
