@@ -18,21 +18,21 @@ if __name__ == '__main__':
         mdCfg = json.load(f)
         f.close()
 
-    mdCfg['servRes']['disk']['max'] = float(sys.argv[1])
-    mdCfg['servRes']['disk']['min'] = float(sys.argv[1])
+    mdCfg['servRes']['disk']['max'] = int(float(sys.argv[1]))
+    mdCfg['servRes']['disk']['min'] = int(float(sys.argv[1]))
 
-    mdCfg['servRes']['cpu']['max'] = float(sys.argv[2])
-    mdCfg['servRes']['cpu']['min'] = float(sys.argv[2])
+    mdCfg['servRes']['cpu']['max'] = int(float(sys.argv[2]))
+    mdCfg['servRes']['cpu']['min'] = int(float(sys.argv[2]))
 
-    mdCfg['servRes']['memory']['max'] = float(sys.argv[3])
-    mdCfg['servRes']['memory']['min'] = float(sys.argv[3])
+    mdCfg['servRes']['memory']['max'] = int(float(sys.argv[3]))
+    mdCfg['servRes']['memory']['min'] = int(float(sys.argv[3]))
 
     if len(sys.argv) > 4:
-        mdCfg['fatLnkRes']['bw']['max'] = float(sys.argv[4])
-        mdCfg['fatLnkRes']['bw']['min'] = float(sys.argv[4])
+        mdCfg['fatLnkRes']['bw']['max'] = int(float(sys.argv[4]))
+        mdCfg['fatLnkRes']['bw']['min'] = int(float(sys.argv[4]))
 
-        mdCfg['meshLnkRes']['bw']['max'] = float(sys.argv[5])
-        mdCfg['meshLnkRes']['bw']['min'] = float(sys.argv[5])
+        mdCfg['meshLnkRes']['bw']['max'] = int(float(sys.argv[5]))
+        mdCfg['meshLnkRes']['bw']['min'] = int(float(sys.argv[5]))
 
     with open(configPath + '/resourceReductionMax/multiDomain.json', 'w') as f:
         json.dump(mdCfg, f)
