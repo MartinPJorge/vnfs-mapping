@@ -42,6 +42,11 @@ memory=`echo "$resources" | grep memory | grep -oe $NUMREGEX`
 fatBw=`echo "$resources" | grep fatBw | grep -oe $NUMREGEX`
 meshBw=`echo "$resources" | grep meshBw | grep -oe $NUMREGEX`
 
+# Put resources as float
+disk=`echo "scale=2; $disk / 1" | bc`
+cpu=`echo "scale=2; $cpu / 1" | bc`
+memory=`echo "scale=2; $memory / 1" | bc`
+
 # PARAMS STEPS
 diskStep=`echo "scale=2; ($disk - $baseDisk) / $STEPS" | bc`
 cpuStep=`echo "scale=2; ($cpu - $baseCpu) / $STEPS" | bc`
