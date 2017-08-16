@@ -49,7 +49,7 @@ yieldOutput () {
     local cpu=`ls $file | grep -oe 'cpu=[0-9]*' | grep -oe '[0-9]*'`
     local improved=`grep improved $file | grep -oe '[0-9]*'`
     local accepted=`grep success $file | grep -oe '[0-9]*'`
-    local time=`grep -oe 'ellapsed time' $file | grep -oe '[0-9]*'`
+    local time=`grep -e 'ellapsed time' $file | grep -oe '[0-9]*\(\.[0-9]*\)*'`
 
     echo "$step $alg $accepted $improved $time $disk $mem $cpu"
 }
