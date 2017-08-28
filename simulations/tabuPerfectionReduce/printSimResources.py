@@ -5,7 +5,7 @@ absPath = os.path.abspath(os.path.dirname(__file__))
 configPath = '/'.join(absPath.split('/')[:-2]) + '/simulation-configs'
 
 if __name__ == '__main__':
-    with open(configPath + '/resourceReductionMax/multiDomain.json') as f:
+    with open(configPath + '/tabuPerfectionReduce/multiDomain.json') as f:
         mdCfg = json.load(f)
         print 'disk: ' + str(mdCfg['servRes']['disk']['max'])
         print 'cpu: ' + str(mdCfg['servRes']['cpu']['max'])

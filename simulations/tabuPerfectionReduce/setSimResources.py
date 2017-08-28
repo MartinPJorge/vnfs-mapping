@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     mdCfg = None
 
-    with open(configPath + '/resourceReductionMax/multiDomain.json') as f:
+    with open(configPath + '/tabuPerfectionReduce/multiDomain.json') as f:
         mdCfg = json.load(f)
         f.close()
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         mdCfg['meshLnkRes']['bw']['max'] = int(float(sys.argv[5]))
         mdCfg['meshLnkRes']['bw']['min'] = int(float(sys.argv[5]))
 
-    with open(configPath + '/resourceReductionMax/multiDomain.json', 'w') as f:
+    with open(configPath + '/tabuPerfectionReduce/multiDomain.json', 'w') as f:
         json.dump(mdCfg, f)
         f.close()
 

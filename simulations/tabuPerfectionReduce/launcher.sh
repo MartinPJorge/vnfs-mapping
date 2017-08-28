@@ -28,31 +28,6 @@ MULTIDOM_DIR="$RELPATH/../../simulation-configs/tabuPerfectionReduce/multiDomain
 VNFS=`grep vnfs $RELPATH/../../simulation-configs/tabuPerfectionReduce/nsBunch.json | grep -oE '[0-9]*'`
 
 
-# RESOURCES RETRIEVAL
-resources=$(python $PRINTRESPY)
-NUMREGEX='[0-9]\+\(\.[0-9]\+\)*'
-disk=`echo "$resources" | grep disk | grep -oe $NUMREGEX`
-cpu=`echo "$resources" | grep cpu | grep -oe $NUMREGEX`
-memory=`echo "$resources" | grep memory | grep -oe $NUMREGEX`
-fatBw=`echo "$resources" | grep fatBw | grep -oe $NUMREGEX`
-meshBw=`echo "$resources" | grep meshBw | grep -oe $NUMREGEX`
-
-# Put resources as float
-disk=`echo "scale=2; $disk / 1" | bc`
-cpu=`echo "scale=2; $cpu / 1" | bc`
-memory=`echo "scale=2; $memory / 1" | bc`
-
-# PARAMS STEPS
-diskStep=`echo "scale=2; ($disk - $baseDisk) / $STEPS" | bc`
-cpuStep=`echo "scale=2; ($cpu - $baseCpu) / $STEPS" | bc`
-memoryStep=`echo "scale=2; ($memory - $baseMem) / $STEPS" | bc`
-
-# INITIALIZE ITER VARS
-currDisk=$disk
-currCpu=$cpu
-currMem=$memory
-
-
 # --- Resources steps ---
 # ORIGINAL FROM TABU PERFECTION EXPERIMENT:
 # disk: 190
@@ -60,9 +35,14 @@ currMem=$memory
 # memory: 200
 # fatBw: 1024000
 # meshBw: 23040
+declare -a disks
+declare -a cpus
+declare -a memories
 disks=(380 190)
 cpus=(130 65)
 memories=(400 200)
+fatBws=(2048000 1024000)
+meshBws=(46080 23040)
 
 # Best tabu params settings
 dfsIters=6
@@ -74,15 +54,17 @@ dijBlocks=3
 
 
 # Iterate through different possible resources
-for (( i = 1; i <= ${#disks}; i++ )); do
+for (( i = 0; i < ${#disks}; i++ )); do
     rm -r $MULTIDOM_DIR
     suffixName="-d=${disks[i]}-cpu=${cpus[i]}-mem=${memories[i]}.log"
+    echo disks: ${disks[@]}
+    echo i: $i
     echo currDisk: ${disks[i]}
     echo currCpu: ${cpus[i]}
     echo -e "currMem: ${memories[i]}\n"
     
     # Set resources to current ones
-    python $SETRESPY ${disks[i]} ${cpus[i]} ${memories[i]}
+    python $SETRESPY ${disks[i]} ${cpus[i]} ${memories[i]} ${fatBws[i]} ${meshBws[i]}
 
     # Calc number of blockings
     dfsBlk=$(( $VNFS * ($dfsBlocks + 1) - 1 ))
@@ -90,8 +72,8 @@ for (( i = 1; i <= ${#disks}; i++ )); do
     dijBlk=$(( $VNFS * ($dijBlocks + 1) - 1 ))
 
     # Launch simulations (first one without & to be the one to write new domain)
-    python $SIMPY tabu greedy backtrackingCutoff d=9 i=6 b=$dfsBlk > "$RELPATH/results/tabu-dijkstra-dpth=9i=5b=$dfsBlk--$suffixName" &
-    python $SIMPY tabu greedy BFScutoff d=9 i=5 b=$bfsBlk > "$RELPATH/results/tabu-dijkstra-dpth=9i=5b=$bfsBlk--$suffixName" &
+    python $SIMPY tabu greedy backtrackingCutoff d=9 i=6 b=$dfsBlk > "$RELPATH/results/tabu-dfs-dpth=9i=6b=$dfsBlk--$suffixName" &
+    python $SIMPY tabu greedy BFScutoff d=9 i=6 b=$bfsBlk > "$RELPATH/results/tabu-bfs-dpth=9i=6b=$bfsBlk--$suffixName" &
     python $SIMPY tabu greedy Dijkstra d=9 i=5 b=$dijBlk > "$RELPATH/results/tabu-dijkstra-dpth=9i=5b=$dijBlk--$suffixName" &
     wait
 done
