@@ -35,14 +35,21 @@ VNFS=`grep vnfs $RELPATH/../../simulation-configs/tabuPerfectionReduce/nsBunch.j
 # memory: 200
 # fatBw: 1024000
 # meshBw: 23040
+#-----------------
+# disk: 200
+# cpu: 200
+# memory: 200
+# fatBw: 5000
+# meshBw: 9000
+
 declare -a disks
 declare -a cpus
 declare -a memories
-disks=(380 190)
-cpus=(130 65)
+disks=(400 200)
+cpus=(400 200)
 memories=(400 200)
-fatBws=(2048000 1024000)
-meshBws=(46080 23040)
+fatBws=(10000 5000)
+meshBws=(18000 9000)
 
 # Best tabu params settings
 dfsIters=6
