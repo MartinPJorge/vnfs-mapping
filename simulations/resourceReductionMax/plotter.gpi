@@ -1,6 +1,6 @@
-set title "Resources consumption & acceptance rate"
+set title "Resources reduction \\& acceptance rate"
 set ylab "acceptance rate (%)"
-set xlab "resource consumption (tenths)"
+set xlab "resource reduction (tenths)"
 
 # color palette -> http://www.colourlovers.com/palette/4520699/Fall_colour
 set style line 1 lw 2 pt 5 ps 1.5 lc rgb "#D35918"

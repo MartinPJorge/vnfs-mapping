@@ -1,6 +1,6 @@
-set title "Resources consumption & run time"
+set title "Resources reduction \\& run time"
 set ylab "run time (sec.)"
-set xlab "resource consumption (tenths)"
+set xlab "resource reduction (tenths)"
 
 # color palette -> http://www.colourlovers.com/palette/4520699/Fall_colour
 set style line 1 lw 2 pt 5 ps 1.5 lc rgb "#D35918"
