@@ -14,45 +14,52 @@ class NSgenerator(object):
 
     """Generator of NS requests"""
 
-    def __init__(self, bwTh, delayTh, memoryTh, diskTh, cpuTh):
+    def __init__(self, linkTh, vnfTh):
         """Initializes the NS generator with required thresholds
 
-        :bwTh: link bandwidth thresholds {'min', 'max'}
-        :delayTh: link delay thresholds {'min', 'max'}
-        :memoryTh: server memory thresholds {'min', 'max'}
-        :diskTh: server disk thresholds {'min', 'max'}
-        :cpuTh: server delay thresholds {'min', 'max'}
+        :linkTh: Threshold values for the links (follow PIMRC18 model), ex.:
+            {'traffic': {'min', 'max'}}
+        :vnfTh: Threshold values for the VNFs (follow PIMRC18 model), ex.:
+            {
+             'processing_time': {'min', 'max'},
+             'requirements': {
+               'cpu':     {'min', 'max'},
+               'memory':  {'min', 'max'},
+               'storage': {'min', 'max'}
+             }
+            }
 
         """
-        self.__bwTh = bwTh
-        self.__delayTh = delayTh
-        self.__memoryTh = memoryTh
-        self.__diskTh = diskTh
-        self.__cpuTh = cpuTh
+        self.__linkTh = linkTh
+        self.__vnfTh = vnfTh
 
         self.__branches = None
         self.__split = None
         
 
-    def __createLink(self, chain, vnfA, vnfB):
+    def __createLink(self, chain, vnfA, vnfB, prob=1):
         """Stablishes a link between VNFs with id vnfA and vnfB
 
-        :chain: NS chain
+        :chain: NS chain (networkX graph)
         :vnfA: id of vnfA
         :vnfB: id of vnfB
+        :prob: probability of going from vnfA to vnfB
         :returns: Nothing
 
         """
-        bw = random.randint(self.__bwTh['min'], self.__bwTh['max'])
-        delay = random.randint(self.__delayTh['min'], self.__delayTh['max'])
-        chain.add_edge(vnfA, vnfB, bw=bw, delay=delay)
+        link_params = {}
+        for linkTh_param in self.__linkTh:
+            link_params['linkTh_param'] = random.randint(
+                self.__linkTh[linkTh_param]['min'],
+                self.__linkTh[linkTh_param]['max'])
+        chain.add_edge(vnfA, vnfB, **link_params)
 
 
     def __insertVNF(self, chain, branchHeads, predecesors, vnfId=None):
         """Inserts a VNF in the current NS chain. It adds it after the
         predecesors VNF list
 
-        :chain: NS chain
+        :chain: NS chain (networkX graph)
         :branchHeads: list of all branches' heads
         :predecesors: list of VNFs predecesors
         :vnfId: (optional) id of inserted VNF, otherwise it'll have
@@ -60,18 +67,42 @@ class NSgenerator(object):
         :returns: Nothing
 
         """
-        
-        memory = random.randint(self.__memoryTh['min'], self.__memoryTh['max'])
-        disk = random.randint(self.__diskTh['min'], self.__diskTh['max'])
-        cpu = random.randint(self.__cpuTh['min'], self.__cpuTh['max'])
+
+        vnf_params = {
+            'requirements': {}
+        }
+        for vnf_param in self.__vnfTh['requirements']:
+            vnf_params['requirements'][vnf_param] = random.randint(
+                self.__vnfTh['requirements'][vnf_param]['min'],
+                self.__vnfTh['requirements'][vnf_param]['max'])
+        for vnf_param in self.__vnfTh:
+            if vnf_param != 'requirements':
+                vnf_params[vnf_param] = random.randint(
+                self.__vnfTh[vnf_param]['min'],
+                self.__vnfTh[vnf_param]['max'])
 
         # Add VNFs and links
         vnfId = max(branchHeads) + 1 if not vnfId else vnfId
-        chain.add_node(vnfId, memory=memory, disk=disk, cpu=cpu)
+        chain.add_node(vnfId, **vnf_params)
         newBranchHeads = list(branchHeads)
-        for predecesor in predecesors:
-            newBranchHeads.remove(predecesor)
-            self.__createLink(chain, predecesor, vnfId)
+        
+        # Decide probabilities
+        probs = [1 for _ in range(len(predecesors))]
+        if len(predecesors) > 1:
+            for i in range(len(probs)):
+                if i == 0:
+                    probs[0] = random.uniform(0, 1)
+                elif predecesors[i] != predecesors[-1]:
+                    assigned_probs = reduce(lambda x, y: x + y, probs[:i])
+                    probs[i] = random.uniform(0, assinged_probs)
+                else: # last element
+                    assigned_probs = reduce(lambda x, y: x + y, probs[:i])
+                    probs[i] = 1 - assigned_probs
+
+        if len(predecesors) > 1:
+            for (predecesor, prob_) in (predecesors, probs):
+                newBranchHeads.remove(predecesor)
+                self.__createLink(chain, predecesor, vnfId, prob=prob_)
 
         return newBranchHeads + [vnfId]
     

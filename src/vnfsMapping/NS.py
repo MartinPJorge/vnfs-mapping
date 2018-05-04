@@ -32,6 +32,7 @@ class NS(object):
         :returns: string representation
 
         """
+
         prevIterIdx = self.__iterIdx
         self.initIter()
         neighs = True
@@ -47,15 +48,14 @@ class NS(object):
                 vnfInfo = 'START'
             else:
                 vnfData = self.getVnf(currVnf)
-                vnfInfo = str(currVnf) + ':: cpu=' + str(vnfData['cpu']) + ',\
- memory=' + str(vnfData['memory']) + ', disk=' + str(vnfData['disk'])
+                vnfInfo = str(currVnf) + ':: ' + str(vnfData)
                 vnfInfos.append(vnfInfo)
 
             # Links requirements
             for neigh in neighs:
                 linkData = self.getLink(currVnf, neigh)
-                linkInfo = str(currVnf) + '<-->' + str(neigh) + ':: bw=' +\
-str(linkData['bw']) + ', delay=' + str(linkData['delay'])
+                linkInfo = str(currVnf) + '<-->' + str(neigh) + ':: ' +\
+                    str(linkData)
                 linkInfos.append(linkInfo)
 
             currVnf = self.currIterId()
@@ -371,13 +371,12 @@ str(linkData['bw']) + ', delay=' + str(linkData['delay'])
         if not self.__chain.has_node(vnf):
             return None
         else:
-            resources = dict()
-            resources['memory'] = nx.get_node_attributes(self.__chain,
-                'memory')[vnf]
-            resources['disk'] = nx.get_node_attributes(self.__chain,
-                'disk')[vnf]
-            resources['cpu'] = nx.get_node_attributes(self.__chain,
-                'cpu')[vnf]
+            resources = {'requirements': {}}
+            resources['processing_time'] = nx.get_node_attributes(self.__chain,
+                'processing_time')[vnf]
+
+            resources['requirements'] = nx.get_node_attributes(self.__chain,
+                'requirements')[vnf]
 
             return resources
 
