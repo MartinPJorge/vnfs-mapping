@@ -14,7 +14,8 @@ if __name__ == '__main__':
     }
 
     linkTh = {
-        'traffic': {'min': 12, 'max': 30}
+        'traffic': {'min': 12, 'max': 30},
+        'delay': {'min': 2, 'max': 14}
     }
 
     ns_gen = NSgenerator(linkTh, vnfTh)
@@ -27,4 +28,10 @@ if __name__ == '__main__':
     probs = NSgenerator.arrayProbs(5)
     print 'sum(probs) = ' + str(reduce(lambda x, y: x + y, probs))
     print 'probs = ' + str(probs)
+
+
+    print '\n======== Printing PIMRC18 conversion ==========='
+    print ns.toPimrc()
+
+
 

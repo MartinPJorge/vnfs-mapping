@@ -17,6 +17,7 @@ class NS(object):
         """Creates empty NS instance
 
         """
+        self.__serviceName = None
         self.__chain = None
         self.__iterIdx = 1
         self.__branches = None
@@ -255,6 +256,24 @@ class NS(object):
         return self.__maxSplitW
 
 
+    def setServiceName(self, name):
+        """Sets the service name
+
+        :name: service name string
+        :returns: Nothing
+
+        """
+        self.__serviceName = name
+
+
+    def getServiceName(self):
+        """Gets the service name
+        :returns: string containing the service name
+
+        """
+        return self.__serviceName
+
+
     def setBranchNum(self, branchNum):
         """Sets the number of branches in a NS chain
 
@@ -352,6 +371,19 @@ class NS(object):
             return self.__chain.get_edge_data(A, B)
 
 
+    def getLinksTo(self, B):
+        """Gets all the links arriving to B
+
+        :B: destination VNF id
+        :returns: list of networkX links arriving to VNF B
+
+        """
+        nodes = self.getChain().nodes()
+        links = [self.getLink(node, B) for node in nodes]
+
+        return filter(lambda l: l != None, links)
+
+
     def getChain(self):
         """Retrieves the NS chain
         :returns: networkx instance
@@ -374,7 +406,8 @@ class NS(object):
             resources = {'requirements': {}}
             resources['processing_time'] = nx.get_node_attributes(self.__chain,
                 'processing_time')[vnf]
-
+            resources['vnf_name'] = nx.get_node_attributes(self.__chain,
+                'vnf_name')[vnf]
             resources['requirements'] = nx.get_node_attributes(self.__chain,
                 'requirements')[vnf]
 
@@ -494,6 +527,78 @@ class NS(object):
             equal = False
                 
         return equal
+
+
+    def toPimrc(self, pimrc=None):
+        """Translates the NS instance into a PIMRC18 JSON format.
+        If pimrc parameter is provided, the info. is incorporated there.
+
+        :pimrc: PIMRC18 dictionary
+        :returns: JSON in PIMRC18 format
+
+        """
+        if not pimrc:
+            pimrc = {
+                'services': [],
+                'vnfs': [],
+                'services': [],
+                'vnf_edges': []
+            }
+
+        # Generate service name
+        service_nums = [-1]
+        for service in pimrc['services']:
+            if 's_gen_' in service:
+                service_nums.append(int(
+                    service['service_name'].split('s_gen_')[-1]))
+        serviceName = 's_gen_' + str(max(service_nums) + 1)
+            
+        # Generate the service dictionary
+        service = {
+            'service_name': serviceName,
+            'max_latency': 0, # TODO - check how to get this
+            'traversed_vnfs': {}
+        }
+
+		# Get the traversed links
+        vnf_edges = filter(lambda ve: ve[0] != 'start' and ve[1] != 'start',
+            self.getChain().edges(data=True))
+        for vnf_edge in vnf_edges:
+            link = dict(self.getLink(vnf_edge[0], vnf_edge[1]))
+            vnfAname = self.getVnf(vnf_edge[0])['vnf_name']
+            vnfBname = self.getVnf(vnf_edge[1])['vnf_name']
+            link['source'] = vnfAname
+            link['target'] = vnfBname
+            del link['prob']
+            pimrc['vnf_edges'].append(link)
+
+        # Get the VNFs inside the NS
+        networkx_vnfs = filter(lambda v: v != 'start',
+            self.getChain().nodes())
+        nsVnfs = [self.getVnf(v) for v in networkx_vnfs]
+        pimrcVnfNames = [vnf['vnf_name'] for vnf in pimrc['vnfs']]
+
+        for (vnf, vnfId) in zip(nsVnfs, networkx_vnfs):
+        	# Check that the vnf is not there
+            if vnf['vnf_name'] in pimrcVnfNames:
+                continue
+
+            # Traversing prob - TODO only 1 link supposed (if more tha one, it
+            # is a merging and will have probs=1)
+            arrivingLinks = self.getLinksTo(vnfId)
+            service['traversed_vnfs'][vnf['vnf_name']] =\
+                arrivingLinks[0]['prob']
+        
+            pimrc['vnfs'].append({
+        		'vnf_name': vnf['vnf_name'],
+        		'processing_time': vnf['processing_time'],
+        		'requirements': vnf['requirements']
+        	})
+        pimrc['services'].append(service)
+
+        return pimrc
+
+    
 
     
     @staticmethod

@@ -3,6 +3,7 @@ import time
 import networkx as nx
 import NS
 import os
+import time 
 
 # Global variable for the project absolute path
 absPath = os.path.abspath(os.path.dirname(__file__))
@@ -18,7 +19,7 @@ class NSgenerator(object):
         """Initializes the NS generator with required thresholds
 
         :linkTh: Threshold values for the links (follow PIMRC18 model), ex.:
-            {'traffic': {'min', 'max'}}
+            {'traffic': {'min', 'max'}, 'delay': {}}
         :vnfTh: Threshold values for the VNFs (follow PIMRC18 model), ex.:
             {
              'processing_time': {'min', 'max'},
@@ -55,6 +56,15 @@ class NSgenerator(object):
         chain.add_edge(vnfA, vnfB, **link_params)
 
 
+    def genVnfName(self, vnfId):
+        """Generates a VNF id based on the VNF IDinside the NS
+
+        :vnfId: VNF id inside the NS chain
+        :returns: Nothing
+
+        """
+        return 'v_gen_' + str(vnfId) + '_' + str(time.time())
+
     def __insertVNF(self, chain, branchHeads, predecesors, vnfId=None, prob=1):
         """Inserts a VNF in the current NS chain. It adds it after the
         predecesors VNF list
@@ -83,6 +93,7 @@ class NSgenerator(object):
 
         # Add VNFs and links
         vnfId = max(branchHeads) + 1 if not vnfId else vnfId
+        vnf_params['vnf_name'] = self.genVnfName(vnfId)
         chain.add_node(vnfId, **vnf_params)
         newBranchHeads = list(branchHeads)
 
