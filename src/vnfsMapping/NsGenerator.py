@@ -47,15 +47,15 @@ class NSgenerator(object):
         :returns: Nothing
 
         """
-        link_params = {}
+        link_params = {'prob': prob}
         for linkTh_param in self.__linkTh:
-            link_params['linkTh_param'] = random.randint(
+            link_params[linkTh_param] = random.randint(
                 self.__linkTh[linkTh_param]['min'],
                 self.__linkTh[linkTh_param]['max'])
         chain.add_edge(vnfA, vnfB, **link_params)
 
 
-    def __insertVNF(self, chain, branchHeads, predecesors, vnfId=None):
+    def __insertVNF(self, chain, branchHeads, predecesors, vnfId=None, prob=1):
         """Inserts a VNF in the current NS chain. It adds it after the
         predecesors VNF list
 
@@ -85,24 +85,10 @@ class NSgenerator(object):
         vnfId = max(branchHeads) + 1 if not vnfId else vnfId
         chain.add_node(vnfId, **vnf_params)
         newBranchHeads = list(branchHeads)
-        
-        # Decide probabilities
-        probs = [1 for _ in range(len(predecesors))]
-        if len(predecesors) > 1:
-            for i in range(len(probs)):
-                if i == 0:
-                    probs[0] = random.uniform(0, 1)
-                elif predecesors[i] != predecesors[-1]:
-                    assigned_probs = reduce(lambda x, y: x + y, probs[:i])
-                    probs[i] = random.uniform(0, assinged_probs)
-                else: # last element
-                    assigned_probs = reduce(lambda x, y: x + y, probs[:i])
-                    probs[i] = 1 - assigned_probs
 
-        if len(predecesors) > 1:
-            for (predecesor, prob_) in (predecesors, probs):
-                newBranchHeads.remove(predecesor)
-                self.__createLink(chain, predecesor, vnfId, prob=prob_)
+        for predecesor in predecesors:
+            newBranchHeads.remove(predecesor)
+            self.__createLink(chain, predecesor, vnfId, prob=prob)
 
         return newBranchHeads + [vnfId]
     
@@ -183,10 +169,12 @@ class NSgenerator(object):
         newVnfs = []
         maxSplitW = min(splitWidth, remBranches + 1, remVNFs)
         splitW = random.randint(2, maxSplitW)
+        probs = NSgenerator.arrayProbs(splitW)
+        print 'Invoked split with: splitW=' + str(splitWidth)
         for i in range(1, splitW + 1):
             newVnfs.append(newVnfId + i)
             self.__insertVNF(chain, branchHeads, [predecesor],
-                    vnfId=newVnfId + i)
+                    vnfId=newVnfId + i, prob=probs[i-1])
 
         del branchHeads[vnfIdx]
 
@@ -272,6 +260,31 @@ class NSgenerator(object):
         ns.setBranchHeads(branchHeads)
 
         return ns
+
+    
+    @staticmethod
+    def arrayProbs(n):
+        """Creates an array of n random numbers summing 1
+        For example, uniformProbs(3) -> [0.3, 0.5, 0.2]
+
+        :n: number of entries in the array
+        :returns: array of probabilities that sum 1
+
+        """
+        # Decide probabilities
+        probs = [1 for _ in range(n)]
+        if n > 1:
+            for i in range(n):
+                if i == 0:
+                    probs[0] = random.uniform(0, 1)
+                elif i == n - 1: # last element
+                    assigned_probs = reduce(lambda x, y: x + y, probs[:i])
+                    probs[i] = 1 - assigned_probs
+                else: 
+                    assigned_probs = reduce(lambda x, y: x + y, probs[:i])
+                    probs[i] = random.uniform(0, 1 - assigned_probs)
+
+        return probs
 
 
     @staticmethod

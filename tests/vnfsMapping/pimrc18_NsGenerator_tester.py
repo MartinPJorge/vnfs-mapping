@@ -22,3 +22,9 @@ if __name__ == '__main__':
 
     print ns
 
+
+    print '======== Testing arrayProbs ========='
+    probs = NSgenerator.arrayProbs(5)
+    print 'sum(probs) = ' + str(reduce(lambda x, y: x + y, probs))
+    print 'probs = ' + str(probs)
+
