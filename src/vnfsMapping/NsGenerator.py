@@ -63,7 +63,7 @@ class NSgenerator(object):
         :returns: Nothing
 
         """
-        return 'v_gen_' + str(vnfId) + '_' + str(time.time())
+        return 'v_gen_' + str(vnfId) + '_' + str(random.randint(1, 20))
 
     def __insertVNF(self, chain, branchHeads, predecesors, vnfId=None, prob=1):
         """Inserts a VNF in the current NS chain. It adds it after the
@@ -181,7 +181,6 @@ class NSgenerator(object):
         maxSplitW = min(splitWidth, remBranches + 1, remVNFs)
         splitW = random.randint(2, maxSplitW)
         probs = NSgenerator.arrayProbs(splitW)
-        print 'Invoked split with: splitW=' + str(splitWidth)
         for i in range(1, splitW + 1):
             newVnfs.append(newVnfId + i)
             self.__insertVNF(chain, branchHeads, [predecesor],

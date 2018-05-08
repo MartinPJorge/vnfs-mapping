@@ -537,9 +537,11 @@ class NS(object):
         :returns: JSON in PIMRC18 format
 
         """
-        if not pimrc:
+        if not pimrc or\
+            'vnfs' not in pimrc or\
+            'services' not in pimrc or\
+            'vnf_edges' not in pimrc:
             pimrc = {
-                'services': [],
                 'vnfs': [],
                 'services': [],
                 'vnf_edges': []
@@ -548,7 +550,7 @@ class NS(object):
         # Generate service name
         service_nums = [-1]
         for service in pimrc['services']:
-            if 's_gen_' in service:
+            if 's_gen_' in service['service_name']:
                 service_nums.append(int(
                     service['service_name'].split('s_gen_')[-1]))
         serviceName = 's_gen_' + str(max(service_nums) + 1)
@@ -579,21 +581,24 @@ class NS(object):
         pimrcVnfNames = [vnf['vnf_name'] for vnf in pimrc['vnfs']]
 
         for (vnf, vnfId) in zip(nsVnfs, networkx_vnfs):
+            pass # TODO
         	# Check that the vnf is not there
-            if vnf['vnf_name'] in pimrcVnfNames:
-                continue
+            if vnf['vnf_name'] not in pimrcVnfNames:
+                pimrc['vnfs'].append({
+                    'vnf_name': vnf['vnf_name'],
+                    'processing_time': vnf['processing_time'],
+                    'requirements': vnf['requirements']
+                })
 
             # Traversing prob - TODO only 1 link supposed (if more tha one, it
             # is a merging and will have probs=1)
             arrivingLinks = self.getLinksTo(vnfId)
-            service['traversed_vnfs'][vnf['vnf_name']] =\
-                arrivingLinks[0]['prob']
+            if 'v_gen_1' in vnf['vnf_name']:
+                service['traversed_vnfs'][vnf['vnf_name']] = 1
+            else:
+                service['traversed_vnfs'][vnf['vnf_name']] =\
+                    arrivingLinks[0]['prob']
         
-            pimrc['vnfs'].append({
-        		'vnf_name': vnf['vnf_name'],
-        		'processing_time': vnf['processing_time'],
-        		'requirements': vnf['requirements']
-        	})
         pimrc['services'].append(service)
 
         return pimrc
