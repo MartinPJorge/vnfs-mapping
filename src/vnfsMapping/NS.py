@@ -537,15 +537,14 @@ class NS(object):
         :returns: JSON in PIMRC18 format
 
         """
-        if not pimrc or\
-            'vnfs' not in pimrc or\
-            'services' not in pimrc or\
-            'vnf_edges' not in pimrc:
-            pimrc = {
-                'vnfs': [],
-                'services': [],
-                'vnf_edges': []
-            }
+        if not pimrc:
+            pimrc = {}
+        if 'vnfs' not in pimrc:
+            pimrc['vnfs'] = []
+        if 'services' not in pimrc:
+            pimrc['services'] = []
+        if 'vnf_edges' not in pimrc:
+            pimrc['vnf_edges'] = []
 
         # Generate service name
         service_nums = [-1]
@@ -558,7 +557,7 @@ class NS(object):
         # Generate the service dictionary
         service = {
             'service_name': serviceName,
-            'max_latency': 0, # TODO - check how to get this
+            'max_latency': self.maxDelay(),
             'traversed_vnfs': {}
         }
 
@@ -664,4 +663,32 @@ class NS(object):
         same = same and self.__branchHeads == ns._NS__branchHeads
 
         return same
+
+    def maxDelay(self):
+        """Obtains the maximum delay to go from the first VNF to one of the
+        last ones.
+        :returns: maximum delay number
+
+        """
+        reach_costs = {'start': 0}
+
+        def dfs_update(vnfId, reach_cost):
+            if vnfId not in reach_costs:
+                reach_costs[vnfId] = reach_cost
+            elif reach_cost > reach_costs[vnfId]:
+                reach_costs[vnfId] = reach_cost
+
+            next_vnfs = self.getNextVNFs(vnfId)
+            for next_vnf in next_vnfs:
+                link = self.getLink(vnfId, next_vnf)
+                dfs_update(next_vnf, reach_cost + link['delay'])
+
+        dfs_update('start', 0)
+        max_reach = 0
+        for vnfId in reach_costs:
+            if reach_costs[vnfId] > max_reach:
+                max_reach = reach_costs[vnfId]
+        
+        return max_reach
+
 

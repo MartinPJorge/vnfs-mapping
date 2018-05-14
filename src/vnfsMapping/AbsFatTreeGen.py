@@ -1,4 +1,5 @@
 import networkx as nx
+import random
 import math
 
 class AbsFatTreeGen(object):
@@ -113,6 +114,37 @@ class AbsFatTreeGen(object):
             return self.__createAbsLinksNET(k, fat_tree, linkProps)
         else:
             return None
+
+
+    @staticmethod
+    def PimrcGenCosts(scenario, support_th, cost_th):
+        """Creates the costs of assignment in the PIMRC18 model.
+        Both hosts and services must be generated in the scenario.
+
+        :pimrc: PIMRC18 JSON to add the information with services inside
+        :support_th: {'min': ,'max' } percentage of #vnfs to support
+        :cost_th: {'min': , 'max': } placement costs
+        :returns: the JSON scenario with costs added
+
+        """
+        num_vnfs = len(scenario['vnfs'])
+        vnf_names = [v['vnf_name'] for v in scenario['vnfs']]
+        if 'costs' not in scenario:
+            scenario['costs'] = []
+
+        for host in scenario['hosts']:
+            random.shuffle(vnf_names)
+            support = int(math.floor(random.uniform(support_th['min'],
+                support_th['max']) * num_vnfs))
+            for i in range(support):
+                scenario['costs'].append({
+                    'vnf': vnf_names[i],
+                    'host': host['host_name'],
+                    'cost': random.uniform(cost_th['min'], cost_th['max'])
+                })
+
+        return scenario
+
 
 
     @staticmethod
