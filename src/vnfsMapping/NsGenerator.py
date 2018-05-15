@@ -1,4 +1,5 @@
 import random
+from time import sleep
 import time
 import networkx as nx
 import NS
@@ -63,7 +64,9 @@ class NSgenerator(object):
         :returns: Nothing
 
         """
-        return 'v_gen_' + str(vnfId) + '_' + str(random.randint(1, 20))
+        sleep(0.001)
+        return 'v_gen_' + str(vnfId) + '_' + str(random.randint(1, 20)) +\
+            '_'+ str(time.time())
 
     def __insertVNF(self, chain, branchHeads, predecesors, vnfId=None, prob=1):
         """Inserts a VNF in the current NS chain. It adds it after the

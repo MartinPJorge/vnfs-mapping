@@ -42,8 +42,9 @@ if __name__ == '__main__':
     scenario = AbsFatTreeGen.NETtoPimrc(NET_fat_tree, linksProps, serverProps)
 
     ns_gen = NSgenerator(linkTh, vnfTh)
-    ns = ns_gen.yieldChain(splits=2, splitWidth=3, branches=5, vnfs=8)
-    ns.toPimrc(pimrc=scenario)
+    for _ in range(3):
+        ns = ns_gen.yieldChain(splits=2, splitWidth=3, branches=5, vnfs=8)
+        ns.toPimrc(pimrc=scenario)
 
     sup_th = {'min': 0.3, 'max': 1}
     cost_th = {'min': 1, 'max': 20}

@@ -673,6 +673,10 @@ class NS(object):
         reach_costs = {'start': 0}
 
         def dfs_update(vnfId, reach_cost):
+            if vnfId == 'start':
+                processing_time = 0
+            else:
+                processing_time = self.getVnf(vnfId)['processing_time']
             if vnfId not in reach_costs:
                 reach_costs[vnfId] = reach_cost
             elif reach_cost > reach_costs[vnfId]:
@@ -681,7 +685,8 @@ class NS(object):
             next_vnfs = self.getNextVNFs(vnfId)
             for next_vnf in next_vnfs:
                 link = self.getLink(vnfId, next_vnf)
-                dfs_update(next_vnf, reach_cost + link['delay'])
+                dfs_update(next_vnf, reach_cost + processing_time +\
+                    link['delay'])
 
         dfs_update('start', 0)
         max_reach = 0
