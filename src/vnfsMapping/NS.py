@@ -1,3 +1,5 @@
+import sys
+import re
 import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import json
@@ -78,7 +80,7 @@ class NS(object):
         """Initializes a Network Service instance
 
         :vnfs: list of dictionaries with required resources for each VNF
-            [{'id', 'memory', 'disk', 'cpu'}, ...]
+            [{'vnf_name', 'id', 'memory', 'disk', 'cpu', 'processing_time'}, ...]
         :links: list of dictionaries with required resources for each link in
             the NS [{'idA', 'idB', 'bw', 'delay'}, ...]
             idA can be 'start' for the starting point
@@ -89,8 +91,9 @@ class NS(object):
         # Create NS chain graph
         chain = nx.Graph()
         for vnf in vnfs:
-            chain.add_node(vnf['id'], memory=vnf['memory'], disk=vnf['disk'],
-                cpu=vnf['cpu'])
+            chain.add_node(vnf['vnf_name'], **vnf)
+            # chain.add_node(vnf['id'], memory=vnf['memory'], disk=vnf['disk'],
+            #     cpu=vnf['cpu'])
         
         for link in links:
             # Check if start/end VNF is correct
@@ -102,8 +105,9 @@ class NS(object):
                 raise UnboundLocalError('Link endpoint is a non-existing\
  VNF!')
             else:
-                chain.add_edge(link['idA'], link['idB'], bw=link['bw'],
-                    delay=link['delay'])
+                chain.add_edge(link['idA'], link['idB'], **link)
+                # chain.add_edge(link['idA'], link['idB'], bw=link['bw'],
+                #     delay=link['delay'])
 
         ns = NS()
         ns.setChain(chain)
@@ -181,6 +185,13 @@ class NS(object):
                 for neigh in neighs:
                     if type(neigh) is int and neigh > vnfId:
                         nexts += [neigh]
+                    else: # v_gen_12_23_122233.02 first num is the ordinal
+                        neigh_num = int(re.findall(r'\d+', neigh)[0]) if\
+                            neigh != 'start' else -1
+                        curr_num = int(re.findall(r'\d+', vnfId)[0])
+                        if neigh_num > curr_num:
+                            nexts += [neigh]
+
             else:
                 nexts = neighs
 
@@ -695,5 +706,57 @@ class NS(object):
                 max_reach = reach_costs[vnfId]
         
         return max_reach
+
+
+    def avgDelay(self, processing=False):
+        """Obtains the average delay of the service to reach last VNF.
+        :returns: average service delay
+        :processing: boolean specifying if processing times must be taken into
+        account
+
+        """
+        reach_costs = {'start': 0}
+        vnf_reachab = {
+            'start': {'1': 0} # indexed by probabilities
+        }
+        end_vnfs = {}
+
+        def dfs_update(vnfId, curr_prob):
+            processing_time = self.getVnf(vnfId)['processing_time']\
+                if processing else 0
+            next_vnfs = self.getNextVNFs(vnfId)
+            if not next_vnfs:
+                end_vnfs[vnfId] = True
+                vnf_reachab[vnfId][str(curr_prob)] += processing_time
+                return
+            else:
+                for next_vnf in next_vnfs:
+                    link = self.getLink(vnfId, next_vnf)
+                    prob_no = curr_prob * link['prob']
+                    prob = str(prob_no)
+                    reach_delay = link['delay'] + processing_time +\
+                        vnf_reachab[vnfId][str(curr_prob)]
+
+                    if next_vnf not in vnf_reachab:
+                        vnf_reachab[next_vnf] = {
+                            prob: reach_delay
+                        }
+                    elif prob not in vnf_reachab[next_vnf]:
+                        vnf_reachab[next_vnf][prob] = reach_delay
+                    elif vnf_reachab[next_vnf][prob] > reach_delay:
+                        vnf_reachab[next_vnf][prob] = reach_delay
+
+                    dfs_update(next_vnf, prob_no)
+
+        dfs_update('start', 1)
+
+        # First stage average (branch heads with multiple paths)
+        head_delays = [] # (prob, delay)
+        for end_vnf in end_vnfs:
+            for prob in vnf_reachab[end_vnf]:
+                head_delays.append(vnf_reachab[end_vnf][prob] * float(prob))
+
+        
+        return reduce(lambda x, y: x + y, head_delays)
 
 

@@ -14,8 +14,8 @@ if __name__ == '__main__':
     }
     serverProps = {
         'capabilities': {
-            'cpu': 1000,
-            'storage': 16,
+            'storage': 1000,
+            'cpu': 16,
             'memory': 128
         }
     }
@@ -24,9 +24,9 @@ if __name__ == '__main__':
     vnfTh = {
         'processing_time': {'min': 2, 'max': 10},
         'requirements': {
-            'cpu': {'min': 2, 'max': 10},
-            'memory': {'min': 2, 'max': 10},
-            'storage': {'min': 2, 'max': 10}
+            'cpu': {'min': 1, 'max': 3},
+            'memory': {'min': 2, 'max': 20},
+            'storage': {'min': 2, 'max': 100}
         }
     }
     linkTh = {
