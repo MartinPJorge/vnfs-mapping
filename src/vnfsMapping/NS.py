@@ -9,6 +9,7 @@ import os
 absPath = os.path.abspath(os.path.dirname(__file__))
 nsAbsPath = '/'.join(absPath.split('/')[:-2]) + '/ns-chains'
 
+# NOTE: ":D" is a market to now that code chunk supports MultiGraphs()
 
 class NS(object):
 
@@ -21,7 +22,8 @@ class NS(object):
         """
         self.__serviceName = None
         self.__chain = None
-        self.__iterIdx = 1
+        self.__nfpdsIdx = dict() # each path has its current index
+        self.__nfpds = dict()
         self.__branches = None
         self.__splits = None
         self.__maxSplitW = None
@@ -75,6 +77,7 @@ class NS(object):
         return st
         
 
+    # :D
     @staticmethod
     def create(vnfs, links):
         """Initializes a Network Service instance
@@ -89,7 +92,7 @@ class NS(object):
         """
 
         # Create NS chain graph
-        chain = nx.Graph()
+        chain = nx.MultiGraph()
         for vnf in vnfs:
             chain.add_node(vnf['vnf_name'], **vnf)
             # chain.add_node(vnf['id'], memory=vnf['memory'], disk=vnf['disk'],
@@ -125,119 +128,93 @@ class NS(object):
 
 
     def initIter(self):
-        """Initializes an iterator that goes through each VNF
+        """Initializes the iterator for each Nfpd
         :returns: Nothing
 
         """
 
-        self.__iterIdx = 'start'
+        for nfpd in self.__nfpds.keys():
+            self.__nfpdsIdx[nfpd] = 0
 
 
-    def currIterId(self):
-        """Obtains the id for the current VNF in the iterator
-        :returns: VNF id (VNF number or 'start')
+    def currIterId(self, nfpd):
+        """Obtains the id for the current VNF in the iterator of a Nfpd
+        :nfpd: ID of the Nfpd
+        :returns: VNF id 
 
         """
-        return self.__iterIdx
+        return self.__nfpds[self.__nfpdsIdx[nfpd]]
 
     
-    def prevVNFs(self, vnfId):
-        """Obtains the previous vnfs of a certain one
+    # :D
+    def prevVNF(self, vnfId, nfpd):
+        """Obtains the previous vnf of a certain one
 
         :vnfId: VNF id from which to obtain the previous neighbours
-        :returns: list of all the previous neighbors (this may include 'start'
-            node)
+        :nfpd: ID of the Nfpd
+        :returns: previous VNF id or None
 
         """
-        if vnfId == 'start':
-            return []
 
-        prevs = []
-        if vnfId in self.__prevNeighsCache:
-            prevs += self.__prevNeighsCache[vnfId]
-        else:
-            neighs = self.__chain.neighbors(vnfId)
-            for neigh in neighs:
-                if type(neigh) == int and neigh < vnfId:
-                    prevs += [neigh]
-                elif neigh == 'start':
-                    prevs += [neigh]
+        if self.__nfpds[nfpd][0] == vnfId:
+            return None
 
-            self.__prevNeighsCache[vnfId] = prevs
+        i = 1
+        prevNotFound = True
 
-        return prevs
+        while i < len(self.__nfpds[nfpd]) and prevNotFound:
+            prevNotFound = self.__nfpds[i] != vnfId
+            i += 1
+
+        return if prevNotFound: None else i - 2
 
 
-    def getNextVNFs(self, vnfId):
-        """Obtains the next VNF neighbors og vnfId
+    # :D
+    def getNextVNF(self, vnfId, nfpd):
+        """Obtains the next VNF neighbor in the nfpd path
 
         :vnfId: VNF id from which to obtain the next neighbours
-        :returns: list of all the next neighbors (this may include node)
+        :nfpd: ID of the Nfpd
+        :returns: None or next VNF id within the nfpd
 
         """
-        nexts = []
-        if vnfId in self.__nextNeighsCache:
-            nexts += self.__nextNeighsCache[vnfId]
-        else:
-            neighs = self.__chain.neighbors(vnfId)
 
-            if vnfId != 'start':
-                for neigh in neighs:
-                    if type(neigh) is int and neigh > vnfId:
-                        nexts += [neigh]
-                    else: # v_gen_12_23_122233.02 first num is the ordinal
-                        neigh_num = int(re.findall(r'\d+', neigh)[0]) if\
-                            neigh != 'start' else -1
-                        curr_num = int(re.findall(r'\d+', vnfId)[0])
-                        if neigh_num > curr_num:
-                            nexts += [neigh]
+        i = 0
+        notFound = True
+        while i < len(self.__nfpds[nfpd]) and notFound:
+            notFound = self.__nfpds[nfpd] == vnfId
+            i += 1
 
-            else:
-                nexts = neighs
-
-            self.__nextNeighsCache[vnfId] = nexts
-
-        return nexts
+        return if notFound: None else i - 1
 
 
-    def getPrevIdx(self):
-        """Obtains the previous index in the iterator
-        :returns: None in case there is no previous, 'start', or a VNF index
+    def getPrevIdx(self, nfpd):
+        """Obtains the previous VNF index in the iterator
+        :nfpd: ID of the Nfpd
+        :returns: None or the index
 
         """
-        prevIdx = None
-        if self.__iterIdx == 1:
-            prevIdx = 'start'
-        else:
-            prevIdx = self.__iterIdx - 1
 
-        return prevIdx
+        prevIdx = self.__nfpdsIdx[nfpd] - 1
+
+        return if prevIdx >= 0: prevIdx else None
 
 
-    def iterNext(self):
-        """Retrieves the next VNFs' ids after the current one and advances the
+    # :D
+    def iterNext(self, nfpd):
+        """Retrieves the next VNFs id after current one and advances the
             iterator pointer to the next id
-        :returns: list of next VNFs ids (it can be [] if curr VNF is last one)
+        :nfpd: ID of the Nfpd
+        :returns: next VNF id or None if it is the last one
 
         """
 
-        neighs = []
+        if self.__nfpdsIdx[nfpd] + 1 == len(self.__nfpds[nfpd]):
+            return None
 
-        # Starting node
-        if self.__iterIdx == 'start':
-            self.__iterIdx = 1
-            neighs = self.__chain.neighbors('start')
-        # Last VNF
-        elif self.__iterIdx == self.getVNFsNumber():
-            self.__iterIdx = 'end'
-        # Intermediate node
-        else:
-            neighs = filter(lambda nd: type(nd) is int,\
-                    self.__chain.neighbors(self.__iterIdx))
-            neighs = filter(lambda nd: nd > self.__iterIdx, neighs)
-            self.__iterIdx += 1
+        self.__nfpdsIdx[nfpd] += 1
 
-        return neighs
+        return self.__nfpds[nfpd][self.__nfpdsIdx[nfpd]]
 
 
     def getBranchNum(self):
@@ -294,14 +271,15 @@ class NS(object):
         self.__branches = branchNum
 
 
-    def setIterIdx(self, iterIdx):
+    def setIterIdx(self, iterIdx, nfpd):
         """Sets the iterator index
 
         :iterIdx: iterator index
+        :nfpd: ID of the Nfpd
         :returns: Nothing
 
         """
-        self.__iterIdx = iterIdx
+        self.__nfpdsIdx[nfpd] = iterIdx
 
 
     def setSplitsNum(self, splits):
@@ -335,6 +313,7 @@ class NS(object):
         self.__maxSplitW = maxSplitW
 
 
+    # TODO - deprecated
     def addBranchHead(self, vnf):
         """Include the vnf in the branch heads list.
         
@@ -343,6 +322,7 @@ class NS(object):
         self.__branchHeads[vnf] = True
 
 
+    # TODO - deprecated
     def setBranchHeads(self, branchHeads):
         """Sets the branch heads of the NS chain
         
@@ -352,6 +332,7 @@ class NS(object):
             self.__branchHeads[branchHead] = True
 
 
+    # TODO - deprecated
     def getBranchHeads(self):
         """Returns the branch heads of the NS chain
         
@@ -359,6 +340,7 @@ class NS(object):
         return [branchHead for branchHead in self.__branchHeads]
 
 
+    # TODO - deprecated
     def isBranchHead(self, vnf):
         """Determines if the vnf is a branch head of the NS chain.
         
@@ -367,12 +349,14 @@ class NS(object):
         return vnf in self.__branchHeads
 
 
-    def getLink(self, A, B):
+    # :D
+    def getLinks(self, A, B):
         """Gets the (A,B) link resources
 
         :A: first VNF
         :B: second VNF
-        :returns: the link resources, None in case of error
+        :returns: a dictionary with the link resources of each VL connecting A
+        and B
 
         """
 
@@ -382,10 +366,12 @@ class NS(object):
             return self.__chain.get_edge_data(A, B)
 
 
+    # :D
     def getLinksTo(self, B):
         """Gets all the links arriving to B
 
         :B: destination VNF id
+        :note: for now it retrieves the first (A,B) link stored
         :returns: list of networkX links arriving to VNF B
 
         """
@@ -470,6 +456,7 @@ class NS(object):
                 vnf1['cpu'] == vnf2['cpu']
 
 
+    # :D
     def compareLinks(self, link1, link2):
         """Compares two NS chain links
 
@@ -482,6 +469,7 @@ class NS(object):
         return link1['bw'] == link2['bw'] and link1['delay'] == link2['delay']
 
 
+    # :D
     def compare(self, ns):
         """Compares the NS chain with the other ones passed by argument.
         All nodes, links and properties must be the same
@@ -490,56 +478,41 @@ class NS(object):
         :returns: True/False
 
         """
+
+        sChain = self.getChain()
+        nsChain = ns.getChain()
+
+
+        # Compare the VNFs
+        if not self.getVNFsNumber() == ns.getVNFsNumber():
+            return False
+        for vnfId in sChain.nodes():
+            if vnfId not in nsChain.nodes():
+                return False
+            for vnfReq in sChain[vnfId]:
+                if vnfReq not in nsChain[vnfId]:
+                    return False
+                if sChain[vnfId][vnfReq] != nsChain[vnfId][vnfReq]:
+                    return False
+
+        # Compare the VLs
+        for vnf in sChain.nodes():
+            for vnfNeig in sChain.neighbors(vnf):
+                if vnfNeig not in nsChain[vnf]:
+                    return False
+                for mVl in sChain[vnf][vnfNeig]:
+                    existInNs = False
+                    for mVl2 in nsChain[vnf][vnfNeight]:
+                        if sChain[vnf][vnfNeigh][mVl] ==\
+                                nsChain[vnf][vnfNeigh][mVl2]:
+                            existInNs = True
+                    if not existInNs:
+                        return False
         
-        equal = True
-        neighs = ['_']
-        self.initIter()
-        ns.initIter()
-
-        while equal and neighs != []:
-            currId1 = self.currIterId()
-            currId2 = ns.currIterId()
-            neighs = neighs1 = self.iterNext()
-            neighs2 = ns.iterNext()
-
-            # Check if neighbors are the same
-            if currId1 != currId2:
-                equal = False
-            if len(neighs1) != len(neighs2):
-                equal = False
-            elif False in [neigh1 in neighs2 for neigh1 in neighs1]:
-                equal = False
-            
-            # Check if current VNFs are the same
-            if type(currId1) is not str:
-                eqVnfs = self.compareVNFs(self.getVnf(currId1),
-                        ns.getVnf(currId2))
-                if not eqVnfs:
-                    equal = False
-
-            # Compare if links are the same
-            i = 0
-            eqLinks = True
-            while eqLinks and i < len(neighs1):
-                neigh1 = neighs1[i]
-
-                link1 = self.getLink(currId1, neigh1)
-                link2 = ns.getLink(currId1, neigh1)
-
-                eqLinks = self.compareLinks(link1, link2)
-                i += 1
-            if not eqLinks:
-                equal = False
-
-        # Check local variables
-        if self.getBranchNum() != ns.getBranchNum() or\
-                self.getSplitsNum() != ns.getSplitsNum() or\
-                self.getMaxSplitW() != ns.getMaxSplitW():
-            equal = False
-                
-        return equal
+        return True
 
 
+    # TODO - deprecated
     def toPimrc(self, pimrc=None):
         """Translates the NS instance into a PIMRC18 JSON format.
         If pimrc parameter is provided, the info. is incorporated there.
@@ -615,7 +588,7 @@ class NS(object):
 
     
 
-    
+    # TODO - unused
     @staticmethod
     def read(storedName, absPath=None):
         """Reads a NS chain stored under the provided storedName directory
@@ -638,7 +611,10 @@ class NS(object):
         # Read from files
         with open(basePath + 'props.json', 'r') as f:
             props = json.load(f)
-        chain = nx.read_gml(basePath + 'chain.gml')
+        chain = nx.read_gml(basePath + 'chain.gml', 'label')
+        print "Nodes of read chain: " + str(chain.nodes())
+        print "This are the chain edges: " + str(chain.edges())
+        print "start 1 properties: " + str(chain['start']["1"])
         
         # Instance the NS chain
         ns = NS()
@@ -655,6 +631,7 @@ class NS(object):
         return ns
 
 
+    # TODO - deprecated
     def equal(self, ns):
         """Compares the NS with the one passed by argument
 
@@ -675,88 +652,51 @@ class NS(object):
 
         return same
 
+
     def maxDelay(self):
         """Obtains the maximum delay to go from the first VNF to one of the
-        last ones.
+        last ones. It is the maximum delay of all existing Nfpds.
         :returns: maximum delay number
 
         """
-        reach_costs = {'start': 0}
 
-        def dfs_update(vnfId, reach_cost):
-            if vnfId == 'start':
-                processing_time = 0
-            else:
-                processing_time = self.getVnf(vnfId)['processing_time']
-            if vnfId not in reach_costs:
-                reach_costs[vnfId] = reach_cost
-            elif reach_cost > reach_costs[vnfId]:
-                reach_costs[vnfId] = reach_cost
+        maxDel = sys.maxint
 
-            next_vnfs = self.getNextVNFs(vnfId)
-            for next_vnf in next_vnfs:
-                link = self.getLink(vnfId, next_vnf)
-                dfs_update(next_vnf, reach_cost + processing_time +\
-                    link['delay'])
+        for nfpd in self.__nfpds:
+            currDel = 0
+            for i in range(len(self.__nfpds[nfpd]) - 1):
+                v1 = self.__nfpds[i]
+                v2 = self.__nfpds[i + 1]
+                currDel += max([l['delay'] for l in self.__getLinks(v1, v2)])
 
-        dfs_update('start', 0)
-        max_reach = 0
-        for vnfId in reach_costs:
-            if reach_costs[vnfId] > max_reach:
-                max_reach = reach_costs[vnfId]
-        
-        return max_reach
+            if currDel < maxDelay:
+                maxDelay = currDel
+
+        return maxDel
 
 
     def avgDelay(self, processing=False):
-        """Obtains the average delay of the service to reach last VNF.
+        """Obtains the average delay of the service to reach last VNF. It is
+        performed over all the existing Nfpds.
         :returns: average service delay
         :processing: boolean specifying if processing times must be taken into
         account
 
         """
-        reach_costs = {'start': 0}
-        vnf_reachab = {
-            'start': {'1': 0} # indexed by probabilities
-        }
-        end_vnfs = {}
 
-        def dfs_update(vnfId, curr_prob):
-            processing_time = self.getVnf(vnfId)['processing_time']\
-                if processing else 0
-            next_vnfs = self.getNextVNFs(vnfId)
-            if not next_vnfs:
-                end_vnfs[vnfId] = True
-                vnf_reachab[vnfId][str(curr_prob)] += processing_time
-                return
-            else:
-                for next_vnf in next_vnfs:
-                    link = self.getLink(vnfId, next_vnf)
-                    prob_no = curr_prob * link['prob']
-                    prob = str(prob_no)
-                    reach_delay = link['delay'] + processing_time +\
-                        vnf_reachab[vnfId][str(curr_prob)]
+        totalAvgDel = 0
 
-                    if next_vnf not in vnf_reachab:
-                        vnf_reachab[next_vnf] = {
-                            prob: reach_delay
-                        }
-                    elif prob not in vnf_reachab[next_vnf]:
-                        vnf_reachab[next_vnf][prob] = reach_delay
-                    elif vnf_reachab[next_vnf][prob] > reach_delay:
-                        vnf_reachab[next_vnf][prob] = reach_delay
+        for nfpd in self.__nfpds:
+            currDel = 0
+            for i in range(len(self.__nfpds[nfpd]) - 1):
+                v1 = self.__nfpds[i]
+                v2 = self.__nfpds[i + 1]
+                allDelays = [l['delay'] for l in self.__getLinks(v1, v2)]
+                currDel += reduce(lambda x, y: x + y, allDelays) / \
+                        len(allDelays)
 
-                    dfs_update(next_vnf, prob_no)
+            totalDel += currDel
 
-        dfs_update('start', 1)
-
-        # First stage average (branch heads with multiple paths)
-        head_delays = [] # (prob, delay)
-        for end_vnf in end_vnfs:
-            for prob in vnf_reachab[end_vnf]:
-                head_delays.append(vnf_reachab[end_vnf][prob] * float(prob))
-
-        
-        return reduce(lambda x, y: x + y, head_delays)
+        return totalAvgDel / len(self.__nfpds.keys())
 
 
