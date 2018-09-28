@@ -27,8 +27,8 @@ class NS(object):
         self.__branches = None
         self.__splits = None
         self.__maxSplitW = None
-        self.__prevNeighsCache = dict()
-        self.__nextNeighsCache = dict()
+        self.__prevNeighsCache = dict() # deprecated
+        self.__nextNeighsCache = dict() # deprecated
         self.__branchHeads = dict()
 
 
@@ -38,48 +38,24 @@ class NS(object):
 
         """
 
-        prevIterIdx = self.__iterIdx
-        self.initIter()
-        neighs = True
-        currVnf =  self.currIterId()
-        vnfInfos = []
-        linkInfos = []
+        vnfStr = "VNFs:"
+        edges = {}
 
-        while neighs != [] and currVnf != 'end':
-            neighs = self.iterNext()
-            
-            # VNF requirements
-            if currVnf == 'start':
-                vnfInfo = 'START'
-            else:
-                vnfData = self.getVnf(currVnf)
-                vnfInfo = str(currVnf) + ':: ' + str(vnfData)
-                vnfInfos.append(vnfInfo)
+        for vnf in mg.nodes():
+            vnfStr += "  " + str(vnf) + ", properties:"
+            vnfStr += "    " + str(mg.getVnf(vnf))
 
-            # Links requirements
-            for neigh in neighs:
-                linkData = self.getLink(currVnf, neigh)
-                linkInfo = str(currVnf) + '<-->' + str(neigh) + ':: ' +\
-                    str(linkData)
-                linkInfos.append(linkInfo)
+        vnfStr += "VLs:"
+        for edge in mg.edges_iter(keys = True):
+            vnfStr += "  " + str(edge[0]) + "<-->" + str(edge[1]) +\
+                    " index=" + str(edge[2])
 
-            currVnf = self.currIterId()
-
-        # Compose final string
-        st = '# NS info\n'
-        st += 'VNFs requirements:\n'
-        for vnfInfo in vnfInfos:
-            st += '  ' + vnfInfo + '\n'
-        st += 'Links requirements:\n'
-        for linkInfo in linkInfos:
-            st += '  ' + linkInfo + '\n'
-
-        return st
+        return vnfStr
         
 
     # :D
     @staticmethod
-    def create(vnfs, links):
+    def create(vnfs, links, nfpds):
         """Initializes a Network Service instance
 
         :vnfs: list of dictionaries with required resources for each VNF
@@ -87,6 +63,7 @@ class NS(object):
         :links: list of dictionaries with required resources for each link in
             the NS [{'idA', 'idB', 'bw', 'delay'}, ...]
             idA can be 'start' for the starting point
+        :nfpds: dictionary of lists containing VNFs traversed at each Nfpd
         :returns: a NS instance
 
         """
@@ -94,26 +71,20 @@ class NS(object):
         # Create NS chain graph
         chain = nx.MultiGraph()
         for vnf in vnfs:
-            chain.add_node(vnf['vnf_name'], **vnf)
-            # chain.add_node(vnf['id'], memory=vnf['memory'], disk=vnf['disk'],
-            #     cpu=vnf['cpu'])
+            chain.add_node(vnf['id'], **vnf)
         
         for link in links:
-            # Check if start/end VNF is correct
-            if link['idA'] == 'start' and not chain.has_node(link['idB']):
-                raise UnboundLocalError('Wrong starting VNF id!')
             # Check if link endpoints are correct
-            elif not chain.has_node(link['idA']) or\
+            if not chain.has_node(link['idA']) or\
                 not chain.has_node(link['idB']):
                 raise UnboundLocalError('Link endpoint is a non-existing\
  VNF!')
             else:
                 chain.add_edge(link['idA'], link['idB'], **link)
-                # chain.add_edge(link['idA'], link['idB'], bw=link['bw'],
-                #     delay=link['delay'])
 
         ns = NS()
         ns.setChain(chain)
+        ns.setNfpds(nfpds)
 
         return ns
 
@@ -134,7 +105,7 @@ class NS(object):
         """
 
         for nfpd in self.__nfpds.keys():
-            self.__nfpdsIdx[nfpd] = 0
+            self.__nfpdsIdx[nfpd] = -1
 
 
     def currIterId(self, nfpd):
@@ -152,6 +123,8 @@ class NS(object):
 
         :vnfId: VNF id from which to obtain the previous neighbours
         :nfpd: ID of the Nfpd
+        :note: in case the VNF is traversed multiple times in nfpd, then the
+        function gives the previous VNF before it is traversed for first time
         :returns: previous VNF id or None
 
         """
@@ -159,14 +132,14 @@ class NS(object):
         if self.__nfpds[nfpd][0] == vnfId:
             return None
 
-        i = 1
+        i = 0
         prevNotFound = True
 
-        while i < len(self.__nfpds[nfpd]) and prevNotFound:
-            prevNotFound = self.__nfpds[i] != vnfId
+        while i < len(self.__nfpds[nfpd]) - 1 and prevNotFound:
+            prevNotFound = self.__nfpds[nfpd][i + 1] != vnfId
             i += 1
 
-        return if prevNotFound: None else i - 2
+        return None if prevNotFound else self.__nfpds[nfpd][i - 1]
 
 
     # :D
@@ -175,6 +148,8 @@ class NS(object):
 
         :vnfId: VNF id from which to obtain the next neighbours
         :nfpd: ID of the Nfpd
+        :note: in case the VNF is traversed multiple times in nfpd, then the
+        function gives the the next VNF after first time traversal
         :returns: None or next VNF id within the nfpd
 
         """
@@ -182,10 +157,11 @@ class NS(object):
         i = 0
         notFound = True
         while i < len(self.__nfpds[nfpd]) and notFound:
-            notFound = self.__nfpds[nfpd] == vnfId
+            notFound = self.__nfpds[nfpd][i] != vnfId
             i += 1
 
-        return if notFound: None else i - 1
+        return None if notFound or i == len(self.__nfpds[nfpd])\
+                else self.__nfpds[nfpd][i]
 
 
     def getPrevIdx(self, nfpd):
@@ -197,7 +173,7 @@ class NS(object):
 
         prevIdx = self.__nfpdsIdx[nfpd] - 1
 
-        return if prevIdx >= 0: prevIdx else None
+        return prevIdx if prevIdx >= 0 else None
 
 
     # :D
@@ -217,6 +193,7 @@ class NS(object):
         return self.__nfpds[nfpd][self.__nfpdsIdx[nfpd]]
 
 
+    # TODO - deprecated
     def getBranchNum(self):
         """Obtains the number of branches
         :returns: int, None if not set
@@ -226,6 +203,7 @@ class NS(object):
         return self.__branches
 
 
+    # TODO - deprecated
     def getSplitsNum(self):
         """Obtains the number of splits
         :returns: int, None if not set
@@ -235,6 +213,7 @@ class NS(object):
         return self.__splits
 
 
+    # TODO - deprecated
     def getMaxSplitW(self):
         """Obtains the maximum split within the chain
         :returns: int, None if not set
@@ -242,6 +221,17 @@ class NS(object):
         """
         
         return self.__maxSplitW
+
+
+    def setNfpds(self, nfpds):
+        """It sets which are the Nfpds within the NS.
+
+        :nfpds: dictionary of lists containing VNFs traversed at each Nfpd
+        :returns: Nothing
+
+        """
+        
+        self.__nfpds = nfpds
 
 
     def setServiceName(self, name):
@@ -262,6 +252,7 @@ class NS(object):
         return self.__serviceName
 
 
+    # TODO - deprecated
     def setBranchNum(self, branchNum):
         """Sets the number of branches in a NS chain
 
@@ -282,6 +273,7 @@ class NS(object):
         self.__nfpdsIdx[nfpd] = iterIdx
 
 
+    # TODO - deprecated
     def setSplitsNum(self, splits):
         """Sets the number of splits of the NS chain
 
@@ -302,6 +294,7 @@ class NS(object):
         self.__chain = chain
 
 
+    # TODO - deprecated
     def setMaxSplitW(self, maxSplitW):
         """Sets the maximum split width
 
@@ -351,7 +344,7 @@ class NS(object):
 
     # :D
     def getLinks(self, A, B):
-        """Gets the (A,B) link resources
+        """Gets the (A,B) links and their resources
 
         :A: first VNF
         :B: second VNF
@@ -372,7 +365,8 @@ class NS(object):
 
         :B: destination VNF id
         :note: for now it retrieves the first (A,B) link stored
-        :returns: list of networkX links arriving to VNF B
+        :returns: list of edges between (_, B), where each element is a
+        dictionary with the multiple links connecting "_" and "B"
 
         """
         nodes = self.getChain().nodes()
@@ -399,16 +393,22 @@ class NS(object):
         
         if not self.__chain.has_node(vnf):
             return None
-        else:
-            resources = {'requirements': {}}
-            resources['processing_time'] = nx.get_node_attributes(self.__chain,
-                'processing_time')[vnf]
-            resources['vnf_name'] = nx.get_node_attributes(self.__chain,
-                'vnf_name')[vnf]
-            resources['requirements'] = nx.get_node_attributes(self.__chain,
-                'requirements')[vnf]
 
-            return resources
+        resources = {'requirements': {}}
+        resources['vnf_name'] = nx.get_node_attributes(self.__chain,
+            'vnf_name')[vnf]
+        resources['id'] = nx.get_node_attributes(self.__chain,
+            'id')[vnf]
+        resources['memory'] = nx.get_node_attributes(self.__chain,
+            'memory')[vnf]
+        resources['disk'] = nx.get_node_attributes(self.__chain,
+            'disk')[vnf]
+        resources['cpu'] = nx.get_node_attributes(self.__chain,
+            'cpu')[vnf]
+        resources['processing_time'] = nx.get_node_attributes(self.__chain,
+            'processing_time')[vnf]
+
+        return resources
 
     
     def write(self, storedName, absPath=None):
@@ -453,15 +453,16 @@ class NS(object):
         
         return vnf1['memory'] == vnf2['memory'] and\
                 vnf1['disk'] == vnf2['disk'] and\
-                vnf1['cpu'] == vnf2['cpu']
+                vnf1['cpu'] == vnf2['cpu'] and\
+                vnf1['processing_time'] == vnf2['processing_time']
 
 
     # :D
     def compareLinks(self, link1, link2):
         """Compares two NS chain links
 
-        :link1: link 1 obtained with getLink() method
-        :link2: link 2 obtained with getLink() method
+        :link1: link 1 obtained with getLinks()[n] method
+        :link2: link 2 obtained with getLinks()[n] method
         :returns: True/False
 
         """
@@ -502,10 +503,11 @@ class NS(object):
                     return False
                 for mVl in sChain[vnf][vnfNeig]:
                     existInNs = False
-                    for mVl2 in nsChain[vnf][vnfNeight]:
-                        if sChain[vnf][vnfNeigh][mVl] ==\
-                                nsChain[vnf][vnfNeigh][mVl2]:
-                            existInNs = True
+                    if mVl not in nsChain[vnf][vnfNeig]:
+                        return False
+                    else:
+                        existInNs = sChain[vnf][vnfNeigh][mVl] ==\
+                                nsChain[vnf][vnfNeigh][mVl]
                     if not existInNs:
                         return False
         
@@ -587,7 +589,6 @@ class NS(object):
         return pimrc
 
     
-
     # TODO - unused
     @staticmethod
     def read(storedName, absPath=None):
@@ -665,8 +666,8 @@ class NS(object):
         for nfpd in self.__nfpds:
             currDel = 0
             for i in range(len(self.__nfpds[nfpd]) - 1):
-                v1 = self.__nfpds[i]
-                v2 = self.__nfpds[i + 1]
+                v1 = self.__nfpds[nfpd][i]
+                v2 = self.__nfpds[nfpd][i + 1]
                 currDel += max([l['delay'] for l in self.__getLinks(v1, v2)])
 
             if currDel < maxDelay:
@@ -688,12 +689,20 @@ class NS(object):
 
         for nfpd in self.__nfpds:
             currDel = 0
+
+            if processing:
+                currDelay = self.__nfpd[0]['processing_time']
+
             for i in range(len(self.__nfpds[nfpd]) - 1):
                 v1 = self.__nfpds[i]
                 v2 = self.__nfpds[i + 1]
                 allDelays = [l['delay'] for l in self.__getLinks(v1, v2)]
+
                 currDel += reduce(lambda x, y: x + y, allDelays) / \
                         len(allDelays)
+
+                if processing:
+                    currDel += v2['processing_time']
 
             totalDel += currDel
 
