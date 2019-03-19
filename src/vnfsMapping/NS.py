@@ -4,6 +4,7 @@ import networkx as nx
 import networkx.algorithms.isomorphism as iso
 import json
 import os
+import csv
 
 # Global variable for the project absolute path
 absPath = os.path.abspath(os.path.dirname(__file__))
@@ -411,7 +412,7 @@ class NS(object):
         return resources
 
     
-    def write(self, storedName, absPath=None):
+    def write(self, storedName, absPath=None, absName=None):
         """Writes the NS chain and saves it under the specified storedName
         directory
 
@@ -419,6 +420,8 @@ class NS(object):
             stored
         :absPath: optional parameter to specify the absolute path under which
             the NS will be stored
+        :absName: optional param to specify absPath/name.gml where file is
+                  stored. If absPath is specified, this one is the used param
         :returns: Nothing
 
         """
@@ -429,7 +432,9 @@ class NS(object):
             basePath = absPath + '/' + storedName + '/'
         if not os.path.exists(basePath):
             os.makedirs(basePath)
-        nx.write_gml(self.__chain, basePath + 'chain.gml')
+        gmlPath = basePath + 'chain.gml' if not absName else absName
+        jsonPath = basePath[:-5] + '.json'
+        nx.write_gml(self.__chain, gmlPath)
 
         # Write the properties as well
         props = {
@@ -438,9 +443,80 @@ class NS(object):
             'maxSplitW': self.__maxSplitW ,
             'branchHeads': self.__branchHeads
         }
-        with open(basePath + 'props.json', 'w') as f:
+        with open(jsonPath, 'w') as f:
             json.dump(props, f)
     
+
+    def writeCSV(self, vlAbs, vnfAbs):
+        """Saves the NS as two separate CSV files, one for the virtual links
+        and another for theSaves the NS as two separate CSV files, one for the
+        virtual links and another for the VNFs
+
+        :vlAbs: absolute path filename to store the VLs CSV
+        :vnfAbs: absolute path filename to store the VNFs CSV
+
+        :returns: Nothing
+
+        """
+        csvChain = self.__prepareCSVchain()
+        # TODO
+        chain = self.getChain()
+        vnfs = chain.nodes()
+        vls = chain.edges()
+
+        # Write the VLs csv file
+        with open(vlAbs, 'w') as csvfile:
+            vl0 = chain.get_edge_data(vls[0][0], vls[0][1])
+            vlsHeader = ['idVNFa', 'idVNFb'].append(vl0.keys())
+            print vlsHeader
+            writer = csv.DictWriter(csvfile, fieldnames = vlsHeader)
+
+            for vl in vls:
+                vlDat = chain.get_edge_data(vl[0], vl[1])
+                vlDat['idVNFa'] = vl[0]
+                vlDat['idVNFb'] = vl[1]
+                #writer.writerow(vlDat)
+                print vlDat
+
+        # Write the VLs csv file
+        with open(vnfAbs, 'w') as csvfile:
+            vnf0 = chain.nodes(data=True)
+            print vnf0
+            vnfsHeader = ['idVNF'].append(vnf0.keys())
+            print vnfsHeader
+            writer = csv.DictWriter(csvfile, fieldnames = vnfsHeader)
+
+            for vnf in vnfs:
+                vnfDat = self.getVnf(vnf)
+                vnfDat['idVNF'] = vnf
+                #writer.writerow(vnfDat)
+                print vnfDat
+
+
+    def __prepareCSVchain(self):
+        """Prepares a networkX chain to write it for a CSV.
+        :returns: networkX Graph instance
+
+        """
+        csvChain = self.getChain().copy()
+        csvNodes = []
+
+        for vnf in csvChain.nodes():
+            vnfDct = {
+                'id': vnf,
+                'cpu': csvChain[vnf]['requirements']['cpu'],
+                'memory': csvChain[vnf]['requirements']['memory'],
+                'disk': csvChain[vnf]['requirements']['storage']
+            }
+            del csvChain[vnf]['requirements']
+            nx.set_node_attributes(csvChain, 'id', {vnf: vnf})
+            nx.set_node_attributes(csvChain, 'cpu', {vnf: vnfDct['cpu']})
+            nx.set_node_attributes(csvChain, 'memory', {vnf: vnfDct['memory']})
+            nx.set_node_attributes(csvChain, 'disk', {vnf: vnfDct['disk']})
+
+        return csvChain
+        # TODO
+
 
     def compareVNFs(self, vnf1, vnf2):
         """Compares two VNFs
