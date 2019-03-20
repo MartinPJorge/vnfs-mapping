@@ -445,6 +445,33 @@ class NS(object):
         }
         with open(jsonPath, 'w') as f:
             json.dump(props, f)
+
+
+    @staticmethod
+    def readCSV(vnfCSV, vlCSV):
+        """Creates a network service based on the virtual links and vnfs CSV
+           files
+
+        :vnfCSV: path to the CSV file where the VNFs are present
+        :vlCSV: path to the CSV file where the virtual links are present
+        :returns: NS instance
+
+        """
+        nsG = nx.Graph()
+        with open(vnfCSV) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                nsG.add_node(row['idVNF'], row)
+
+        with open(vlCSV) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                nsG.add_edge(row['idVNFa'], row['idVNFb'], row)
+
+        readNS = NS()
+        readNS.setChain(nsG)
+
+        return readNS
     
 
     def writeCSV(self, vlAbs, vnfAbs):
@@ -486,7 +513,7 @@ class NS(object):
             for vnf in csvChain.nodes():
                 vnfDat = dict(self.getVnf(vnf))
                 vnfDat['idVNF'] = vnfDat['id']
-                del vnfDat['id']
+                #del vnfDat['id']
                 writer.writerow(vnfDat)
 
 
