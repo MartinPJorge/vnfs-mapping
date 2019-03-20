@@ -459,63 +459,69 @@ class NS(object):
 
         """
         csvChain = self.__prepareCSVchain()
-        # TODO
-        chain = self.getChain()
-        vnfs = chain.nodes()
-        vls = chain.edges()
+        vnfs = csvChain.nodes()
+        vls = csvChain.edges()
 
         # Write the VLs csv file
         with open(vlAbs, 'w') as csvfile:
-            vl0 = chain.get_edge_data(vls[0][0], vls[0][1])
-            vlsHeader = ['idVNFa', 'idVNFb'].append(vl0.keys())
-            print vlsHeader
-            writer = csv.DictWriter(csvfile, fieldnames = vlsHeader)
+            vl0 = csvChain.get_edge_data(vls[0][0], vls[0][1])
+            writer = csv.DictWriter(csvfile, fieldnames = vl0.keys())
+            writer.writeheader()
 
-            for vl in vls:
-                vlDat = chain.get_edge_data(vl[0], vl[1])
-                vlDat['idVNFa'] = vl[0]
-                vlDat['idVNFb'] = vl[1]
-                #writer.writerow(vlDat)
-                print vlDat
+            for (vnf1, vnf2, data) in csvChain.edges(data=True):
+                writer.writerow(data)
 
-        # Write the VLs csv file
+        # Write the VNFs csv file
         with open(vnfAbs, 'w') as csvfile:
-            vnf0 = chain.nodes(data=True)
-            print vnf0
-            vnfsHeader = ['idVNF'].append(vnf0.keys())
-            print vnfsHeader
-            writer = csv.DictWriter(csvfile, fieldnames = vnfsHeader)
+            prevChain = self.getChain()
+            self.setChain(csvChain)
+            firstVnf = csvChain.nodes()[0]
+            props = self.getVnf(firstVnf).keys()
+            if 'idVNF' not in props:
+                props += ['idVNF']
+            writer = csv.DictWriter(csvfile, fieldnames = props)
+            writer.writeheader()
 
-            for vnf in vnfs:
-                vnfDat = self.getVnf(vnf)
-                vnfDat['idVNF'] = vnf
-                #writer.writerow(vnfDat)
-                print vnfDat
+
+            for vnf in csvChain.nodes():
+                vnfDat = dict(self.getVnf(vnf))
+                vnfDat['idVNF'] = vnfDat['id']
+                del vnfDat['id']
+                writer.writerow(vnfDat)
 
 
     def __prepareCSVchain(self):
         """Prepares a networkX chain to write it for a CSV.
+           It removes the 'start' VNF.
         :returns: networkX Graph instance
 
         """
         csvChain = self.getChain().copy()
-        csvNodes = []
+        csvChain.remove_node('start')
 
-        for vnf in csvChain.nodes():
-            vnfDct = {
-                'id': vnf,
-                'cpu': csvChain[vnf]['requirements']['cpu'],
-                'memory': csvChain[vnf]['requirements']['memory'],
-                'disk': csvChain[vnf]['requirements']['storage']
-            }
-            del csvChain[vnf]['requirements']
-            nx.set_node_attributes(csvChain, 'id', {vnf: vnf})
-            nx.set_node_attributes(csvChain, 'cpu', {vnf: vnfDct['cpu']})
-            nx.set_node_attributes(csvChain, 'memory', {vnf: vnfDct['memory']})
-            nx.set_node_attributes(csvChain, 'disk', {vnf: vnfDct['disk']})
+        # Set VL attributes
+        idsA, idsB = {}, {}
+        for (vnfA, vnfB, data) in csvChain.edges(data=True):
+            idsA[vnfA,vnfB] = vnfA
+            idsB[vnfA,vnfB] = vnfB
+        nx.set_edge_attributes(csvChain, 'idVNFa', idsA)
+        nx.set_edge_attributes(csvChain, 'idVNFb', idsB)
+
+        # Set VNF attributes
+        ids, cpus, disks, memories = {}, {}, {}, {},
+        for (vnf, data) in csvChain.nodes(data=True):
+            csvChain.node[vnf]['id'] = vnf
+            ids[vnf] = vnf
+            cpus[vnf] = data['requirements']['cpu']
+            disks[vnf] = data['requirements']['storage']
+            memories[vnf] = data['requirements']['memory']
+
+        nx.set_node_attributes(csvChain, 'id', ids)
+        nx.set_node_attributes(csvChain, 'cpu', cpus)
+        nx.set_node_attributes(csvChain, 'disk', disks)
+        nx.set_node_attributes(csvChain, 'memory', memories)
 
         return csvChain
-        # TODO
 
 
     def compareVNFs(self, vnf1, vnf2):
