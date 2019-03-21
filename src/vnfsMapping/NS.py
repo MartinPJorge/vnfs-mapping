@@ -411,6 +411,30 @@ class NS(object):
 
         return resources
 
+
+    def split(self, clusters):
+        """Splits the network service in the specified clusters, and generates
+           a NS entity for every cluster.
+
+        :clusters: dictionary with clusters and vnf numbers
+                   {clusterNum: [vnf1, vnf2], clusterNum2: [vnf3, vnf4]}
+        :returns: list of NS in ascendent ordered by respective cluster number
+                  i.e., [NScls1, NScls2]
+
+        """
+        nsClusters = []
+        for cls in clusters:
+            vnfs = clusters[cls]
+            notInCls = [v for v in self.getChain().nodes() if v not in vnfs]
+            cluster = self.getChain().copy()
+            for vnf in notInCls:
+                cluster.remove_node(vnf)
+            nsCluster = NS()
+            nsCluster.setChain(cluster)
+            nsClusters.append(nsCluster)
+
+        return nsClusters
+        
     
     def write(self, storedName, absPath=None, absName=None):
         """Writes the NS chain and saves it under the specified storedName
@@ -490,31 +514,33 @@ class NS(object):
         vls = csvChain.edges()
 
         # Write the VLs csv file
-        with open(vlAbs, 'w') as csvfile:
-            vl0 = csvChain.get_edge_data(vls[0][0], vls[0][1])
-            writer = csv.DictWriter(csvfile, fieldnames = vl0.keys())
-            writer.writeheader()
+        if len(vls) > 0:
+            with open(vlAbs, 'w') as csvfile:
+                vl0 = csvChain.get_edge_data(vls[0][0], vls[0][1])
+                writer = csv.DictWriter(csvfile, fieldnames = vl0.keys())
+                writer.writeheader()
 
-            for (vnf1, vnf2, data) in csvChain.edges(data=True):
-                writer.writerow(data)
+                for (vnf1, vnf2, data) in csvChain.edges(data=True):
+                    writer.writerow(data)
 
         # Write the VNFs csv file
-        with open(vnfAbs, 'w') as csvfile:
-            prevChain = self.getChain()
-            self.setChain(csvChain)
-            firstVnf = csvChain.nodes()[0]
-            props = self.getVnf(firstVnf).keys()
-            if 'idVNF' not in props:
-                props += ['idVNF']
-            writer = csv.DictWriter(csvfile, fieldnames = props)
-            writer.writeheader()
+        if len(vnfs) > 0:
+            with open(vnfAbs, 'w') as csvfile:
+                prevChain = self.getChain()
+                self.setChain(csvChain)
+                firstVnf = csvChain.nodes()[0]
+                props = self.getVnf(firstVnf).keys()
+                if 'idVNF' not in props:
+                    props += ['idVNF']
+                writer = csv.DictWriter(csvfile, fieldnames = props)
+                writer.writeheader()
 
 
-            for vnf in csvChain.nodes():
-                vnfDat = dict(self.getVnf(vnf))
-                vnfDat['idVNF'] = vnfDat['id']
-                #del vnfDat['id']
-                writer.writerow(vnfDat)
+                for vnf in csvChain.nodes():
+                    vnfDat = dict(self.getVnf(vnf))
+                    vnfDat['idVNF'] = vnfDat['id']
+                    #del vnfDat['id']
+                    writer.writerow(vnfDat)
 
 
     def __prepareCSVchain(self):
@@ -524,7 +550,8 @@ class NS(object):
 
         """
         csvChain = self.getChain().copy()
-        csvChain.remove_node('start')
+        if 'start' in csvChain.nodes():
+            csvChain.remove_node('start')
 
         # Set VL attributes
         idsA, idsB = {}, {}
@@ -539,14 +566,18 @@ class NS(object):
         for (vnf, data) in csvChain.nodes(data=True):
             csvChain.node[vnf]['id'] = vnf
             ids[vnf] = vnf
-            cpus[vnf] = data['requirements']['cpu']
-            disks[vnf] = data['requirements']['storage']
-            memories[vnf] = data['requirements']['memory']
+            # It might be the case that requirements is not present
+            if type(data['requirements']) == dict and len(a) > 0:
+                cpus[vnf] = data['requirements']['cpu']
+                disks[vnf] = data['requirements']['storage']
+                memories[vnf] = data['requirements']['memory']
 
         nx.set_node_attributes(csvChain, 'id', ids)
-        nx.set_node_attributes(csvChain, 'cpu', cpus)
-        nx.set_node_attributes(csvChain, 'disk', disks)
-        nx.set_node_attributes(csvChain, 'memory', memories)
+        # It might be the case that requirements is not present
+        if len(cpus) > 0:
+            nx.set_node_attributes(csvChain, 'cpu', cpus)
+            nx.set_node_attributes(csvChain, 'disk', disks)
+            nx.set_node_attributes(csvChain, 'memory', memories)
 
         return csvChain
 
