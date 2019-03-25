@@ -567,7 +567,8 @@ class NS(object):
             csvChain.node[vnf]['id'] = vnf
             ids[vnf] = vnf
             # It might be the case that requirements is not present
-            if type(data['requirements']) == dict and len(a) > 0:
+            reqs = data['requirements']
+            if type(reqs) == dict and len(reqs) > 0:
                 cpus[vnf] = data['requirements']['cpu']
                 disks[vnf] = data['requirements']['storage']
                 memories[vnf] = data['requirements']['memory']
